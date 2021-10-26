@@ -1,0 +1,154 @@
+<section id="customLayout" class="ptPDFMain ptPDF customlayout nav-{{ _navStatus }}">
+  <section id="prePrintContent">
+    <section class="prePrintContent" *ngIf="_contentData">
+
+      <!-- Header -->
+      <ion-row>
+        <ion-col sizeXs="6" sizeMd="8" class="ptPageHeader">
+          <strong class="headerText fs-18">
+            {{ _coverData['coverTitle'] }}
+            <small class="d-block">
+              {{ _contentData['personalDetails']['sEmployeeName'] }}
+            </small>
+          </strong>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="4" class="text-right">
+          <ion-button type="button" class="btn btn-primary" (click)="printPDFReport()">
+            <ion-icon name="print-outline"></ion-icon>
+            Print Report
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <!-- PERSONAL DETAILS -->
+      <ion-row class="row">
+        <ion-col size="12" class="section-header">
+          <strong>Section 1</strong>
+          <small class="m-l-10">Personal Details</small>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="sub-header">
+        <ion-col size="12">
+          <ion-col sizeSm="6" sizeXs="8" sizeMd="10">
+            <strong>{{ _contentData['personalDetails']['sEmployeeName'] }}</strong>
+          </ion-col>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="m-tb-10-20 a-center">
+        <!-- row 1 -->
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Role</strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["personalDetails"]["sKraRoleName"] }}</p>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Self Signed</strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["personalDetails"]["sEmployeeSigned"] }}</p>
+        </ion-col>
+        <!-- row 2 -->
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Manager</strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["personalDetails"]["sAdminFullName"] }}</p>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Manager Signed</strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["personalDetails"]["sManagerSigned"] }}</p>
+        </ion-col>
+        <!-- row 3 -->
+        <ng-container *ngIf="_contentData['personalDetails']['sAdmin2UUID'] !== ''">
+          <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Second Manager</strong></ion-col>
+          <ion-col sizeXs="6" sizeMd="3">
+            <p>{{ _contentData['personalDetails']["sAdmin2FullName"] }}</p>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Manager Signed</strong></ion-col>
+          <ion-col sizeXs="6" sizeMd="3">
+            <p>{{ _contentData["personalDetails"]["sManager2Signed"] }}</p>
+          </ion-col>
+        </ng-container>
+        <!-- row 4 -->
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Agreement Period</strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["personalDetails"]["agreementPeriod"] }}</p>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Department</strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p [innerHTML]="_contentData['personalDetails']['sUserStructure']"></p>
+        </ion-col>
+      </ion-row>
+
+      <!-- Personal Development Plan -->
+      <ion-row class="row">
+        <ion-col size="12" class="section-header">
+          <strong>Section 2</strong>
+          <small class="m-l-10">Personal Development Plan</small>
+        </ion-col>
+      </ion-row>
+
+      <ng-container *ngFor="let devNeeds of _contentData['pdpProfile']; let iPDP = index">
+        <ion-row class="sub-header">
+          <ion-col size="12">
+            <ion-col sizeSm="6" sizeXs="8" sizeMd="10">
+              <strong>{{ _contentData['settings']['sPDPDevelopmentNeedChange'] }} {{iPDP + 1}}</strong>
+            </ion-col>
+          </ion-col>
+        </ion-row>
+
+        <!-- row 1 -->
+        <ion-row class="b-b-1">
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>
+              <strong>{{ _contentData['settings']['sPDPDevelopmentNeedChange'] }} Details</strong>
+              <small>
+                <br>
+                ( a brief explanation of what the need is eg.Advanced Level Business Writing Skills )
+              </small>
+            </p>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>{{ devNeeds["sDescription"] }}</p>
+          </ion-col>
+        </ion-row>
+
+        <!-- row 2 -->
+        <ion-row class="b-b-1">
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>
+              <strong>{{ _contentData['settings']['sPDPDueDateChange'] }}</strong>
+            </p>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>{{ devNeeds["dPeriodOfImprovementEnd"] }}</p>
+          </ion-col>
+        </ion-row>
+
+        <!-- row 3 -->
+        <ion-row class="b-b-1">
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>
+              <strong>{{ _contentData['settings']['sPDPPriorityChange'] }}</strong>
+            </p>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>{{ devNeeds["sPriority"] }}</p>
+          </ion-col>
+        </ion-row>
+
+        <!-- row 4 -->
+        <ion-row class="b-b-1">
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>
+              <strong>{{ _contentData['settings']['sKpiCommentsNameChange'] }}</strong>
+            </p>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="6">
+            <p class="m-b-10" *ngFor="let comment of devNeeds['comments'];">
+              <b>{{ comment["sCommentBy"] }} <small>( {{ comment["dCommentDate"] }} )</small></b>
+              {{ comment["sComment"] }}
+            </p>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+    </section>
+  </section>
+</section>

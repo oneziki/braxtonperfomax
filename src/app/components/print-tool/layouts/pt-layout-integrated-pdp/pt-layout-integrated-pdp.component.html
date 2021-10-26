@@ -1,0 +1,308 @@
+<section id="customLayout" class="ptPDFMain ptPDF customlayout nav-{{ _navStatus }}">
+  <section id="prePrintContent">
+    <section class="prePrintContent" *ngIf="_contentData">
+
+      <!-- Header -->
+      <ion-row>
+        <ion-col sizeXs="6" sizeMd="8" class="ptPageHeader">
+          <strong class="headerText fs-18">
+            {{ _coverData['coverTitle'] }}
+            <small class="d-block">
+              {{ sEmployeeName }}
+            </small>
+          </strong>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="4" class="text-right">
+          <ion-button type="button" class="btn btn-primary" (click)="printPDFReport()">
+            <ion-icon name="print-outline"></ion-icon>
+            Print Report
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <!-- PERSONAL DETAILS -->
+      <ion-row class="row">
+        <ion-col size="12" class="section-header">
+          <strong>Section 1</strong>
+          <small class="m-l-10">Personal Details</small>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="sub-header">
+        <ion-col size="12">
+          <ion-col sizeSm="6" sizeXs="8" sizeMd="10">
+            <strong>{{ sEmployeeName }}</strong>
+          </ion-col>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="m-tb-10-20 a-center">
+        <!-- row 1 -->
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Self Signed</strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["pdpProfile"]["dDateNormalUserSigned"] }}</p>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Manager</strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["personalDetails"][0]["sAdminFullName"] }}</p>
+        </ion-col>
+        <!-- row 2 -->
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Assessment</strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["pdpProfile"]["sAssessmentName"] }}</p>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Manager Signed</strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["pdpProfile"]["dDateAdminUserSigned"] }}</p>
+        </ion-col>
+        <!-- row 3 -->
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Department</strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p [innerHTML]="_contentData['personalDetails'][0]['sUserStructure']"></p>
+        </ion-col>
+      </ion-row>
+
+      <!-- DEVELOPMENT NEEDS-->
+      <ng-container *ngFor="let devNeeds of _contentData['pdpProfile']['pdpDevelopmentNeeds']; let iPDP = index">
+        <ion-row class="row">
+          <ion-col size="12" class="section-header">
+            <strong>Section 2</strong>
+            <small class="m-l-10">Development Needs</small>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="sub-header">
+          <ion-col size="12">
+            <ion-col sizeSm="6" sizeXs="8" sizeMd="10">
+              <strong>{{ _contentData['settings']['sPDPDevelopmentNeedChange'] }}</strong>
+            </ion-col>
+          </ion-col>
+        </ion-row>
+
+        <!-- row 1 -->
+        <ion-row class="b-b-1">
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>
+              <strong>{{ _contentData['settings']['sPDPDevelopmentNeedChange'] }} Details</strong>
+              <small>
+                <br>
+                ( a brief explanation of what the need is eg.Advanced Level Business Writing Skills )
+              </small>
+            </p>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>{{ devNeeds["sDevelopmentActivity"] }}</p>
+          </ion-col>
+        </ion-row>
+
+        <!-- row 2 -->
+        <ion-row class="b-b-1">
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>
+              <strong>{{ _contentData['settings']['sPDPDueDateChange'] }}</strong>
+            </p>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>{{ devNeeds["dPeriodOfImprovementEnd"] }}</p>
+          </ion-col>
+        </ion-row>
+
+        <!-- row 3 -->
+        <ion-row class="b-b-1">
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>
+              <strong>{{ _contentData['settings']['sPDPPriorityChange'] }}</strong>
+            </p>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>{{ devNeeds["sPriority"] }}</p>
+          </ion-col>
+        </ion-row>
+
+        <!-- row 4 -->
+        <ion-row class="b-b-1">
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>
+              <strong>{{ _contentData['settings']['sKpiCommentsNameChange'] }}</strong>
+            </p>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="6">
+            <p class="m-b-10" *ngFor="let comment of devNeeds['comments'];">
+              <b>{{ comment["sCommentBy"] }} <small>( {{ comment["dCommentDate"] }} )</small></b>
+              {{ comment["sComment"] }}
+            </p>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+
+
+      <!-- COMPETENCIES -->
+      <ng-container *ngFor="let competency of _contentData['pdpProfile']['pdpCompetencies']; let iPDP = index">
+        <ion-row class="row">
+          <ion-col size="12" class="section-header">
+            <strong>Section 3</strong>
+            <small class="m-l-10">Competencies</small>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="sub-header">
+          <ion-col size="12">
+            <ion-col sizeSm="6" sizeXs="8" sizeMd="10">
+              <strong>{{ competency['sOutcomeName'] }}</strong>
+            </ion-col>
+          </ion-col>
+        </ion-row>
+
+        <!-- row 1 -->
+        <ion-row class="b-b-1">
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>
+              <strong>Indicator</strong>
+            </p>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>{{ competency['sIndicatorName'] }}</p>
+          </ion-col>
+        </ion-row>
+
+        <!-- row 2 -->
+        <ion-row class="b-b-1">
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>
+              <strong>Score</strong>
+            </p>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>{{ competency['fScoreValue'] }}%</p>
+          </ion-col>
+        </ion-row>
+
+        <!-- row 3 -->
+        <ion-row class="b-b-1">
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>
+              <strong>{{ _contentData['settings']['sPDPDueDateChange'] }}</strong>
+            </p>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>{{ competency["dPeriodOfImprovementEnd"] }}</p>
+          </ion-col>
+        </ion-row>
+
+        <!-- row 4 -->
+        <ion-row class="b-b-1">
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>
+              <strong>{{ _contentData['settings']['sPDPPriorityChange'] }}</strong>
+            </p>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>{{ competency["sPriority"] }}</p>
+          </ion-col>
+        </ion-row>
+
+        <!-- row 5 -->
+        <ion-row class="b-b-1">
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>
+              <strong>Status</strong>
+            </p>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>{{ competency["sAcceptStatus"] }}</p>
+          </ion-col>
+        </ion-row>
+
+        <!-- row 6 -->
+        <ion-row class="b-b-1">
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>
+              <strong>{{ _contentData['settings']['sKpiCommentsNameChange'] }}</strong>
+            </p>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="6">
+            <p class="m-b-10" *ngFor="let comment of competency['comments'];">
+              <b>{{ comment["sCommentBy"] }} <small>( {{ comment["dCommentDate"] }} )</small></b>
+              {{ comment["sComment"] }}
+            </p>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+
+
+      <!--GOALS AND COMMENTS-->
+      <ion-row class="row">
+        <ion-col size="12" class="section-header">
+          <strong>Section 4</strong>
+          <small class="m-l-10">Career Goals & Comments</small>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="sub-header">
+        <ion-col size="12">
+          <ion-col sizeSm="6" sizeXs="8" sizeMd="10">
+            <strong>Career Goals</strong>
+          </ion-col>
+        </ion-col>
+      </ion-row>
+
+      <!-- row 1 -->
+      <ion-row class="b-b-1">
+        <ion-col sizeXs="6" sizeMd="6">
+          <p>
+            <strong>Short term goals (3-6 months)</strong>
+          </p>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="6">
+          <p>{{ _contentData['pdpProfile']['sShortTermGoals'] }}</p>
+        </ion-col>
+      </ion-row>
+
+      <!-- row 2 -->
+      <ion-row class="b-b-1">
+        <ion-col sizeXs="6" sizeMd="6">
+          <p>
+            <strong>Medium term goals (3-12 months)</strong>
+          </p>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="6">
+          <p>{{ _contentData['pdpProfile']['sMediumTermGoals'] }}</p>
+        </ion-col>
+      </ion-row>
+
+      <!-- row 3 -->
+      <ion-row class="b-b-1">
+        <ion-col sizeXs="6" sizeMd="6">
+          <p>
+            <strong>Long term goals (12-24 months)</strong>
+          </p>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="6">
+          <p>{{ _contentData['pdpProfile']['sLongTermGoals'] }}</p>
+        </ion-col>
+      </ion-row>
+
+      <ng-container *ngIf="_contentData['pdpProfile']['sManagerOverAllComment'] !== ''">
+        <ion-row class="sub-header">
+          <ion-col size="12">
+            <ion-col sizeSm="6" sizeXs="8" sizeMd="10">
+              <strong>Manager Comment</strong>
+            </ion-col>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="b-b-1">
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>
+              <strong>Manager Comment</strong>
+            </p>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="6">
+            <p>{{ _contentData['pdpProfile']['sManagerOverAllComment'] }}</p>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+
+    </section>
+  </section>
+</section>

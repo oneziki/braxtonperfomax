@@ -1,0 +1,272 @@
+<section id="customLayout" class="ptPDFMain ptPDF customlayout nav-{{ _navStatus }}">
+  <section id="prePrintContent">
+    <app-pt-element-page-header [title]="_coverData['coverTitle']"
+      [sub]="'Presented to ' + _contentData['details']['sFirstName'] + ' ' + _contentData['details']['sLastName']"
+      [_clientLogo]="_coverData['clientLogo']"></app-pt-element-page-header>
+
+    <!-- PERSONAL DETAILS-->
+    <div class="row ptItem">
+      <div class="col-12">
+        <strong class="d-block small-header">{{ _contentData['details']["sDetailsHeading"] }}</strong>
+        <br />
+      </div>
+      <div class="col-8">
+        <div class="row">
+          <div class="col-4">
+            <strong class="d-block">Name</strong>
+          </div>
+          <div class="col">
+            <p>
+              {{ _contentData['details']["sFirstName"] }} {{ _contentData['details']["sLastName"] }}
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <strong class="d-block">Email</strong>
+          </div>
+          <div class="col">
+            <p>
+              {{ _contentData['details']["sEmail"] }}
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <strong class="d-block">Completed</strong>
+          </div>
+          <div class="col">
+            <p>
+              {{ _contentData['details']["dtLastSubmitted"] }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col text-center">
+        <h5 class="m-t-0 m-b-0">{{ _contentData['details']["sOverallScoreLabel"] }}</h5>
+        <h1 class="m-t-0 fs-70" [ngStyle]="{ color:  _contentData['details']['overall_sColor'] }">
+          {{ _contentData['details']["overallScore"] }}
+        </h1>
+      </div>
+    </div>
+
+    <!-- LEGEND -->
+    <div class="row ptItem">
+      <div class="col-12">
+        <hr />
+      </div>
+      <div class="col">
+        <strong class="d-block p-t-10">{{ _contentData['details']["sLegendHeading"] }}</strong>
+      </div>
+      <div class="col" *ngFor="let legend of _contentData['legend']; let iLegend = index">
+        <p>
+          <span class="color-dot" [ngStyle]="{ background: legend['sColor'] }"></span>
+          <strong class="fc-222">{{ legend["iStart"] }} - {{ legend["iEnd"] }}</strong>
+          <br />
+          {{ legend["sLegend"] }}
+        </p>
+      </div>
+      <div class="col-12">
+        <hr />
+      </div>
+    </div>
+
+    <!-- LENSE ANSWERS -->
+    <ng-container *ngIf="_contentData['lenseData'].length">
+      <div class="row no-gutters ptItem">
+        <div class="col-12">
+          <strong class="d-block small-header">
+            {{ _contentData['details']["sLenseHeading"] }}
+          </strong>
+        </div>
+      </div>
+      <div class="row ptItem no-gutters b-b-lightgray" *ngFor="let lenseItem of _contentData['lenseData'];">
+        <div class="col-6">
+          <strong class="d-block">{{ lenseItem.sLenseName }}</strong>
+        </div>
+        <div class="col">
+          <p>{{ lenseItem.sOptionValue }}</p>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- REVIEW HEADER -->
+    <div class="row ptItem">
+      <div class="col-12">
+        <h4 class="section-title">SECTION 1: <span class="fw-thin">REVIEW RESULTS</span></h4>
+      </div>
+    </div>
+
+    <!-- QUESTIONS -->
+    <ng-container *ngIf="_contentData['questionData'].length != 0">
+      <div class="row no-gutters ptItem">
+        <div class="col-10">
+          <strong class="d-block small-header">
+            Questions Responded To
+          </strong>
+        </div>
+        <div class="col-2 text-center">
+          <strong class="d-block small-header">
+            Your Results
+          </strong>
+        </div>
+      </div>
+      <ng-container *ngFor="let item of _contentData['questionData']">
+        <!-- Dimension -->
+        <div class="row ptItem postSkip no-gutters b-b-lightgray"
+          *ngIf="_contentData['details']['bIncludePageBreaks'] && item.sType == 'Heading'">
+          <div class="col-10">
+            <strong class="d-block fs-22 fw-100">{{ item.sSurveyQuestionText }}</strong>
+          </div>
+          <div class="col-2 text-center">
+            <p class="fs-22" [ngStyle]="{ color: item['sColor'] }">
+              {{ item.sScore }}
+              <span *ngIf="item.bShowPercentage">%</span>
+            </p>
+          </div>
+        </div>
+        <!-- Question -->
+        <div class="row ptItem no-gutters b-b-lightgray" *ngIf="item.sType == 'Question'">
+          <div class="col-10">
+            <p>{{ item.sSurveyQuestionText }}</p>
+          </div>
+          <div class="col-2 text-center">
+            <p>
+              <span class="color-dot" [ngStyle]="{ background:  item['sColor'] }"
+                *ngIf="item.bShowColorDot && item.sScore != 'N/A'"></span>
+              <span class="color-dot" [ngStyle]="{ background: 'transparent' }"
+                *ngIf="!item.bShowColorDot && item.sScore != 'N/A'"></span>
+              {{ item.sScore }}
+              <span *ngIf="item.bShowPercentage">%</span>
+            </p>
+          </div>
+        </div>
+        <!-- COMMENTS -->
+        <!--
+          COMMENTS ARE NOT GROUPED AT THE BOTTOM AND DISPLAYS BETWEEN QUESTIONS
+        -->
+        <div class="row ptItem no-gutters b-b-lightgray"
+          *ngIf="_contentData['details']['bGroupReportComments'] && item.sType == 'Comment'">
+          <div class="col-10">
+            <p>{{ item.sSurveyQuestionText }}</p>
+          </div>
+          <div class="col-2 text-center">
+            <p>{{ item.sScore }}</p>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <!-- COMMENTS HEADER -->
+    <ng-container *ngIf="_contentData['commentsData'].length != 0">
+      <div class="row ptItem">
+        <div class="col-12">
+          <h4 class="section-title">SECTION 2: <span class="fw-thin">COMMENTS</span></h4>
+        </div>
+      </div>
+      <div class="row no-gutters ptItem">
+        <div class="col-6">
+          <strong class="d-block small-header">
+            The Questions
+          </strong>
+        </div>
+        <div class="col-6">
+          <strong class="d-block small-header">
+            Your Responses
+          </strong>
+        </div>
+      </div>
+      <ng-container *ngFor="let item of _contentData['commentsData']">
+        <div class="row ptItem" *ngIf="item.sType == 'Heading'">
+          <div class="col-12">
+            <strong class="d-block small-header">
+              {{ item.sSurveyQuestionText }}
+            </strong>
+          </div>
+        </div>
+        <div class="row ptItem b-b-lightgray" *ngIf="item.sType == 'Comment'">
+          <div class="col-6">
+            <strong class="d-block">{{ item.sSurveyQuestionText }}</strong>
+          </div>
+          <div class="col-6">
+            <p>{{ item.sScore }}</p>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <!-- RECOMMENDATION HEADER -->
+    <ng-container *ngIf="_contentData['recommendationData'].length != 0">
+      <div class="row ptItem preSkip">
+        <div class="col-12">
+          <h4>SECTION 3: <span class="fw-thin">RECOMMENDATIONS</span></h4>
+        </div>
+      </div>
+      <div class="row ptItem">
+        <div class="col-12">
+          <strong class="d-block small-header">
+            Recommendation
+          </strong>
+        </div>
+      </div>
+      <ng-container *ngFor="let item of _contentData['recommendationData']">
+        <div class="row ptItem">
+          <div class="col-12">
+            <strong class="d-block">
+              {{ item.sSurveyQuestionText }}
+            </strong>
+          </div>
+        </div>
+        <!-- Overall Recommendation -->
+        <ng-container *ngIf="item.bOverallRecommendation">
+          <div class="row ptItem no-gutters b-b-lightgray">
+            <div class="col-12">
+              <ng-container *ngIf="item.sRecommendationText !== ''">
+                <p>{{ item.sOverallRecommendationText }}</p>
+              </ng-container>
+              <ng-container *ngIf="item.sRecommendationText === ''">
+                <p>No Recommendation is available</p>
+              </ng-container>
+            </div>
+          </div>
+        </ng-container>
+        <!-- Review Recommendation -->
+        <ng-container *ngIf="item.bReviewRecommendation">
+          <div class="row ptItem no-gutters b-b-lightgray">
+            <div class="col-6">
+              <p>{{ item.sLowScoreRecommendationNameChange }}</p>
+            </div>
+            <div class="col-6">
+              <p>{{ item.sHighScoreRecommendationNameChange }}</p>
+            </div>
+          </div>
+          <div class="row ptItem no-gutters b-b-lightgray">
+            <div class="col-6">
+              <p>{{ item.sLowScoreReviewRecommendationText }}</p>
+            </div>
+            <div class="col-6">
+              <p>{{ item.sHighScoreRecommendationNameChange }}</p>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="!item.bReviewRecommendation && !item.bOverallRecommendation">
+          <div class="row ptItem no-gutters b-b-lightgray">
+            <div class="col-12">
+              <p>No Recommendation is available</p>
+            </div>
+          </div>
+        </ng-container>
+
+      </ng-container>
+    </ng-container>
+
+  </section>
+  <section id="ptPrintContent">
+    <app-pt-element-cover [_clientLogo]="_coverData['clientLogo']" [_clientBanner]="_coverData['clientBanner']"
+      [_coverTitle]="_coverData['coverTitle']" [_coverSub]="_coverData['coverSub']">
+    </app-pt-element-cover>
+    <app-pt-element-page-footer
+      [sub]="'Presented to ' + _contentData['details']['sFirstName'] + ' ' + _contentData['details']['sLastName']">
+    </app-pt-element-page-footer>
+  </section>
+</section>

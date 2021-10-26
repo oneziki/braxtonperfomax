@@ -1,0 +1,81 @@
+.legend-list-wrapper {
+
+  .legend-cat {
+    color: var(--sub-grey);
+    display: block;
+    text-transform: uppercase;
+    opacity: 0.5;
+    letter-spacing: 2px;
+  }
+
+  h1 {
+    font-size: 60px;
+    margin-top: 5px;
+    margin-bottom: 2px;
+    .icofont {
+      display: block;
+    }
+  }
+  strong {
+    display: block;
+    font-weight: 900;
+  }
+  p {
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    margin-bottom: 8px;
+  }
+  .text-prime-default {
+    color: var(--primary);
+  }
+
+
+  table {
+    margin-bottom: 0;
+    h1 {
+      font-size: 30px;
+      margin: 0;
+    }
+    h4 {
+      margin-bottom: 0;
+    }
+    td {
+      padding: 1px !important;
+    }
+  }
+
+  .click-true {
+    cursor: pointer;
+    &:hover {
+      color: var(--primary);
+    }
+  }
+  .click-false {
+    cursor: default;
+  }
+
+  .maxFiveCol {
+    // margin-top: 0 !important;
+
+    h1 {
+      font-size: 36px;
+    }
+  }
+  .fiveCol {
+    width: 20% !important;
+  }
+
+  &.tinyPod {
+    h1 {
+      font-size: 26px;
+    }
+    strong {
+      font-size: 10px;
+    }
+    p {
+      font-size: 8px;
+    }
+  }
+
+}

@@ -1,0 +1,92 @@
+.hmSidebar {
+  grid-area: sidebar;
+  position: relative;
+  font-weight: 600;
+}
+
+.hmContent {
+  grid-area: content;
+}
+
+.fmFooter {
+  grid-area: footer;
+  font-weight: 600;
+}
+
+.hmWrapper {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 5% 95%;
+  grid-template-rows: 1fr 10%;
+  grid-template-areas:
+    "sidebar content"
+    "....... footer";
+
+  .fmFooter {
+    height: 25px;
+  }
+
+    &.oneRow {
+      p.tUpRight,
+      .xAxis,
+      .fmFooter {
+        font-size: 14px;
+        min-height: unset;
+      }
+    }
+    &.oneRow.tinyRow {
+      p.tUpRight,
+      .xAxis,
+      .fmFooter {
+        font-size: 10px;
+        min-height: unset;
+        white-space: normal;
+      }
+    }
+    &.oneRow.midRow {
+      p.tUpRight,
+      .xAxis,
+      .fmFooter {
+        font-size: 12px;
+        min-height: unset;
+        white-space: normal;
+      }
+    }
+}
+
+.box {
+  text-align: center;
+  // border: 1px solid black;
+}
+
+.hmWrapperInner {
+  display: grid;
+  width: 100%;
+  height: 100%;
+
+  &.grid-two-columns {
+    grid-template-columns: 5% 1fr 1fr;
+  }
+  &.grid-three-columns {
+    grid-template-columns: 5% 1fr 1fr 1fr;
+  }
+  &.grid-four-columns {
+    grid-template-columns: 5% 1fr 1fr 1fr 1fr;
+  }
+
+}
+.hmWrapperInner .box.yAxis {
+  position: relative;
+}
+.hmWrapperInner .box.xAxis {
+  min-height: 25px;
+  padding: 5px;
+}
+
+p.tUpRight {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+  white-space: nowrap;
+}

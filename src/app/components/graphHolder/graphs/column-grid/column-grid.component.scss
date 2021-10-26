@@ -1,0 +1,98 @@
+.grid-col-wrapper {
+  margin-top: 25px;
+
+  .initRow {
+    .grid-face {
+      padding: 5px 5px;
+      border-radius: 100%;
+      height: 46px;
+      width: 46px;
+      line-height: 46px;
+      display: block;
+      text-align: center;
+      margin: 0 auto;
+      i {
+        font-size: 36PX;
+        filter: drop-shadow(2px 4px 6px black);
+      }
+    }
+    .grid-score {
+      font-size: 40PX;
+      margin-bottom: 0 !important;
+    }
+    .grid-role {
+      font-size: 20PX;
+    }
+  }
+  .lineRow {
+    .grid-face {
+      background: transparent !important;
+      display: block;
+      text-align: center;
+      margin: 0 auto;
+
+      i {
+        font-size: 30PX;
+      }
+    }
+    .grid-score {
+      font-size: 30PX;
+      margin-bottom: 0;
+    }
+    .grid-role {
+      font-size: 16PX;
+    }
+  }
+}
+
+
+.grid-col-icon-wrapper {
+  .icofont {
+    display: block;
+    font-size: 26px;
+    margin-top: 2px; 
+  }
+  h4 {
+    font-size: 10px;
+    word-break: break-word;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  strong {
+    display: block;
+    font-size: 12px;
+    margin-top: 5px;
+    font-weight: 900;
+  }
+  p {
+    font-size: 10px;
+  }
+
+  .click-true {
+    cursor: pointer;
+    &:hover {
+      color: var(--primary);
+    }
+  }
+  .click-false {
+    cursor: default;
+  }
+
+  marquee {
+    text-align: center;
+  }
+  .coller {
+    display: inline-block;
+    margin: 0 15px;
+  }
+  .rotate-90 {
+    transform: rotate(90deg);
+  }
+  .carousel-item {
+    text-align: center;
+  }
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    filter: invert(1);
+  }
+}

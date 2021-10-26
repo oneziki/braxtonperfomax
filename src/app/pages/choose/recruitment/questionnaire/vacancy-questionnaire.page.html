@@ -1,0 +1,36 @@
+<ion-content [fullscreen]="true">
+    <ion-grid class="contentPageWrapper survey-wrapper">  
+      <ion-card>
+        <ion-card-content class="survey-wrapper">
+          <ion-row class="survey-container">
+            <ion-col size="12">
+              <h4 class="sub-title" *ngIf="_questionnaireTitle">
+                {{ _questionnaireTitle }}:
+              </h4>
+            </ion-col>
+            <ion-col size="12" class="text-center">
+              <img class="color-avi" alt="{{ _selectedAssessee['sAssesseeFullName'] }}" [src]="_selectedAssessee['profilePhoto']" (error)="assesseeDefaultImg()"
+                *ngIf="_showImage">
+              <h6>
+                <ion-icon class="default-img" name="person-circle-outline" *ngIf="!_showImage"></ion-icon>
+              </h6>
+              <h6 class="color-avi-name">
+                {{ _selectedAssessee['sAssesseeFullName'] }}
+              </h6>
+            </ion-col>
+            <ion-col size="12">
+              <div id="surveyContainer" class="contentcontainer codecontainer">
+                <div id="surveyElement"></div>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </ion-grid>
+  </ion-content>
+
+<ion-footer>
+    <ion-button class="btnRound" shape="round" (click)="goBackToLibrary()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+  </ion-footer>

@@ -1,0 +1,276 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper summaryGrid" *ngIf="!_isLoading">
+    <ion-row>
+      <ion-col sizeXs="12" sizeMd="6">
+        <ion-text>
+          <h2 class="contentHeader">Actions</h2>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+
+    <!-- PERFORM -->
+    <ng-container *ngIf="_selectedAppTab === 'perform'">
+      <ion-card class="transparentCard" *ngFor="let status of _filterStatusList; let i = index">
+        <ion-card-content>
+          <ion-row class="sub-title" [ngStyle]="{ 'background-color': _tasksList[status['statusGroup']][0]['color']}">
+            <h3>{{ _tasksList[status['statusGroup']][0]["status"] }}</h3>
+          </ion-row>
+          <ion-row class="b-b-1">
+            <ion-col size="4" sizeSm="4" sizeMd="2" sizeLg="2" sizeXl="2">
+              <strong>Employee</strong>
+            </ion-col>
+            <ion-col size="4" sizeSm="4" sizeMd="3" sizeLg="2" sizeXl="2">
+              <strong>Period</strong>
+            </ion-col>
+            <ion-col size="4" sizeSm="4" sizeMd="3" sizeLg="2" sizeXl="2">
+              <strong>Module</strong>
+            </ion-col>
+            <ion-col size="2" class="ion-hide-md-down">
+              <strong>Employee Signed</strong>
+            </ion-col>
+            <ion-col size="2" class="ion-hide-md-down">
+              <strong>Manager Signed</strong>
+            </ion-col>
+            <ion-col size="2" class="ion-hide-lg-down">
+              <strong>2nd Manager Signed</strong>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngFor="let statusItem of _tasksList[status['statusGroup']]" class="hover">
+            <ion-col size="4" sizeSm="4" sizeMd="2" sizeLg="2" sizeXl="2" class="task-contain" (click)="processTask(statusItem)">
+              <h6 class="d-inline-block text-center ion-hide-lg-down" [ngStyle]="{'background': statusItem['color']}">
+                {{ statusItem['sEmployeeInitials'] }}</h6>
+              <p class="d-inline-block">{{ statusItem["sEmployeeFullName"] }}</p>
+            </ion-col>
+            <ion-col (click)="processTask(statusItem)" size="4" sizeSm="4" sizeMd="3" sizeLg="2" sizeXl="2">
+              <p class="d-inline-block">{{ statusItem["sContractPeriod"] }}</p>
+            </ion-col>
+            <ion-col (click)="processTask(statusItem)" size="4" sizeSm="4" sizeMd="3" sizeLg="2" sizeXl="2">
+              <p class="d-inline-block">{{ statusItem["sSubModuleItem"] }}</p>
+            </ion-col>
+            <ion-col (click)="processTask(statusItem)" size="2" class="ion-hide-md-down">
+              <p class="d-inline-block">{{ statusItem["sDateEmployeeSigned"] }}</p>
+            </ion-col>
+            <ion-col (click)="processTask(statusItem)" size="2" class="ion-hide-md-down">
+              <p class="d-inline-block">{{ statusItem["sDateAdminSigned"] }}</p>
+            </ion-col>
+            <ion-col class="ion-hide-lg-down">
+              <p class="d-inline-block">{{ statusItem["sDateAdmin2Signed"] }}</p>
+            </ion-col>
+            <ng-container *ngIf="statusItem['status'] !== 'Completed' && statusItem['status'] !== 'Coming Up'">
+              <ion-button class="pdfDownload m-b-10 d-inline-block ion-hide-lg-down" (click)="downloadPDFForm(statusItem)">
+                <ion-icon name="document-outline"></ion-icon>
+              </ion-button>
+            </ng-container>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
+
+    <!-- GROW -->
+    <ng-container *ngIf="_selectedAppTab === 'grow'">
+      <ion-card class="transparentCard" *ngFor="let status of _filterStatusList; let i = index">
+        <ion-card-content>
+          <ion-row class="sub-title" [ngStyle]="{ 'background-color': _tasksList[status['statusGroup']][0]['color']}">
+            <h3>{{ _tasksList[status['statusGroup']][0]["status"] }}</h3>
+          </ion-row>
+          <ion-row class="b-b-1">
+            <ion-col size="4" sizeSm="4" sizeMd="3" sizeLg="3" sizeXl="3">
+              <strong>Employee</strong>
+            </ion-col>
+            <ion-col size="4" sizeSm="4" sizeMd="3" sizeLg="3" sizeXl="3">
+              <strong>Review</strong>
+            </ion-col>
+            <ion-col size="4" sizeSm="4" sizeMd="2" sizeLg="2" sizeXl="2">
+              <strong>Employee Signed</strong>
+            </ion-col>
+            <ion-col size="2" class="ion-hide-md-down">
+              <strong>Manager Signed</strong>
+            </ion-col>
+            <ion-col size="2" class="ion-hide-md-down">
+              <strong>2nd Manager Signed</strong>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngFor="let statusItem of _tasksList[status['statusGroup']]" class="hover">
+            <ion-col size="4" sizeSm="4" sizeMd="3" sizeLg="3" sizeXl="3" class="task-contain" (click)="processTask(statusItem)">
+              <ng-container *ngIf="statusItem['sSubModuleItem'] !== 'Integrated PDP'; else empName">
+                <h6 class="d-inline-block text-center ion-hide-md-down" [ngStyle]="{'background': statusItem['color']}">
+                  {{ statusItem['initials'] }}</h6>
+                <p class="d-inline-block">{{ statusItem["sAssesseeFullName"] }}</p>
+              </ng-container>
+              <ng-template #empName>
+                <h6 class="d-inline-block text-center ion-hide-md-down" [ngStyle]="{'background': statusItem['color']}">
+                  {{ statusItem['sEmployeeInitials'] }}</h6>
+                <p class="d-inline-block">{{ statusItem["sEmployeeFullName"] }}</p>
+              </ng-template>
+            </ion-col>
+            <ion-col size="4" sizeSm="4" sizeMd="3" sizeLg="3" sizeXl="3" (click)="processTask(statusItem)">
+              <ng-container *ngIf="statusItem['sSurveyDateName'] !== ''; else surveyName">
+                <p class="d-inline-block">{{ statusItem["sSurveyDateName"] }}</p>
+              </ng-container>
+              <ng-template #surveyName>
+                <p class="d-inline-block">{{ statusItem["sSurveyName"] }}</p>
+              </ng-template>
+              <ng-container *ngIf="statusItem['sSubModuleItem'] === 'Integrated PDP'">
+                <p class="d-inline-block">{{ statusItem["sSubModuleItem"] }}</p>
+              </ng-container>
+            </ion-col>
+            <ion-col size="4" sizeSm="4" sizeMd="2" sizeLg="2" sizeXl="2" (click)="processTask(statusItem)">
+              <p class="d-inline-block">Not Applicable</p>
+            </ion-col>
+            <ion-col size="2" class="ion-hide-md-down" (click)="processTask(statusItem)">
+              <p class="d-inline-block">Not Applicable</p>
+            </ion-col>
+            <ion-col class="ion-hide-md-down">
+              <p class="d-inline-block">Not Applicable</p>
+            </ion-col>
+            <ng-container *ngIf="statusItem['sSubModuleItem'] === 'Competency' && statusItem['status'] !== 'Completed'">
+              <ion-button class="pdfDownload m-b-10 d-inline-block ion-hide-lg-down" (click)="downloadPDFForm(statusItem)">
+                <ion-icon name="document-outline"></ion-icon>
+              </ion-button>
+            </ng-container>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
+
+    <!-- LIVE -->
+    <ng-container *ngIf="_selectedAppTab === 'live'">
+      <ion-card class="transparentCard" *ngFor="let status of _filterStatusList; let i = index">
+        <ion-card-content>
+          <ion-row class="sub-title" [ngStyle]="{ 'background-color': _tasksList[status['statusGroup']][0]['color']}">
+            <h3>{{ _tasksList[status['statusGroup']][0]["status"] }}</h3>
+          </ion-row>
+          <ion-row class="b-b-1">
+            <ion-col size="4" sizeSm="4" sizeMd="2" sizeLg="2" sizeXl="2">
+              <strong>Employee</strong>
+            </ion-col>
+            <ion-col size="4" sizeSm="4" sizeMd="3" sizeLg="2" sizeXl="2">
+              <strong>Review</strong>
+            </ion-col>
+            <ion-col size="4" sizeSm="4" sizeMd="3" sizeLg="2" sizeXl="2">
+              <strong>Module</strong>
+            </ion-col>
+            <ion-col size="2" class="ion-hide-md-down">
+              <strong>Employee Signed</strong>
+            </ion-col>
+            <ion-col size="2" class="ion-hide-md-down">
+              <strong>Manager Signed</strong>
+            </ion-col>
+            <ion-col size="2" class="ion-hide-lg-down">
+              <strong>2nd Manager Signed</strong>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngFor="let statusItem of _tasksList[status['statusGroup']]" class="hover">
+            <ion-col size="4" sizeSm="4" sizeMd="2" sizeLg="2" sizeXl="2" class="task-contain" (click)="processTask(statusItem)">
+              <h6 class="d-inline-block text-center ion-hide-lg-down" [ngStyle]="{'background': statusItem['color']}">
+                {{ statusItem['initials'] }}</h6>
+              <p class="d-inline-block">{{ statusItem["sAssesseeFullName"] }}</p>
+            </ion-col>
+            <ion-col (click)="processTask(statusItem)" size="4" sizeSm="4" sizeMd="3" sizeLg="2" sizeXl="2">
+              <p class="d-inline-block"> {{ statusItem["sAssessmentName"] }}</p>
+            </ion-col>
+            <ion-col (click)="processTask(statusItem)" size="4" sizeSm="4" sizeMd="3" sizeLg="2" sizeXl="2">
+              <p class="d-inline-block">Live</p>
+            </ion-col>
+            <ion-col (click)="processTask(statusItem)" size="2" class="ion-hide-md-down">
+              <p class="d-inline-block">Not Applicable</p>
+            </ion-col>
+            <ion-col (click)="processTask(statusItem)" size="2" class="ion-hide-md-down">
+              <p class="d-inline-block">Not Applicable
+            </ion-col>
+            <ion-col class="ion-hide-lg-down">
+              <p class="d-inline-block">Not Applicable</p>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
+
+    <!-- CHOOSE -->
+    <ng-container *ngIf="_selectedAppTab === 'choose'">
+      <ion-card class="transparentCard" *ngFor="let status of _filterStatusList; let i = index">
+        <ion-card-content>
+          <ion-row class="sub-title" [ngStyle]="{ 'background-color': _tasksList[status['statusGroup']][0]['color']}">
+            <h3>{{ _tasksList[status['statusGroup']][0]["status"] }}</h3>
+          </ion-row>
+          <ion-row class="b-b-1">
+            <ion-col size="4" sizeSm="4" sizeMd="2" sizeLg="2" sizeXl="2">
+              <strong>Employee</strong>
+            </ion-col>
+            <ion-col size="4" sizeSm="4" sizeMd="3" sizeLg="2" sizeXl="2">
+              <strong>Review</strong>
+            </ion-col>
+            <ion-col size="4" sizeSm="4" sizeMd="3" sizeLg="2" sizeXl="2">
+              <strong>Module</strong>
+            </ion-col>
+            <ion-col size="2" class="ion-hide-md-down">
+              <strong>Employee Signed</strong>
+            </ion-col>
+            <ion-col size="2" class="ion-hide-md-down">
+              <strong>Manager Signed</strong>
+            </ion-col>
+            <ion-col size="2" class="ion-hide-lg-down">
+              <strong>2nd Manager Signed</strong>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngFor="let statusItem of _tasksList[status['statusGroup']]" class="hover">
+            <ion-col size="4" sizeSm="4" sizeMd="2" sizeLg="2" sizeXl="2" class="task-contain" (click)="processTask(statusItem)">
+              <ng-container *ngIf="statusItem['initials']; else sAssesseeFullName">
+                <h6 class="d-inline-block text-center ion-hide-lg-down" [ngStyle]="{'background': statusItem['color']}">
+                  {{ statusItem['initials'] }}</h6>
+                <p class="d-inline-block">{{ statusItem["sAssesseeFullName"] }}</p>
+              </ng-container>
+              <ng-template #sAssesseeFullName>
+                <h6 class="d-inline-block text-center ion-hide-lg-down" [ngStyle]="{'background': statusItem['color']}">
+                  {{ statusItem['sEmployeeInitials'] }}</h6>
+                <p class="d-inline-block">{{ statusItem["sEmployeeFullName"] }}</p>
+              </ng-template>
+            </ion-col>
+            <ion-col (click)="processTask(statusItem)" size="4" sizeSm="4" sizeMd="3" sizeLg="2" sizeXl="2">
+              <ng-container *ngIf="statusItem['sSurveyName']; else sCoverTitle">
+                <p class="d-inline-block"> {{ statusItem["sSurveyName"] }}</p>
+              </ng-container>
+              <ng-template #sCoverTitle>
+                <p class="d-inline-block"> {{ statusItem["sCoverTitle"] }}</p>
+              </ng-template>
+            </ion-col>
+            <ion-col (click)="processTask(statusItem)" size="4" sizeSm="4" sizeMd="3" sizeLg="2" sizeXl="2">
+              <p class="d-inline-block">{{statusItem["sSubModuleItem"]}}</p>
+            </ion-col>
+            <ion-col (click)="processTask(statusItem)" size="2" class="ion-hide-md-down">
+              <p class="d-inline-block">Not Applicable</p>
+            </ion-col>
+            <ion-col (click)="processTask(statusItem)" size="2" class="ion-hide-md-down">
+              <p class="d-inline-block">Not Applicable
+            </ion-col>
+            <ion-col class="ion-hide-lg-down">
+              <p class="d-inline-block">Not Applicable</p>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
+
+    <ng-container *ngIf="_filterStatusList.length === 0">
+      <ion-card class="transparentCard">
+        <ion-card-content class="ion-text-center">
+          <ion-row>
+            <ion-col>
+              <strong>* No Data To Display</strong>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-button class="btnRound" shape="round" (click)="goBack()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-button>
+</ion-footer>

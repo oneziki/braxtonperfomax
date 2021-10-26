@@ -1,0 +1,64 @@
+.customlayout {
+  color: #4d5154;
+
+  .prePrintContent {
+    padding: 20px;
+  }
+
+  .header {
+    margin-left: -42px;
+  }
+
+  .section-header {
+    text-align: left;
+    font-weight: bolder;
+    font-size: 35px;
+    padding-top: 30px;
+    padding-bottom: 20px;
+  }
+
+  .section-sub-header {
+    display: inline-block;
+    text-align: left;
+    font-size: 18px;
+    padding-top: 10px;
+    padding-bottom: 20px;
+  }
+
+  .sub-header {
+    font-weight: 600;
+    background: #e5e5e5;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 18px;
+  }
+
+  .small-header {
+    display: block;
+    font-size: 16px;
+    padding: 5px 10px;
+    background: #e0e0e0;
+  }
+  p {
+    color: #525354;
+  }
+  strong,
+  p {
+    padding: 10px 2px;
+  }
+
+  .p-l-10 {
+    padding-left: 10px;
+  }
+
+  .m-0 {
+    margin: 0px;
+  }
+  .p-t-5 {
+    padding-top: 5px;
+  }
+
+  .w-space {
+    white-space: pre-line;
+  }
+}

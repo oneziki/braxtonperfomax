@@ -1,0 +1,23 @@
+<div class="card-list-wrapper" *ngIf="data">
+  <ng-container *ngFor="let listItem of data['data']; let iListItem = index">
+    <ng-container *ngIf="iListItem > 0">
+
+      <div class="card bg-c-blue order-card animated mobile-view"
+        [ngStyle]="{ background: listItem[3] }"
+        (click)="chartClick(listItem)"
+        [ngClass]="{'pulse': _mouseOvered === iListItem, 'pointer': data['visualSettings'][ filter['viewPrefix'] + 'bGraphClickThrough']}"
+        (mouseover)="_mouseOvered = iListItem"
+        (mouseout)="_mouseOvered = -1">
+        <ion-row class="card-block">
+          <ion-col size="10">
+            <h6 class="m-b-0">{{ listItem[0] }}</h6>
+          </ion-col>
+          <ion-col>
+            <h2 class="text-right">{{ listItem[2] }}</h2>
+          </ion-col>
+        </ion-row>
+      </div>
+
+    </ng-container>
+  </ng-container>
+</div>

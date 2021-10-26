@@ -1,0 +1,723 @@
+<section id="customLayout" class="ptPDFMain profile-portfolio ptPDF customlayout nav-{{ _navStatus }}">
+  <section id="prePrintContent">
+    <section class="prePrintContent" *ngIf="_contentData">
+
+
+      <!-- Header -->
+      <ion-row>
+        <ion-col sizeXs="6" sizeMd="8" class="ptPageHeader">
+          <strong class="headerText fs-18">
+            {{ _coverData['coverTitle'] }}
+            <small class="d-block">
+              {{ _contentData['UserData']['sFullName'] }}
+            </small>
+          </strong>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="4" class="text-right">
+          <ion-button type="button" class="btn btn-primary" (click)="printPDFReport()">
+            <ion-icon name="print-outline"></ion-icon>
+            Print Report
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <!--  -->
+      <!-- PERSONAL DETAILS-->
+      <!--  -->
+      <ion-row class="spacing-header">
+        <ion-col sizeXs="12" sizeMd="12">
+          <strong>Personal Details</strong>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="m-tb-10-20 a-center">
+        <ion-col sizeXs="12" sizeMd="6">
+          <ion-row class="m-tb-10-20 a-center">
+            <!-- row 1 -->
+            <ion-col size="6"><strong class="d-block"> Employee Name </strong></ion-col>
+            <ion-col size="6">
+              <p>{{ _contentData["UserData"]["sFullName"] }}</p>
+            </ion-col>
+            <ion-col size="6"> <strong class="d-block">Role</strong></ion-col>
+            <ion-col size="6">
+              <p>{{ _contentData["UserData"]["sJobTitleName"] }}</p>
+            </ion-col>
+            <!-- row 2 -->
+            <ion-col size="6"> <strong class="d-block"> Department</strong></ion-col>
+            <ion-col size="6">
+              <p>{{ _contentData["UserData"]["sOrganisationTierName"] }}</p>
+            </ion-col>
+            <ion-col size="6"> <strong class="d-block">Manager</strong></ion-col>
+            <ion-col size="6">
+              <p>{{ _contentData["UserData"]["sManagerFullName"] }}</p>
+            </ion-col>
+            <ion-col size="6"> <strong class="d-block">Review Month</strong></ion-col>
+            <ion-col size="6">
+              <p>{{ _contentData["UserData"]["sMonth"] }}</p>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <ion-col sizeXs="12" sizeMd="6" class="d-flex text-center">
+          <img class="p-p-img profile-photo" [src]="_contentData['UserData']['sProfilePic']" />
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="spacing-header">
+        <ion-col size="12">
+          <strong>Summary of Results</strong>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="b-b-lightgray">
+        <ion-col size="12">
+          <ion-row class="row spacing-header main-progressbars">
+            <ion-col size="" class="text-center"
+              *ngIf="_contentData['OverallData']['kraOverall'] && _contentData['OverallData']['kraOverall'].length">
+              <h1>{{ _contentData['OverallData']['kraOverall'][1][0] }}<span
+                  *ngIf="_contentData['settings']['sShowOverallScoreAsPercentage'] !== 'Actual'">%</span></h1>
+              <div class="progress">
+                <div class="progressBar">
+                  <span
+                    [ngStyle]="{'background': _contentData['OverallData']['kraOverall'][1][3],'width': _contentData['OverallData']['kraOverall'][1][2]}"></span>
+                </div>
+              </div>
+              <small class="d-block m-t-5" [ngStyle]="{ 'color': _contentData['OverallData']['kraOverall'][1][3] }">
+                {{ _contentData['OverallData']['kraOverall'][0][1] }}
+              </small>
+              <strong class="d-block m-t-15 fs-16 text-center">
+                Performance
+              </strong>
+            </ion-col>
+            <ion-col size="" class="text-center"
+              *ngIf="_contentData['OverallData']['competencyOverall'] && _contentData['OverallData']['competencyOverall'].length">
+              <h1>{{ _contentData['OverallData']['competencyOverall'][1][0] }}<span
+                  *ngIf="_contentData['UserData']['competencyScoreDisplayType'] === 'percentage'">%</span></h1>
+              <div class="progress">
+                <div class="progressBar">
+                  <span
+                    [ngStyle]="{'background': _contentData['OverallData']['competencyOverall'][1][3],'width': _contentData['OverallData']['competencyOverall'][1][2]}"></span>
+                </div>
+              </div>
+              <small class="d-block m-t-5"
+                [ngStyle]="{ 'color': _contentData['OverallData']['competencyOverall'][1][3] }">
+                {{ _contentData['OverallData']['competencyOverall'][0][1] }}
+              </small>
+              <strong class="d-block m-t-15 fs-16 text-center">
+                Development
+              </strong>
+            </ion-col>
+            <ion-col size=""
+              *ngIf="_contentData['OverallData']['motivationOverall'] && _contentData['OverallData']['motivationOverall'].length">
+              <h1>{{ _contentData['OverallData']['motivationOverall'][1][0] }}</h1>
+              <div class="progress">
+                <div class="progressBar">
+                  <span
+                    [ngStyle]="{'background': _contentData['OverallData']['motivationOverall'][1][3],'width': _contentData['OverallData']['motivationOverall'][1][2]}"></span>
+                </div>
+              </div>
+              <small class="d-block m-t-5"
+                [ngStyle]="{ 'color': _contentData['OverallData']['motivationOverall'][1][3] }">
+                {{ _contentData['OverallData']['kraOverall'][0][1] }}
+              </small>
+              <strong class="d-block m-t-15 fs-16 text-center">
+                Motivation
+              </strong>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+
+      <!-- Performance section -->
+      <ng-container
+        *ngIf="(_contentData['PerformanceData']['kraOverall'].length !==0 || _contentData['OverallData']['monthlyScoreCard'].length !== 0)">
+        <ion-row>
+          <ion-col size="12" class="section-header">
+            <strong>Section {{sectionA}}</strong>
+            <small class="m-l-10">Performance</small>
+          </ion-col>
+        </ion-row>
+
+        <ng-container *ngIf="_contentData['PerformanceData']['kraOverall'].length !== 0">
+          <ion-row class="sub-header p-b-10">
+            <ion-col size="12">
+              <strong>YTD {{_contentData['UserData']['sMonth']}} Results</strong>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="p-t-10 p-b-20 ">
+            <ion-col size="" *ngFor="let legend of _contentData['PerformanceData']['kraLegendItems']">
+              <span *ngIf="!legend['sColor'].includes('#')" class="color-dot"
+                [ngStyle]="{ background: '#' + legend['sColor'] }"></span>
+              <span *ngIf="legend['sColor'].includes('#')" class="color-dot"
+                [ngStyle]="{ background: legend['sColor'] }"></span>
+              <strong class="p-l-10">{{ legend["fLegendFrom"] }} - {{ legend["fLegendTo"] }}</strong>
+              <p class="p-l-18 legend">{{ legend["sOrgScaleLegend"] }}</p>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="sub-header p-b-10 header-light">
+            <ion-col sizeXs="12" sizeMd="2">
+              <!-- <ng-container *ngIf="_contentData['settings']['bHideBusinessUnitObjective']">
+              {{_contentData['settings']['sPerspectiveNameChange']}}
+            </ng-container>
+            <ng-container *ngIf="!_contentData['settings']['bHideBusinessUnitObjective']">
+              {{_contentData['settings']['sBusinessUnitObjective']}}
+            </ng-container> -->
+              UG Objectives
+            </ion-col>
+            <ion-col sizeXs="12" sizeMd="4">
+              <!-- {{_contentData['settings']['sKraNameChange']}}
+            <span *ngIf="_contentData['settings']['sKraNameChangeEndText'] !== ''">
+              {{_contentData['settings']['sKraNameChangeEndText']}}
+            </span> -->
+              Key Result Area
+            </ion-col>
+            <ion-col sizeXs="12" sizeMd="5">
+              <!-- {{_contentData['settings']['sKpiNameChange']}}
+            <span *ngIf="_contentData['settings']['sKpiNameChangeEndText'] !== ''">
+              {{_contentData['settings']['sKpiNameChangeEndText']}}
+            </span> -->
+              Key Performance Indicator (Weight)
+            </ion-col>
+            <ion-col sizeXs="12" sizeMd="1" class="textsm-left-center">
+              Result
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="b-b-lightgray p-b-10 p-t-10"
+            *ngFor="let kra of _contentData['PerformanceData']['kraOverall']">
+            <ion-col sizeXs="12" sizeMd="2">
+              <ng-container *ngIf="_contentData['settings']['bHideBusinessUnitObjective']">
+                <p>{{kra['sBppName']}}</p>
+              </ng-container>
+              <ng-container *ngIf="!_contentData['settings']['bHideBusinessUnitObjective']">
+                <p>{{kra['sObjectivesName']}}</p>
+              </ng-container>
+            </ion-col>
+            <ion-col sizeXs="12" sizeMd="4">
+              <p>{{kra['sKraName']}}</p>
+            </ion-col>
+            <ion-col sizeXs="12" sizeMd="5">
+              <p *ngFor="let kpi of kra['kpi']" class="paragraph">
+                - {{kpi.sKpiname}} ( {{kpi.fWeight}} %)
+              </p>
+            </ion-col>
+            <ion-col sizeXs="12" sizeMd="1" class="textsm-left-center">
+              <p *ngFor="let kpi of kra['kpi']">
+                <span class="color-dot" [ngStyle]="{ background: '#' + kra['sColor'] }"></span>
+                {{ kpi['fScore_Admin'] }}
+                <span *ngIf="kpi.fScore_Admin === ''"> N/A</span>
+              </p>
+            </ion-col>
+          </ion-row>
+        </ng-container>
+
+        <ion-row class="sub-progressbars" *ngIf="_contentData['OverallData']['monthlyScoreCard'].length !== 0">
+          <ion-col sizeXs="12" sizeMd="12" class="header-light m-t-15 m-b-15">
+            <strong class="d-block m-t-10">
+              Monthly Scorecard:
+              <ng-container
+                *ngIf="_contentData['OverallData']['monthlyScoreCardData'] && _contentData['OverallData']['monthlyScoreCardData']['sMonths']">
+                {{ _contentData['OverallData']['monthlyScoreCardData']['sMinYearMonth'] }}
+                {{_contentData['OverallData']['monthlyScoreCardData'].length}}
+                <span *ngIf="_contentData['OverallData']['monthlyScoreCard'].length > 1">
+                  - {{ _contentData['OverallData']['monthlyScoreCardData']['sLatestYearMonth'] }}
+                </span>
+              </ng-container>
+            </strong>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="4" class="text-center"
+            *ngFor="let mScore of _contentData['OverallData']['monthlyScoreCard']; let lTile = last">
+            <h5>
+              {{ mScore[1][0] }}
+              <span *ngIf="_contentData['settings']['sShowOverallScoreAsPercentage'] !== 'Actual'">%</span>
+            </h5>
+            <div class="progress">
+              <div class="progressBar">
+                <span [ngStyle]="{'background': mScore[1][3] ,'width': mScore[1][2]}"></span>
+              </div>
+            </div>
+            <small class="d-block m-t-5" [ngStyle]="{ 'color': mScore[1][3] }">
+              {{ mScore[0][1] }}
+            </small>
+            <strong class="d-block m-t-5 fs-14 text-center">
+              {{ mScore[0][0] }}
+            </strong>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+
+
+      <!-- Competency Results section Heading -->
+      <ion-row *ngIf="_contentData['CompetencyData']['competencyOverall'].length !==0
+                  || _contentData['ExpertiseData']['expertiseOverall'].length !== 0
+                  || _contentData['CareerAsipirationsData'].length !== 0">
+        <ion-col size="12" class="section-header">
+          <strong>Section {{sectionB}}</strong>
+          <small class="m-l-10">Development</small>
+        </ion-col>
+      </ion-row>
+
+      <!-- Competency Results section -->
+      <ng-container *ngIf="_contentData['CompetencyData']['competencyOverall'].length !==0">
+        <ion-row class="sub-header p-b-10">
+
+          <ion-col size="12">
+            <strong>Competency Results</strong>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="p-t-10 p-b-20">
+          <ion-col sizeXs="12" sizeMd="" *ngFor="let legend of _contentData['CompetencyData']['legendItems']">
+            <span *ngIf="!legend['sColor'].includes('#')" class="color-dot"
+              [ngStyle]="{ background: '#' + legend['sColor'] }"></span>
+            <span *ngIf="legend['sColor'].includes('#')" class="color-dot"
+              [ngStyle]="{ background: legend['sColor'] }"></span>
+            <strong class="p-l-10">{{ legend["iStart"] }} - {{ legend["iEnd"] }}</strong>
+            <p class="p-l-18 legend">{{ legend["sOptionName"] }}</p>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="score-header d-flex header-light">
+          <ion-col sizeXs="12" sizeMd="4">
+            <strong>Dimensions</strong>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="6">
+            <strong>Percentage</strong>
+            <ion-row>
+              <ion-col size="" class="text-right fw-thin">
+                <small>20%</small>
+              </ion-col>
+              <ion-col size="" class="text-right fw-thin">
+                <small>40%</small>
+              </ion-col>
+              <ion-col size="" class="text-right fw-thin">
+                <small>60%</small>
+              </ion-col>
+              <ion-col size="" class="text-right fw-thin">
+                <small>80%</small>
+              </ion-col>
+              <ion-col size="" class="text-right fw-thin">
+                <small>100%</small>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="2" class="text-center">
+            <strong>{{_contentData['UserData']['sOverallScoreLabel']}}</strong>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="b-b-lightgray"
+          *ngFor="let ctHead of _contentData['CompetencyData']['competencyOverall']; let iQ = index">
+          <ion-col sizeXs="12" sizeMd="4">
+            <p> {{ ctHead['sHeading'] }} </p>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="6">
+            <div class="progress">
+
+              <div class="progressBar">
+                <span [ngStyle]="{'background': ctHead['sColor'] ,'width': ctHead['fScore1'] + '%'}"></span>
+              </div>
+            </div>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="2" class="text-center">
+            <p>
+              <span class="color-dot" [ngStyle]="{ background: ctHead['sColor'] }"></span>
+              <span *ngIf="ctHead['fScore1'] !== ''">{{ ctHead['fScore1'] }} %</span>
+              <span *ngIf="ctHead['fScore1'] === ''">N/A</span>
+            </p>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+
+      <!-- Expertise Results -->
+      <ng-container *ngIf="_contentData['ExpertiseData']['expertiseOverall'].length !== 0">
+        <ion-row class="p-b-10 sub-header">
+          <ion-col sizeXs="12" sizeMd="6">
+            <strong>Expertise Results</strong>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="p-t-10 p-b-20 m-b-20  b-b-lightgray">
+          <ion-col size="" *ngFor="let legend of _contentData['ExpertiseData']['legendItems']">
+            <span *ngIf="!legend['sColor'].includes('#')" class="color-dot"
+              [ngStyle]="{ background: '#' + legend['sColor'] }"></span>
+            <span *ngIf="legend['sColor'].includes('#')" class="color-dot"
+              [ngStyle]="{ background: legend['sColor'] }"></span>
+            <strong class="p-l-10">{{ legend["iStart"] }} - {{ legend["iEnd"] }}</strong>
+            <p class="p-l-18 legend">{{ legend["sOptionName"] }}</p>
+          </ion-col>
+        </ion-row>
+        <ion-row class="m-b-20">
+          <ion-col sizeXs="12" sizeMd="3" class="text-center">
+            <ion-row>
+              <ion-col size="12" class="col-12 fs-20">
+                <strong>{{ _contentData['ExpertiseData']['expertiseOverallScore'][0]['sLabel1'] }} </strong>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12">
+                <h1 class="fs-80 m-0"
+                  [ngStyle]="{ color: _contentData['ExpertiseData']['expertiseOverallScore'][0]['sColor'] }">
+                  {{ _contentData['ExpertiseData']['expertiseOverallScore'][0]['fScore1'] }} %
+                </h1>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="9" class="p-r-35">
+            <ion-row class="row">
+              <ion-col sizeXs="12" sizeMd="4">
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="6">
+                <ion-row>
+                  <ion-col size="" class="text-right fw-thin">
+                    <small>20%</small>
+                  </ion-col>
+                  <ion-col size="" class="text-right fw-thin">
+                    <small>40%</small>
+                  </ion-col>
+                  <ion-col size="" class="text-right fw-thin">
+                    <small>60%</small>
+                  </ion-col>
+                  <ion-col size="" class="text-right fw-thin">
+                    <small>80%</small>
+                  </ion-col>
+                  <ion-col size="" class="text-right fw-thin">
+                    <small>100%</small>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="2" class="text-center">
+              </ion-col>
+            </ion-row>
+
+            <ion-row class="b-b-lightgray"
+              *ngFor="let sData of _contentData['ExpertiseData']['expertiseOverall']; let iQ = index">
+              <ion-col sizeXs="12" sizeMd="4">
+                <p> {{ sData['sSection'] }} </p>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="6">
+                <div class="progress">
+                  <div class="progressBar">
+                    <span [ngStyle]="{'background': sData['sColor'] ,'width': sData['fScore1'] + '%'}"></span>
+                  </div>
+
+                  <!-- <div aria-valuemin="0" role="progressbar" class="progress-bar" aria-valuenow="25" aria-valuemax="100"
+                    [ngStyle]="{ 'width': sData['fScore1'] + '%', 'background-color': sData['sColor'] }">
+                  </div> -->
+                </div>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="2" class="text-center">
+                <p>
+                  <span class="color-dot" [ngStyle]="{ background: sData['sColor'] }"></span>
+                  <span *ngIf="sData['fScore1'] !== ''">{{ sData['fScore1'] }} %</span>
+                  <span *ngIf="sData['fScore1'] === ''">N/A</span>
+                </p>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+
+      <!-- Career Aspirations -->
+      <ng-container *ngIf="_contentData['CareerAsipirationsData'].length !== 0">
+        <ion-row class=" sub-header p-b-10">
+          <ion-col size="12">
+            <strong>Career Aspirations</strong>
+          </ion-col>
+        </ion-row>
+        <ion-row class="p-b-10">
+          <ion-col sizeXs="6" sizeMd="4" class="f-w-600 fs-17 p-l-20">
+            <p> Immediate</p>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="8">
+            <p *ngIf="_contentData['CareerAsipirationsData'][0]['sImmediateTermRole'] === 'N/A'">
+              *No role selected
+            </p>
+            <p *ngIf="_contentData['CareerAsipirationsData'][0]['sImmediateTermRole'] !== 'N/A'">
+              {{_contentData['CareerAsipirationsData'][0]['sImmediateTermRole']}}
+            </p>
+          </ion-col>
+        </ion-row>
+        <ion-row class="p-b-10">
+          <ion-col sizeXs="6" sizeMd="4" class="f-w-600 fs-17 p-l-20">
+            <p>Medium Term</p>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="8">
+            <p *ngIf="_contentData['CareerAsipirationsData'][0]['sShortTermRole'] === 'N/A'">
+              *No role selected
+            </p>
+            <p *ngIf="_contentData['CareerAsipirationsData'][0]['sShortTermRole'] !== 'N/A'">
+              {{_contentData['CareerAsipirationsData'][0]['sShortTermRole']}}
+            </p>
+          </ion-col>
+        </ion-row>
+        <ion-row class="p-b-10">
+          <ion-col sizeXs="6" sizeMd="4" class="f-w-600 fs-17 p-l-20">
+            <p>Long Term</p>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="8">
+            <p *ngIf="_contentData['CareerAsipirationsData'][0]['sLongTermRole'] === 'N/A'">
+              *No role selected
+            </p>
+            <p *ngIf="_contentData['CareerAsipirationsData'][0]['sLongTermRole'] !== 'N/A'">
+              {{_contentData['CareerAsipirationsData'][0]['sLongTermRole']}}
+            </p>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+
+      <!-- Training Needs -->
+      <ng-container *ngIf="_contentData['TrainingNeedsData'].length !== 0">
+        <ion-row class="sub-header m-b-10">
+          <ion-col sizeXs="12" sizeMd="6">
+            <strong>Training and Development Status</strong>
+          </ion-col>
+        </ion-row>
+        <ion-row class="sub-header header-light p-b-10">
+          <ion-col sizeXs="12" sizeMd="2">
+            Training Module
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="3">
+            Service Provider Name
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="2">
+            Training Criteria
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="2">
+            Date of Training
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="1">
+            Time
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="1">
+            Status
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="1" class="p-r-0 p-l-0">
+            Result
+          </ion-col>
+        </ion-row>
+        <ion-row class="p-t-10 p-b-5" *ngFor="let trainingNeeds of _contentData['TrainingNeedsData']">
+          <ion-col sizeXs="12" sizeMd="2">
+            {{trainingNeeds.sModule}}
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="3">
+            {{trainingNeeds.sProvider}}
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="2">
+            <ng-container *ngIf="trainingNeeds.sTrainingMethod === ''">
+              <small>* Not Completed</small>
+            </ng-container>
+            <ng-container *ngIf="trainingNeeds.sTrainingMethod !== ''">
+              {{trainingNeeds.sTrainingMethod}}
+            </ng-container>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="2">
+            <ng-container *ngIf="trainingNeeds.dDateCompleted === ''">
+              <small>* Not Completed</small>
+            </ng-container>
+            <ng-container *ngIf="trainingNeeds.dDateCompleted !== ''">
+              {{trainingNeeds.dDateCompleted}}
+            </ng-container>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="1">
+            {{trainingNeeds.sDuration}} Hours
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="1">
+            {{trainingNeeds.sStatus}}
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="1" class="p-r-0 p-l-0">
+            {{trainingNeeds.sResult}}
+          </ion-col>
+        </ion-row>
+      </ng-container>
+
+      <!-- Motivation -->
+      <!-- <ng-container *ngIf="_contentData['MotivationData'].length !==0">
+        <div class="row ">
+          <div class="col-12 section-header">
+            <strong>Section {{sectionC}}</strong>
+            <small class="m-l-10">Motivation</small>
+          </div>
+        </div>
+
+        <div class="row ptItem p-b-10">
+          <div class="col-12">
+            <div class="row sub-header">
+              <div class="col-12">
+                <strong>Motivation</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row ptItem p-t-10 p-b-20">
+          <div class="col" *ngFor="let legend of _contentData['CompetencyData']['legendItems']">
+            <span *ngIf="!legend['sColor'].includes('#')" class="color-dot" [ngStyle]="{ background: '#' + legend['sColor'] }"></span>
+            <span *ngIf="legend['sColor'].includes('#')" class="color-dot" [ngStyle]="{ background: legend['sColor'] }"></span>
+            <strong class="p-l-10">{{ legend["iStart"] }} - {{ legend["iEnd"] }}</strong>
+            <p class="p-l-18 legend">{{ legend["sOptionName"] }}</p>
+          </div>
+        </div>
+
+        <div class="row score-header d-flex header-light">
+          <div class="col-4">
+            <strong>Dimensions</strong>
+          </div>
+          <div class="col-6"> -->
+      <!-- <div class="row">
+            <div class="col col-12">
+              <strong class="p-l-18">Percentage</strong>
+            </div>
+          </div> -->
+      <!-- <strong class="p-l-18">Percentage</strong>
+            <div class="row p-l-18">
+              <div class="col text-right fw-thin">
+                <small>20%</small>
+              </div>
+              <div class="col text-right fw-thin">
+                <small>40%</small>
+              </div>
+              <div class="col text-right fw-thin">
+                <small>60%</small>
+              </div>
+              <div class="col text-right fw-thin">
+                <small>80%</small>
+              </div>
+              <div class="col text-right fw-thin">
+                <small>100%</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-2 text-center">
+            <strong>{{_contentData['UserData']['sOverallScoreLabel']}}</strong>
+          </div>
+        </div>
+
+        <div class="row b-b-lightgray" *ngFor="let ctHead of _contentData['CompetencyData']['competencyOverall']; let iQ = index">
+          <div class="col-4">
+            <p> {{ ctHead['sHeading'] }} </p>
+          </div>
+          <div class="col-6">
+            <div class="progress">
+              <div aria-valuemin="0" role="progressbar" class="progress-bar" aria-valuenow="25" aria-valuemax="100"
+                [ngStyle]="{ 'width': ctHead['fScore1'] + '%', 'background-color': ctHead['sColor'] }">
+              </div>
+            </div>
+          </div>
+          <div class="col-2 text-center">
+            <p>
+              <span class="color-dot" [ngStyle]="{ background: ctHead['sColor'] }"></span>
+              <span *ngIf="ctHead['fScore1'] !== ''">{{ ctHead['fScore1'] }} %</span>
+              <span *ngIf="ctHead['fScore1'] === ''">N/A</span>
+            </p>
+          </div>
+        </div>
+      </ng-container> -->
+
+      <!-- Discussion Data -->
+      <ng-container *ngIf="_contentData['PerformanceFeedbackData'].length !== 0">
+        <ion-row>
+          <ion-col size="12" class="section-header">
+            <strong>Section {{sectionD}}</strong>
+            <small class="m-l-10">Performance & Development Feedback</small>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="sub-header p-b-10">
+          <ion-col size="12">
+            <strong>Manager Summary</strong>
+          </ion-col>
+        </ion-row>
+
+        <ng-container *ngFor="let sComment of _contentData['PerformanceFeedbackData']">
+          <ion-row class="p-t-15">
+            <ion-col sizeXs="12" sizeMd="4">
+              <p class="p-5-10 f-w-600 fs-17">Manager</p>
+            </ion-col>
+            <ion-col sizeXs="12" sizeMd="8">
+              <p class="p-5-10">{{ sComment["sFullName"] }}</p>
+            </ion-col>
+          </ion-row>
+          <ion-row class="p-t-15 b-b-lightgray p-b-10">
+            <ion-col sizeXs="12" sizeMd="4">
+              <p class="p-5-10 f-w-600 fs-17">Conversation Date</p>
+            </ion-col>
+            <ion-col sizeXs="12" sizeMd="8">
+              <p class="p-5-10">{{ sComment["selectedDateCreated"] }}</p>
+            </ion-col>
+          </ion-row>
+
+          <!-- Comment -->
+          <ion-row class="p-t-10">
+            <ion-col sizeXs="12" sizeMd="4">
+              <p class="p-5-10 f-w-600 fs-17">Key Notes</p>
+            </ion-col>
+            <ion-col sizeXs="12" sizeMd="8">
+              <p class="p-5-10">{{ sComment["sStrippedComment"] }}</p>
+            </ion-col>
+          </ion-row>
+
+          <ng-container *ngIf="_contentData['settings']['bShowPerformanceDiscussionRating']">
+            <!-- Strengths -->
+            <ion-row class="ptItem p-t-5" *ngIf="sComment['sStrengths'] !== ''">
+              <ion-col sizeXs="12" sizeMd="4">
+                <p class="p-5-10 f-w-600 fs-17">Greatest Strengths</p>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="8">
+                <p class="p-5-10" [innerHTML]="sComment['sStrengths']"></p>
+              </ion-col>
+            </ion-row>
+
+            <!-- Improvements -->
+            <ion-row class="p-t-5" *ngIf="sComment['sImprovements'] !== ''">
+              <ion-col sizeXs="12" sizeMd="4">
+                <p class="p-5-10 f-w-600 fs-17">Areas requiring improvement</p>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="8">
+                <p class="p-5-10" [innerHTML]="sComment['sImprovements']"></p>
+              </ion-col>
+            </ion-row>
+
+            <!-- Goals -->
+            <ion-row class="p-t-5" *ngIf="sComment['sGoals'] !== ''">
+              <ion-col sizeXs="12" sizeMd="4">
+                <p class="p-5-10 f-w-600 fs-17">Goals for next review period</p>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="8">
+                <p class="p-5-10" [innerHTML]="sComment['sGoals']"></p>
+              </ion-col>
+            </ion-row>
+
+            <!-- Rating -->
+            <ion-row class="sub-header p-b-10 m-t-10">
+              <ion-col size="12" class="col-12">
+                <strong>Employee Experience</strong>
+              </ion-col>
+            </ion-row>
+
+            <ion-row class="p-t-5" *ngIf="sComment['sDiscussionsName'] !== ''">
+              <ion-col sizeXs="12" sizeMd="4">
+                <p class="p-5-10 f-w-600 fs-17">Experience of Process</p>
+
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="8">
+                <p class="p-5-10">{{sComment['sDiscussionsName']}}</p>
+              </ion-col>
+            </ion-row>
+
+            <ion-row class="p-t-5" *ngIf="sComment['sAccuracyName'] !== ''">
+              <ion-col sizeXs="12" sizeMd="4">
+                <p class="p-5-10 f-w-600 fs-17">Accuracy of Review</p>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="8">
+                <p class="p-5-10">{{sComment['sAccuracyName']}}</p>
+              </ion-col>
+            </ion-row>
+          </ng-container>
+
+        </ng-container>
+      </ng-container>
+    </section>
+  </section>
+</section>

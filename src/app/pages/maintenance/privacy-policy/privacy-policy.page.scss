@@ -1,0 +1,31 @@
+.privacyGrid {
+  .privacy-policy {
+    display: block !important;
+    position: relative !important;
+    margin: 25px auto;
+
+    .cs-light {
+      font-size: 100px;
+      margin: 0 auto;
+    }
+    .cs-main {
+      font-size: 30px;
+      margin-bottom: 15px;
+    }
+    .cs-sub {
+      font-size: 10px;
+      margin-top: 5px;
+    }
+
+    p {
+      margin: 20px auto 10px;
+      max-width: 65%;
+
+      strong {
+        display: block;
+        margin-top: 10px;
+        margin-bottom: 5px;
+      }
+    }
+  }
+}

@@ -1,0 +1,54 @@
+<!-- Horizontal -->
+<div class="legend-list-wrapper" [ngClass]="{'tinyPod': overallHeight < 200 }" *ngIf="data['data'] && !data['visualSettings'][ filter['viewPrefix'] + 'bDisplayGraphVertical']">
+  <div class="row no-gutters" [ngClass]="{'maxFiveCol': data['data'].length > 4}" [ngStyle]="{'margin-top': calcMarginToip()}">
+    <div class="col-12" *ngIf="data['data'] && data['visualSettings'][ filter['viewPrefix'] + 'bShowLegendCat']">
+      <strong class="legend-cat text-right">Accuracy</strong>
+    </div>
+    <ng-container *ngFor="let col of data['data']; let iCol = index;">
+      <div class="text-center click-{{ data['visualSettings'][ filter['viewPrefix'] + 'bGraphClickThrough'] }}" (click)="chartClick(col)"
+        (mouseover)="_mouseOvered=iCol" (mouseout)="_mouseOvered = -1"
+        [ngClass]="{'col': data['data'].length < 5, 'fiveCol': data['data'].length > 4}">
+        <h1>
+          <i class="text-muted icofont {{ col['sLabel1']['sIconLabel']['icon'] }} animated" [ngClass]="{'jello': iCol === _mouseOvered}"></i>
+        </h1>
+        <strong class="text-prime-default" [ngStyle]="{ 'color': col['fScore1']['color'] }">
+          {{ col['fScore1']['label'] }}
+        </strong>
+        <p>
+          <i class="icofont icofont-caret-right text-primary" *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'bGraphClickThrough']"></i>
+          {{ col['sLabel1']['label'] }}
+        </p>
+      </div>
+    </ng-container>
+    <div class="col-12" *ngIf="data['data'] && data['visualSettings'][ filter['viewPrefix'] + 'bShowLegendCat']">
+      <strong class="legend-cat">Satisfaction</strong>
+    </div>
+  </div>
+</div>
+
+<!-- Vertical -->
+<div class="legend-list-wrapper" *ngIf="data['data'] && data['visualSettings'][ filter['viewPrefix'] + 'bDisplayGraphVertical']">
+  <table class="table no-borders" [ngStyle]="{'margin-top': calcMarginToip()}">
+    <ng-container *ngFor="let col of data['data']; let iCol = index;">
+      <tr class="click-{{ data['visualSettings'][ filter['viewPrefix'] + 'bGraphClickThrough'] }}" (click)="chartClick(col)"
+        (mouseover)="_mouseOvered=iCol" (mouseout)="_mouseOvered = -1">
+        <td>
+          <h1>
+            <i class="text-muted icofont {{ col['sLabel1']['sIconLabel']['icon'] }} animated" [ngClass]="{'jello': iCol === _mouseOvered}"></i>
+          </h1>
+        </td>
+        <td class="text-center">
+          <h4 class="text-prime-default" [ngStyle]="{ 'color': col['fScore1']['color'] }">
+            {{ col['fScore1']['label'] }}
+          </h4>
+        </td>
+        <td>
+          <strong>
+            <i class="icofont icofont-caret-right text-primary" *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'bGraphClickThrough']"></i>
+            {{ col['sLabel1']['label'] }}
+          </strong>
+        </td>
+      </tr>
+    </ng-container>
+  </table>
+</div>

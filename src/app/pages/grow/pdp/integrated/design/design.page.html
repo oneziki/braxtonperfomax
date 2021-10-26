@@ -1,0 +1,647 @@
+<ion-content [fullscreen]="true" class="contentDesign">
+  <ion-grid class="contentPageWrapper pdpDesignGrid" *ngIf="_pageGO">
+    <ion-row>
+      <ion-col sizeXs="12" sizeMd="6">
+        <ion-text>
+          <h2 class="contentHeader">
+            Personal Development Plan
+          </h2>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="assHeader">
+      <ion-col size="6" class="p-0-impo">
+        <div class="col-header ion-text-left">
+          <h1 class="m-l-20">Complete All Sections</h1>
+        </div>
+      </ion-col>
+      <ion-col size="6" class="p-0-impo">
+        <div class="col-header ion-text-right">
+          <h1 *ngIf="!_bManager" class="m-r-20">Steps 2 of 2</h1>
+          <h1 *ngIf="_bManager" class="m-r-20">Steps 1 of 1</h1>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <!-- SECTION 1 -->
+    <ion-row>
+      <ion-col size="12" class="p-0-impo" class="ion-no-padding">
+        <ion-card class="card card-transparent">
+          <ion-card-header class="sub-title bg-primary">
+            <ion-card-title>
+              <ion-row>
+                <ion-col sizeXs="12">
+                  <span class="pointer" style="font-size: 14px;">Section 1: Personal Details</span>
+                </ion-col>
+              </ion-row>
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content *ngIf="_details">
+            <ion-grid>
+              <ion-row>
+                <!-- row 1 -->
+                <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Employee Name:</strong></ion-col>
+                <ion-col sizeXs="6" sizeMd="3">
+                  <p>{{ _details["sEmployeeName"] }}</p>
+                </ion-col>
+                <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Manager:</strong></ion-col>
+                <ion-col sizeXs="6" sizeMd="3">
+                  <p>{{ _details["sAdminFullName"] }}</p>
+                </ion-col>
+                <!-- row 2 -->
+                <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Role Name:</strong></ion-col>
+                <ion-col sizeXs="6" sizeMd="3">
+                  <p>{{ _details["sJobTitleName"] }}</p>
+                </ion-col>
+                <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Agreement Period:</strong></ion-col>
+                <ion-col sizeXs="6" sizeMd="3">
+                  <p>{{ _details['agreementPeriod'] }}</p>
+                </ion-col>
+                <!-- row 3 -->
+                <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Departments:</strong></ion-col>
+                <ion-col sizeXs="6" sizeMd="3">
+                  <p [innerHTML]="_details['sUserStructure']"></p>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <!-- SECTION 2 -->
+    <ion-row>
+      <ion-col size="12" class="p-0-impo" class="ion-no-padding">
+        <ion-card class="card card-transparent">
+          <ion-card-header class="sub-title bg-primary">
+            <ion-card-title>
+              <ion-row>
+                <ion-col sizeXs="12">
+                  <span class="pointer" style="font-size: 14px;">Section 2: Personal Vision and Objectives</span>
+                  <ion-button class="f-right" color="primary" size="small" *ngIf="!_bViewMode && !_bManager" (click)="adjustPDPCount(true,0)">
+                    +
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-grid>
+              <ng-container *ngFor="let pdp of _intergratedPDPProfile.pdpDevelopmentNeeds; let iPDP = index; let isLastPDP = last">
+                <ng-container *ngIf="pdp['bMarkForDelete'] && pdp['bMarkForDelete'] === false || !pdp['bMarkForDelete']">
+
+                  <!-- DEVELOPMENT NEED NAME -->
+                  <ion-row *ngIf="_kraCompanySettings.bShowDevelopmentNeedOnPDP">
+                    <ion-col size="2">
+                      <ion-label>
+                        {{ _kraCompanySettings.sPDPDevelopmentNeedChange }}
+                        <strong>{{ iPDP + 1}}</strong>
+                      </ion-label>
+                    </ion-col>
+                    <ion-col>
+                      <ion-item lines="none">
+                        <ion-input [(ngModel)]="pdp['sDevelopmentPriority']" placeholder="Enter {{  _kraCompanySettings.sPDPDevelopmentNeedChange }} here"
+                          [disabled]="_bViewMode || _bManager"></ion-input>
+                        <ion-button color="danger" size="small" slot="end" *ngIf="!_bViewMode && !_bManager" (click)="adjustPDPCount(false,iPDP)">
+                          <ion-icon name="close-circle-outline" class="fs-24"> </ion-icon>
+                        </ion-button>
+                      </ion-item>
+                    </ion-col>
+                  </ion-row>
+
+                  <!-- DEVELOPMENT NEED DESCRIPTION -->
+                  <ion-row>
+                    <ion-col size="2">
+                      <ion-label>
+                        {{ _kraCompanySettings.sPDPActivitiesChange }}
+                      </ion-label>
+                    </ion-col>
+                    <ion-col>
+                      <ion-item lines="none">
+                        <ion-input [(ngModel)]="pdp['sDevelopmentActivity']" placeholder="Enter {{  _kraCompanySettings.sPDPActivityDescriptionChange }} here"
+                          [disabled]="_bViewMode || _bManager"></ion-input>
+                      </ion-item>
+                    </ion-col>
+                  </ion-row>
+
+                  <!-- PDP DUE DATE -->
+                  <ion-row>
+                    <ion-col size="2">
+                      <ion-label>
+                        {{ _kraCompanySettings.sPDPDueDateChange }}
+                      </ion-label>
+                    </ion-col>
+                    <ion-col>
+                      <ion-item lines="none">
+                        <ng-container *ngIf="!_bViewMode && !_bManager">
+                          <input type="date" id="from-date" name="from-date" class="periodDate" displayFormat="MM DD YY" placeholder="Select from date" value=""
+                            [(ngModel)]="pdp['dPeriodOfImprovementEnd']">
+                        </ng-container>
+                        <ng-container *ngIf="_bViewMode || _bManager">
+                          <ion-input [(ngModel)]="pdp['dPeriodOfImprovementEnd']" placeholder="Enter {{  _kraCompanySettings.sPDPActivityDescriptionChange }} here"
+                            [disabled]="_bViewMode || _bManager"></ion-input>
+                        </ng-container>
+                      </ion-item>
+                    </ion-col>
+                  </ion-row>
+
+                  <!-- PDP PRIORITY -->
+                  <ion-row>
+                    <ion-col size="2">
+                      <ion-label>
+                        {{ _kraCompanySettings.sPDPPriorityChange }}
+                      </ion-label>
+                    </ion-col>
+                    <ion-col>
+                      <ion-item lines="none">
+                        <ion-select [interfaceOptions]='{ showBackdrop: false }' interface="popover" name="sPriority-{{ iPDP }}" id="sPriority-{{ iPDP }}"
+                          [(ngModel)]="pdp.sPriority" [disabled]="_bViewMode || _bManager" placeholder="Please Select {{ _kraCompanySettings.sPDPPriorityChange }}">
+                          <ion-select-option *ngFor="let priority of _pdpPriority" [value]="priority.label">
+                            {{ priority.label }}
+                          </ion-select-option>
+                        </ion-select>
+                      </ion-item>
+                    </ion-col>
+                  </ion-row>
+
+                  <!-- PERSONAL STATUS -->
+                  <ion-row *ngIf="!_bManager">
+                    <ng-container *ngIf="pdp.sAcceptStatus === 'Selected'">
+                      <ion-col size="2">
+                        <ion-label>
+                          {{ _kraCompanySettings.sPDPEmployeeStatusChange }}
+                        </ion-label>
+                      </ion-col>
+                      <ion-col>
+                        <ion-item lines="none">
+                          <ion-input name="status" value="New" readonly></ion-input>
+                        </ion-item>
+                      </ion-col>
+                    </ng-container>
+
+                    <ng-container *ngIf="pdp.sAcceptStatus !== 'Selected'">
+                      <ng-container *ngIf="pdp.sManagerStatus !== 'Declined'">
+                        <ion-col size="2">
+                          <ion-label>
+                            {{ _kraCompanySettings.sPDPEmployeeStatusChange }}
+                          </ion-label>
+                        </ion-col>
+                        <ion-col>
+                          <ion-item lines="none">
+                            <ion-select [interfaceOptions]='{ showBackdrop: false }' interface="popover" name="status{{ iPDP}}" id="sPriority" [(ngModel)]="pdp['sAcceptStatus']"
+                              placeholder="Please Select {{ _kraCompanySettings.sPDPEmployeeStatusChange }}">
+                              <ion-select-option *ngFor="let status of _pdpStatus" [value]="status['label']">
+                                {{ status['label'] }}
+                              </ion-select-option>
+                            </ion-select>
+                          </ion-item>
+                        </ion-col>
+                      </ng-container>
+                      <ng-container *ngIf="_intergratedPDPProfile['sDateAdminSigned'] !== ''">
+                        <ion-col>
+                          <ion-item lines="none">
+                            <p>Manager Status: <strong>{{pdp.sManagerStatus }} on {{pdp.dAcceptedDate}}</strong></p>
+                          </ion-item>
+                        </ion-col>
+                      </ng-container>
+                    </ng-container>
+                  </ion-row>
+
+                  <!-- MANAGER STATUS -->
+                  <ion-row *ngIf="_bManager">
+                    <ion-col size="2">
+                      <ion-label>
+                        {{ _kraCompanySettings.sPDPManagerStatusChange }}
+                      </ion-label>
+                    </ion-col>
+                    <ion-col>
+                      <ion-item lines="none">
+                        <ion-select [interfaceOptions]='{ showBackdrop: false }' interface="popover" name="pdpstatus-{{ iPDP }}" id="pdpstatus-{{ iPDP }}"
+                          [(ngModel)]="pdp.sAcceptStatus" placeholder="Please Select {{ _kraCompanySettings.sPDPManagerStatusChange }}">
+                          <ion-select-option *ngFor="let options of _pdpApproveOptions" [value]="options['label']">
+                            {{ options['label'] }}
+                          </ion-select-option>
+                        </ion-select>
+                      </ion-item>
+                    </ion-col>
+                  </ion-row>
+
+                  <!--COMMENTS -->
+                  <ion-row>
+                    <ion-col>
+                      <ion-label>
+                        {{ _kraCompanySettings.sPDPEmployeeCommentsChange }}
+                      </ion-label>
+                    </ion-col>
+                  </ion-row>
+
+                  <!--EMPLOYEE COMMENTS -->
+                  <ng-container *ngIf="!_bManager">
+                    <ng-container *ngFor="let comment of pdp['comments'];">
+                      <ng-container *ngIf="_sessionUser.sFullName !== comment['sCommentBy']">
+                        <ion-item lines="none">
+                          <p [innerHTML]="comment['sComment']"></p>
+                          <small>
+                            - {{ comment['sCommentBy'] }} on {{ comment['dCommentDate'] }}
+                          </small>
+                        </ion-item>
+                      </ng-container>
+
+                      <ng-container *ngIf="pdp.sAcceptStatus == 'Declined' && _sessionUser.sFullName === comment['sCommentBy'] ">
+                        <ion-item lines="none">
+                          <p [innerHTML]="comment['sComment']"></p>
+                          <small>
+                            - {{ comment['sCommentBy'] }} on {{ comment['dCommentDate'] }}
+                          </small>
+                        </ion-item>
+                      </ng-container>
+
+                      <ng-container *ngIf="pdp.sAcceptStatus !== 'Declined' && _sessionUser.sFullName === comment['sCommentBy'] ">
+                        <ion-item lines="none">
+                          <p [innerHTML]="comment['sComment']"></p>
+                          <small>
+                            - {{ comment['sCommentBy'] }} on {{ comment['dCommentDate'] }}
+                          </small>
+                        </ion-item>
+                        <ng-container *ngIf="!_bViewMode">
+                          <ion-textarea autoGrow="true" name="sPDPComment-{{ iPDP }}" [(ngModel)]="comment['sComment']" placeholder="Enter here..."></ion-textarea>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+
+                    <!-- Show this box when adding a new development need -->
+                    <ng-container *ngIf="(!pdp['comments'] || pdp['comments'] && pdp['comments'].length === 0 ) && pdp.sAcceptStatus === 'Selected'">
+                      <ion-textarea autoGrow="true" name="sPDPComment-{{iPDP}}" [(ngModel)]="pdp.sComment" [readonly]="_bViewMode" placeholder="Enter here..."></ion-textarea>
+                    </ng-container>
+                    <ng-container *ngIf="(!pdp['comments'] || pdp['comments'] && pdp['comments'].length === 0) && pdp.sAcceptStatus !== 'Selected'">
+                      <ion-input autoGrow="true" name="sPDPComment-{{ iPDP }}" readonly placeholder="No Comments" readonly></ion-input>
+                      <hr>
+                    </ng-container>
+                  </ng-container>
+
+                  <!-- MANAGER COMMENTS -->
+                  <ng-container *ngIf="_bManager">
+                    <ng-container *ngFor="let comment of pdp['comments'];">
+                      <ng-container *ngIf="_sessionUser.sFullName !== comment['sCommentBy']">
+                        <ion-item lines="none">
+                          <p [innerHTML]="comment['sComment']"></p>
+                          <small>
+                            - {{ comment['sCommentBy'] }} on {{ comment['dCommentDate'] }}
+                          </small>
+                        </ion-item>
+                      </ng-container>
+                      <ng-container *ngIf="pdp.sAcceptStatus != 'Declined' &&  _sessionUser.sFullName === comment['sCommentBy']">
+                        <ion-textarea autoGrow="true" name="sPDPCommentManager-{{ iPDP }}" [(ngModel)]="comment['sComment']" placeholder="Enter here..." [disabled]="_bViewMode">
+                        </ion-textarea>
+                      </ng-container>
+                      <ng-container *ngIf="pdp['comments'] && pdp['comments'].length && pdp['comments'].length !== 0  && !_bManagerCommentExist">
+                        <ion-textarea autoGrow="true" name="sPDPCommentManager-{{ iPDP }}" [(ngModel)]="pdp['sComment']" placeholder="Enter here..." [disabled]="_bViewMode">
+                        </ion-textarea>
+                      </ng-container>
+                      <ng-container *ngIf="!pdp['comments'] || (pdp['comments'] && !pdp['comments'].length || pdp['comments'].length === 0)">
+                        <ion-textarea autoGrow="true" name="sPDPCommentManager-{{ iPDP }}" [(ngModel)]="pdp['sComment']" placeholder="Enter here..." [disabled]="_bViewMode">
+                        </ion-textarea>
+                      </ng-container>
+                    </ng-container>
+                  </ng-container>
+                  <hr class="m-b-20 m-t-20">
+                </ng-container>
+              </ng-container>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <!-- SECTION 3 -->
+    <ion-row>
+      <ion-col size="12" class="p-0-impo" class="ion-no-padding">
+        <ion-card class="card card-transparent">
+          <ion-card-header class="sub-title bg-primary">
+            <ion-card-title>
+              <ion-row>
+                <ion-col sizeXs="12">
+                  <span class="pointer" style="font-size: 14px;">Section 3: Skills and Behaviour Reviews</span>
+                </ion-col>
+              </ion-row>
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-grid>
+              <ng-container *ngFor="let pdpComp of _intergratedPDPProfile.pdpCompetencies; let iPDPCompetency = index; let isLastPDPCompetency = last">
+                <ng-container *ngIf="pdpComp['bIncludeInPDP'] || _bManager || _bViewMode">
+                  <!-- PDP COMPETENCY NAME -->
+                  <ion-row>
+                    <ion-col size="2">
+                      <ion-label>
+                        Competency <strong>{{ iPDPCompetency + 1 }}</strong>
+                      </ion-label>
+                    </ion-col>
+                    <ion-col>
+                      <ion-item lines="none">
+                        <ion-input name="sCompentency-{{ iPDPCompetency }}" [(ngModel)]="pdpComp['sOutcomeName']" readonly></ion-input>
+                      </ion-item>
+                    </ion-col>
+                  </ion-row>
+
+                  <!-- PDP INDICATOR NAME -->
+                  <ion-row>
+                    <ion-col size="2">
+                      <ion-label>
+                        Indicator
+                      </ion-label>
+                    </ion-col>
+                    <ion-col>
+                      <ion-item lines="none">
+                        <ion-input name="sIndicator-{{ iPDPCompetency }}" [(ngModel)]="pdpComp['sIndicatorName']" readonly></ion-input>
+                      </ion-item>
+                    </ion-col>
+                  </ion-row>
+
+                  <!-- PDP INDICATOR SCORE -->
+                  <ion-row>
+                    <ion-col size="2">
+                      <ion-label>
+                        Score
+                      </ion-label>
+                    </ion-col>
+                    <ion-col>
+                      <ion-item lines="none">
+                        <ion-input name="sScore-{{ iPDPCompetency }}" [(ngModel)]="pdpComp['fScoreValue']" readonly></ion-input>
+                      </ion-item>
+                    </ion-col>
+                  </ion-row>
+
+                  <!-- PDP DUE DATE DATEPICKER -->
+                  <ion-row>
+                    <ion-col size="2">
+                      <ion-label>
+                        {{ _kraCompanySettings.sPDPDueDateChange }}
+                      </ion-label>
+                    </ion-col>
+                    <ion-col>
+                      <ion-item lines="none">
+                        <ng-container *ngIf="!_bViewMode && !_bManager">
+                          <input type="date" id="from-date" name="from-date" class="periodDate" displayFormat="MM DD YY" placeholder="Select from date" value=""
+                            [(ngModel)]="pdpComp['dPeriodOfImprovementEnd']">
+                        </ng-container>
+                        <ng-container *ngIf="_bViewMode || _bManager">
+                          <ion-input name="dueDate-{{ iPDPCompetency }}" [(ngModel)]="pdpComp['dPeriodOfImprovementEnd']"
+                            placeholder="Enter {{  _kraCompanySettings.sPDPDueDateChange }} here" [disabled]="_bViewMode || _bManager"></ion-input>
+                        </ng-container>
+                      </ion-item>
+                    </ion-col>
+                  </ion-row>
+
+                  <!-- PDP PRIORITY -->
+                  <ion-row>
+                    <ion-col size="2">
+                      <ion-label>
+                        {{ _kraCompanySettings.sPDPPriorityChange }}
+                      </ion-label>
+                    </ion-col>
+                    <ion-col>
+                      <ion-item lines="none">
+                        <ion-select [interfaceOptions]='{ showBackdrop: false }' interface="popover" name="sDevelopmentPriority--{{ iPDPCompetency }}"
+                          id="sDevelopmentPriority--{{ iPDPCompetency }}" [(ngModel)]="pdpComp['sPriority']"
+                          placeholder="Please Select {{ _kraCompanySettings.sPDPPriorityChange }}">
+                          <ion-select-option *ngFor="let  priority of _pdpPriority;" [value]="priority.label" [disabled]="_bViewMode || _bManager">
+                            {{ priority.label }}
+                          </ion-select-option>
+                        </ion-select>
+                      </ion-item>
+                    </ion-col>
+                  </ion-row>
+
+                  <!-- PERSONAL STATUS -->
+                  <ion-row *ngIf="!_bManager">
+                    <ng-container *ngIf="pdpComp.sAcceptStatus === 'Selected'">
+                      <ion-col size="2">
+                        <ion-label>
+                          {{ _kraCompanySettings.sPDPEmployeeStatusChange }}
+                        </ion-label>
+                      </ion-col>
+                      <ion-col>
+                        <ion-item lines="none">
+                          <ion-input name="status" value="New" readonly></ion-input>
+                        </ion-item>
+                      </ion-col>
+                    </ng-container>
+
+                    <ng-container *ngIf="pdpComp.sAcceptStatus !== 'Selected'">
+                      <ng-container *ngIf="pdpComp.sManagerStatus !== 'Declined'">
+                        <ion-col size="2">
+                          <ion-label>
+                            {{ _kraCompanySettings.sPDPEmployeeStatusChange }}
+                          </ion-label>
+                        </ion-col>
+                        <ion-col>
+                          <ion-item lines="none">
+                            <ion-select [interfaceOptions]='{ showBackdrop: false }' name="status{{ iPDPCompetency + 1 }}" [(ngModel)]="pdpComp['sAcceptStatus']"
+                              [ngClass]="{'filled': pdpComp['sAcceptStatus']}">
+                              <ion-select-option *ngFor="let status of _pdpStatus" [value]="status['label']" [disabled]="_bViewMode || _bManager">
+                                {{ status['label'] }}
+                              </ion-select-option>
+                            </ion-select>
+                          </ion-item>
+                        </ion-col>
+                      </ng-container>
+                      <ng-container *ngIf="_intergratedPDPProfile['sDateAdminSigned'] !== ''">
+                        <ion-col>
+                          <ion-item lines="none">
+                            <p>Manager Status: <strong>{{pdpComp.sManagerStatus }} on {{pdpComp.dAcceptedDate}}</strong></p>
+                          </ion-item>
+                        </ion-col>
+                      </ng-container>
+                    </ng-container>
+                  </ion-row>
+
+                  <!-- DEPARTMENT STATUS -->
+                  <ion-row *ngIf="_bManager">
+                    <ion-col size="2">
+                      <ion-label>
+                        {{ _kraCompanySettings.sPDPManagerStatusChange }}
+                      </ion-label>
+                    </ion-col>
+                    <ion-col>
+                      <ion-item lines="none">
+                        <ion-select [interfaceOptions]='{ showBackdrop: false }' interface="popover" name="status{{ iPDPCompetency + 1 }}" id="status{{ iPDPCompetency + 1 }}"
+                          [(ngModel)]="pdpComp['sAcceptStatus']" placeholder="Please Select {{ _kraCompanySettings.sPDPManagerStatusChange }}">
+                          <ion-select-option *ngFor="let options of _pdpApproveOptions" [value]="options.label" [disabled]="_bViewMode">
+                            {{ options.label }}
+                          </ion-select-option>
+                        </ion-select>
+                      </ion-item>
+                    </ion-col>
+                  </ion-row>
+
+                  <!--COMMENTS -->
+                  <ion-row>
+                    <ion-col>
+                      <ion-label>
+                        {{ _kraCompanySettings.sPDPEmployeeCommentsChange }}
+                      </ion-label>
+                    </ion-col>
+                  </ion-row>
+
+                  <!--EMPLOYEE COMMENTS -->
+                  <ion-row>
+                    <ion-col>
+                      <ng-container *ngIf="!_bManager">
+                        <ng-container *ngFor="let comment of pdpComp['comments'];">
+                          <ng-container *ngIf="_sessionUser['sFullName'] !== comment['sCommentBy']">
+                            <ion-item lines="none">
+                              <p [innerHTML]="comment['sComment']"></p>
+                              <small>
+                                - {{ comment['sCommentBy'] }} on {{ comment['dCommentDate'] }}
+                              </small>
+                            </ion-item>
+                          </ng-container>
+                          <ng-container *ngIf="pdpComp['sAcceptStatus'] == 'Declined' && _sessionUser['sFullName'] === comment['sCommentBy']">
+                            <ion-item lines="none">
+                              <p [innerHTML]="comment['sComment']"></p>
+                              <small>
+                                - {{ comment['sCommentBy'] }} on {{ comment['dCommentDate'] }}
+                              </small>
+                            </ion-item>
+                          </ng-container>
+                          <ng-container *ngIf="pdpComp['sAcceptStatus'] !== 'Declined' && _sessionUser['sFullName'] === comment['sCommentBy']">
+                            <ion-item lines="none">
+                              <p [innerHTML]="comment['sComment']"></p>
+                              <small>
+                                - {{ comment['sCommentBy'] }} on {{ comment['dCommentDate'] }}
+                              </small>
+                            </ion-item>
+                            <ng-container *ngIf="!_bViewMode">
+                              <ion-textarea autoGrow="true" name="sPDPCompComment-{{ iPDPCompetency }}" [(ngModel)]="comment['sComment']" placeholder="Enter here...">
+                              </ion-textarea>
+                            </ng-container>
+                          </ng-container>
+                        </ng-container>
+
+                        <!-- Show this box when adding a new development need -->
+                        <ng-container *ngIf="(!pdpComp['comments'] || pdpComp['comments'] && pdpComp['comments'].length === 0 ) && pdpComp.sAcceptStatus === 'Selected'">
+                          <ion-textarea autoGrow="true" name="sPDPCompComment-{{iPDPCompetency}}" [(ngModel)]="pdpComp.sComment" placeholder="Enter here..."></ion-textarea>
+                        </ng-container>
+                        <ng-container *ngIf="(!pdpComp['comments'] || pdpComp['comments'] && pdpComp['comments'].length === 0) && pdpComp.sAcceptStatus !== 'Selected'">
+                          <ion-input autoGrow="true" name="sPDPCompComment-{{ iPDPCompetency }}" placeholder="No Comments" readonly></ion-input>
+                          <hr>
+                        </ng-container>
+                      </ng-container>
+
+                      <!--MANAGER COMMENTS -->
+                      <ng-container *ngIf="_bManager">
+                        <ng-container *ngFor="let comment of pdpComp['comments'];">
+                          <ng-container *ngIf="_sessionUser['sFullName'] !== comment['sCommentBy']">
+                            <ion-item lines="none">
+                              <p [innerHTML]="comment['sComment']"></p>
+                              <small>
+                                - {{ comment['sCommentBy'] }} on {{ comment['dCommentDate'] }}
+                              </small>
+                            </ion-item>
+                          </ng-container>
+                          <ng-container *ngIf="pdpComp.sAcceptStatus != 'Declined' && _sessionUser['sFullName'] === comment['sCommentBy']">
+                            <ion-textarea autoGrow="true" name="sCommentManager-{{ iPDPCompetency }}" [(ngModel)]="comment['sComment']" placeholder="Enter here..."
+                              [disabled]="_bViewMode">
+                            </ion-textarea>
+                          </ng-container>
+                        </ng-container>
+                        <ng-container *ngIf="pdpComp['comments'] && pdpComp['comments'].length && pdpComp['comments'].length !== 0  && !_bManagerCommentExist">
+                          <ion-textarea autoGrow="true" name="sCommentManager-{{ iPDPCompetency }}" [(ngModel)]="pdpComp['sComment']" placeholder="Enter here..."
+                            [disabled]="_bViewMode">
+                          </ion-textarea>
+                        </ng-container>
+                        <ng-container *ngIf="!pdpComp['comments'] || (pdpComp['comments'] && !pdpComp['comments'].length || pdpComp['comments'].length === 0)">
+                          <ion-textarea autoGrow="true" name="sCommentManager-{{ iPDPCompetency }}" [(ngModel)]="pdpComp.sComment" placeholder="Enter here..."
+                            [disabled]="_bViewMode">
+                          </ion-textarea>
+                        </ng-container>
+                      </ng-container>
+                    </ion-col>
+                  </ion-row>
+                </ng-container>
+              </ng-container>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <!-- SECTION 4 -->
+    <ion-row>
+      <ion-col size="12" class="p-0-impo" class="ion-no-padding">
+        <ion-card class="card card-transparent">
+          <ion-card-header class="sub-title bg-primary">
+            <ion-card-title>
+              <ion-row>
+                <ion-col sizeXs="12">
+                  <span class="pointer" style="font-size: 14px;">Section 4: Career Goals and Development Focus</span>
+                </ion-col>
+              </ion-row>
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content *ngIf="_details">
+            <ion-grid>
+              <ion-col sizeXs="12" sizeLg="6" sizeXl="12">
+                <ion-item lines="none">
+                  <ion-label position="stacked">
+                    Short term goals (3-6 months)
+                  </ion-label>
+                  <ion-textarea autoGrow="true" name="sSWOT3monthsManualObjectiveComment" [(ngModel)]="_intergratedPDPProfile['sShortTermGoals']" placeholder="Enter here..."
+                    [disabled]="_bViewMode || _bManager"></ion-textarea>
+                </ion-item>
+              </ion-col>
+
+              <ion-col sizeXs="12" sizeLg="6" sizeXl="12">
+                <ion-item lines="none">
+                  <ion-label position="stacked">
+                    Medium term goals (3-12 months)
+                  </ion-label>
+                  <ion-textarea autoGrow="true" name="sSWOT3monthsManualObjectiveComment" [(ngModel)]="_intergratedPDPProfile['sMediumTermGoals']" placeholder="Enter here..."
+                    [disabled]="_bViewMode || _bManager"></ion-textarea>
+                </ion-item>
+              </ion-col>
+
+              <ion-col sizeXs="12" sizeLg="6" sizeXl="12">
+                <ion-item lines="none">
+                  <ion-label position="stacked">
+                    Long term goals (12-24 months)
+                  </ion-label>
+                  <ion-textarea autoGrow="true" name="sSWOT3monthsManualObjectiveComment" [(ngModel)]="_intergratedPDPProfile['sLongTermGoals']" placeholder="Enter here..."
+                    [disabled]="_bViewMode || _bManager"></ion-textarea>
+                </ion-item>
+              </ion-col>
+
+              <ion-col sizeXs="12" sizeLg="6" sizeXl="12" *ngIf="_bManager || _intergratedPDPProfile['sManagerOverAllComment'] !== ''">
+                <ion-item lines="none">
+                  <ion-label position="stacked">
+                    Manager Comment
+                  </ion-label>
+                  <ion-textarea autoGrow="true" name="sSWOT3monthsManualObjectiveComment" [(ngModel)]="_intergratedPDPProfile['sManagerOverAllComment']" placeholder="Enter here..."
+                    [disabled]="_bViewMode || !_bManager"></ion-textarea>
+                </ion-item>
+              </ion-col>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+    <ion-button class="btnRound" shape="round" *ngIf="_bManager" (click)="goActivitySummary()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="!_bViewMode && _bManager" shape="round" class="f-right" (click)="validatePDP(false)">Submit PDP</ion-button>
+
+    <ion-button class="btnRound" shape="round" *ngIf="!_bManager" (click)="goBack()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    <div class="f-right">
+      <ion-button shape="round" *ngIf="!_bViewMode && !_bManager" (click)="validatePDP(true)">{{ _saveButton['text'] }}</ion-button>
+      <ion-button shape="round" *ngIf="!_bViewMode && !_bManager" (click)="validatePDP(false)">{{ _submitButton['text'] }}</ion-button>
+    </div>
+</ion-footer>

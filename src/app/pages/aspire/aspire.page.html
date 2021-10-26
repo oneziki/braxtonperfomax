@@ -1,0 +1,438 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper moduleLanding aspireGrid" *ngIf="!_isLoading">
+    <ion-row>
+      <ion-col sizeXs="12" sizeMd="6">
+        <ion-text>
+          <h2 class="contentHeader">
+            {{_aspireTemplate['sName']}} : <span class="text-lite-charcoal fw-400">{{ _selectedUser['sFullName']
+              }}</span>
+            <small class="p-t-10 p-b-20 text-muted" [innerHTML]="_aspireTemplate['sDisplayDescription']"></small>
+
+          </h2>
+        </ion-text>
+
+        <div class="d-block text-center">
+          <!-- Default if nothing is uploaded -->
+          <img [src]="_aspireTemplate['sTileImageURL']" class="tileHeaderImage" *ngIf="_aspireTemplate['sTileDisplayUrlP7'] === ''">
+          <!-- Display P7 Specific Image -->
+          <img [src]="_aspireTemplate['sTileDisplayUrlP7']" class="tileHeaderImage" *ngIf="_aspireTemplate['sTileDisplayUrlP7'] === 'Image'">
+          <!-- Display P7 Document -->
+          <div class="container-document" *ngIf="_aspireTemplate['sTileDisplayUrlP7'] === 'Document'">
+            <img [src]="_aspireTemplate['sTileImageURL']" class="tileHeaderImage">
+            <a [href]="_aspireTemplate['sTileDisplayUrlP7']">
+              <span class="centered-document"> {{_aspireTemplate['sTileImageNameP7']}}</span>
+            </a>
+          </div>
+          <!-- Display P7 Video -->
+          <ion-slide class="tileHeaderImage" style="margin-bottom: 10px"
+                     *ngIf="_aspireTemplate['sTileDisplayCategoryP7'] === 'Video Link' || _aspireTemplate['sTileDisplayCategoryP7'] === 'Video'">
+            <iframe width="420" height="225" [src]="_aspireTemplate['sTileDisplayUrlP7'] | safe" title="video player" frameborder="0" allow="autoplay" controls="0"
+                    allowfullscreen></iframe>
+          </ion-slide>
+        </div>
+
+        <!-- <div class="d-block text-center">
+          <img [src]="_aspireTemplate['sTileImageURL']" class="tileHeaderImage">
+        </div> -->
+      </ion-col>
+      <ion-col sizeXs="12" sizeMd="6">
+
+        <ion-text>
+          <h2 class="contentHeader">Aspire Individual Reporting</h2>
+        </ion-text>
+
+
+        <ion-card class="homeCard personalLeave" *ngIf="bLoadTiles && _bPortfolioData">
+          <ion-card-header>
+            <ion-card-title class="cardHeader">
+              <ion-item lines="none">
+                <i class="icofont icofont-file-pdf icofont-appPage"></i>
+                <ion-label>
+                  PDF’s
+                </ion-label>
+              </ion-item>
+            </ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <ion-list *ngFor="let category of _linkedCategories; let i = index">
+              <ion-item lines="none">
+                <ion-label class="leaveHeader">
+                  {{category['sCategoryName']}}
+                </ion-label>
+              </ion-item>
+              <ng-container *ngFor="let task of category['task']; let j = index">
+                <ion-item lines="none" *ngIf="j < category['iTotal'] && category['task'].length !== 0">
+                  <ion-label>{{task['sSurveyName']}}
+                    <ion-badge class="actionBadgeNew animated pulse" color="danger" *ngIf="task['sHasReadNotification'] === 'NO'">
+                      NEW
+                    </ion-badge>
+                  </ion-label>
+                  <ion-button slot="end" color="primary" (click)=printPDF(task,false)>
+                    <ion-icon name="print"></ion-icon>
+                  </ion-button>
+                  <ion-button slot="end" color="primary" (click)=printPDF(task,true)>
+                    <ion-icon name="search"></ion-icon>
+                  </ion-button>
+                </ion-item>
+              </ng-container>
+              <ion-item lines="none" *ngIf="category['task'].length === 0">
+                <ion-label class="text-muted">*no pdf's available</ion-label>
+              </ion-item>
+              <ion-item lines="none" *ngIf="category['task'].length > 2">
+                <ion-label slot="end" class="loadMore hover" *ngIf="!category['bLoadMore']">
+                  Load more...
+                </ion-label>
+                <ion-label slot="end" class="loadMore hover" *ngIf="category['bLoadMore']">
+                  load less...
+                </ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+
+        <!-- Tile Actions -->
+        <ion-card class="homeCard tileActions ion-hide-md-down">
+          <ion-card-content>
+            <ion-list>
+              <ion-item lines="none">
+                <i class="icofont {{_aspireTemplate['sIconP7']}} icofont-appPage"></i>
+                <ion-label class="hover" (click)="goTrainersTool()">Trainers Tool</ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ng-container *ngIf="!_isLoadingTraining">
+      <!-- Employee View -->
+      <ng-container *ngIf="_employeeView">
+        <ion-card class="homeCard personalLeave landingList">
+          <ion-card-header>
+            <ion-card-title class="cardHeader">
+              <strong *ngIf="!_bView">Recommended Training</strong>
+              <strong *ngIf="_bView">Approved / Compulsory Training</strong>
+            </ion-card-title>
+            <ion-card-subtitle *ngIf="!_bView">
+              Review the recommended training modules by clicking on the module.
+              Prioritize the module you’d like to complete and submit to your manager for approval
+            </ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content class="mHeight-100 training-col">
+            <ng-container *ngIf="!_bNoData">
+              <ion-row class="landingListHeader ion-hide-sm-down p-b-10">
+                <ion-col sizeXs="12" sizeMd="3">
+                  <strong *ngIf="!_bView">Available Training</strong>
+                  <strong *ngIf="_bView">Reviewed Training</strong>
+                </ion-col>
+                <ion-col sizeXs="6" sizeMd="2">
+                  <strong>Service Provider</strong>
+                </ion-col>
+                <ion-col sizeXs="6" sizeMd="1">
+                  <strong>Cost</strong>
+                </ion-col>
+                <ion-col sizeXs="6" sizeMd="2" class="text-center">
+                  <ion-icon class="clockResize" name="time-outline"></ion-icon>
+                </ion-col>
+                <ion-col sizeXs="6" [sizeMd]="_bView? '2': '4'" class="textsm-left-center">
+                  <small class="text-muted" *ngIf="!_bView">
+                    Review the recommended training modules by clicking on the module. Prioritize the
+                    modules you would like to complete and then submit to manager for approval.
+                  </small>
+                  <strong *ngIf="_bView"> Status</strong>
+                </ion-col>
+                <ion-col sizeXs="12" sizeMd="2" *ngIf="_bView">
+                  <strong>Progress Status</strong>
+                </ion-col>
+              </ion-row>
+              <ion-row class="landingListItem p-b-10 p-t-10 b-t-lightgray" *ngFor="let training of _trainingNeeds; let iTraining = index">
+                <ion-col sizeXs="12" sizeMd="3">
+                  <strong class="pointer ion-hide-sm-down" (click)="training['bMoreInfo'] = !training['bMoreInfo']">
+                    <ion-icon class="icon text-prime arrow-16" name="chevron-forward-circle" [ngClass]="{' rotate-90': training['bMoreInfo'], '': !training['bMoreInfo']}">
+                    </ion-icon>
+                  </strong>
+                  {{ training['sModule'] }}
+                </ion-col>
+                <ion-col sizeXs="12" sizeMd="2">
+                  <ion-text>
+                    {{training['sProvider']}}
+                  </ion-text>
+                </ion-col>
+                <ion-col sizeXs="6" sizeMd="1">
+                  <ion-text>
+                    {{training['sCost']}}
+                  </ion-text>
+                </ion-col>
+                <ion-col sizeXs="6" sizeMd="2" class="col-6 col-sm-2 textsm-left-center">
+                  <ion-text>
+                    {{training['sDuration']}} hours
+                  </ion-text>
+                </ion-col>
+                <ion-col sizeXs="6" [sizeMd]="_bView? '2': '4'" class="text-center" *ngIf="!_bView">
+                  <ion-select class="trainingNeedInput" [interfaceOptions]='{ showBackdrop: false }' interface="popover" name="priority" id="priority"
+                              [(ngModel)]="training['iPriority']" placeholder="Please Select a Priority" label="Please Select a Priority">
+                    <ion-select-option *ngFor="let training of _trainingNeeds; let iPriority = index" value="{{iPriority + 1}}">
+                      Priority {{iPriority + 1}}
+                    </ion-select-option>
+                  </ion-select>
+                </ion-col>
+                <ion-col sizeXs="6" sizeMd="2" class="col-6 col-sm-2 textsm-left-center" *ngIf="_bView">
+                  <ion-badge class="m-r-5 p-5 t-black" [color]="training['sStatus'] === 'Pending'? 'light'
+                                                        :training['sStatus'] === 'Required'? 'medium'
+                                                        :training['sStatus'] === 'Approved'? 'success'
+                                                        :'danger'">
+                    {{training['sStatus']}}
+                  </ion-badge>
+                </ion-col>
+                <ion-col sizeXs="6" sizeMd="2" class="col-6 col-sm-2" *ngIf="_bView">
+                  <ion-text>
+                    {{training['sResult']}}
+                  </ion-text>
+                </ion-col>
+                <ion-col sizeXs="12" sizeMd="12" class="p-t-5 p-b-5 m-l-17 djustify" *ngIf="training['bMoreInfo']">
+                  <ion-text>
+                    <small>{{training['sDescription']}}</small>
+                  </ion-text>
+                </ion-col>
+              </ion-row>
+            </ng-container>
+          </ion-card-content>
+
+          <ion-card-content class="mHeight-100 training-col-mobile">
+            <ng-container *ngIf="!_bNoData">
+              <ion-row class="landingListHeader p-b-10 b-b-1" *ngFor="let training of _trainingNeeds; let iTraining = index">
+                <ion-col size="12">
+                  <ion-row>
+                    <ion-col size="6">
+                      <strong *ngIf="!_bView">Available Training:</strong>
+                      <strong *ngIf="_bView">Reviewed Training:</strong>
+                    </ion-col>
+                    <ion-col size="6">
+                      <strong class="pointer ion-hide-sm-down" (click)="training['bMoreInfo'] = !training['bMoreInfo']">
+                        <ion-icon class="icon text-prime arrow-16" name="chevron-forward-circle" [ngClass]="{' rotate-90': training['bMoreInfo'], '': !training['bMoreInfo']}">
+                        </ion-icon>
+                      </strong>
+                      {{ training['sModule'] }}
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col size="6">
+                      <strong>Service Provider:</strong>
+                    </ion-col>
+                    <ion-col size="6">{{training['sProvider']}}</ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col size="6">
+                      <strong>Cost:</strong>
+                    </ion-col>
+                    <ion-col size="6">{{training['sCost']}}</ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col size="6">
+                      <ion-icon class="clockResize" name="time-outline"></ion-icon>
+                    </ion-col>
+                    <ion-col size="6">{{training['sDuration']}} hours</ion-col>
+                  </ion-row>
+                  <ion-row *ngIf="!_bView">
+                    <ion-col size="6">
+                      <small class="text-muted" *ngIf="!_bView">
+                        Review the recommended training modules by clicking on the module. Prioritize the
+                        modules you would like to complete and then submit to manager for approval.
+                      </small>
+                      <strong *ngIf="_bView">Status:</strong>
+                    </ion-col>
+                    <ion-col size="6">
+                      <ion-select class="trainingNeedInput" [interfaceOptions]='{ showBackdrop: false }' interface="popover" name="priority" id="priority"
+                                  [(ngModel)]="training['iPriority']" placeholder="Please Select a Priority" label="Please Select a Priority">
+                        <ion-select-option *ngFor="let training of _trainingNeeds; let iPriority = index" value="{{iPriority + 1}}">
+                          Priority {{iPriority + 1}}
+                        </ion-select-option>
+                      </ion-select>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row *ngIf="_bView">
+                    <ion-col size="6">
+                      <strong>Progress Status:</strong>
+                    </ion-col>
+                    <ion-col size="6" class="col-6 col-sm-2">
+                      <ion-badge class="m-r-5 p-5 t-black" [color]="training['sStatus'] === 'Pending'? 'light'
+                                                            :training['sStatus'] === 'Required'? 'medium'
+                                                            :training['sStatus'] === 'Approved'? 'success'
+                                                            :'danger'">
+                        {{training['sStatus']}}
+                      </ion-badge>
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
+              </ion-row>
+            </ng-container>
+          </ion-card-content>
+
+          <ion-card-content class="mHeight-100" *ngIf="_bNoData">
+            <strong class="noDataDisplay">
+              *There is Currently No Training Data Available
+            </strong>
+          </ion-card-content>
+        </ion-card>
+      </ng-container>
+
+      <!-- Manager View -->
+      <ng-container *ngIf="!_employeeView">
+        <ion-card class="homeCard personalLeave landingList">
+          <ion-card-header>
+            <ion-card-title class="cardHeader">
+              <strong>Recommended Training for approval</strong>
+            </ion-card-title>
+            <ion-card-subtitle>
+              Review and approve the recommended/required training modules by clicking on the module.
+              These were prioritized by the employee in order of preference
+            </ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content *ngIf="!_bNoData" class="training-col">
+            <ion-row class="landingListHeader ion-hide-sm-down p-b-10">
+              <ion-col size="5" class="ion-align-self-end">
+                <small class="text-muted">
+                  Please review the training modules chosen by above-mentioned individual. These are listed from highest
+                  to lowest priority as indicated by the individual.
+                  Review the modules by clicking on the module. Either reject or approve each of the modules below and
+                  submit to employee.
+                </small>
+              </ion-col>
+              <ion-col size="2" class="text-center ion-align-self-end">
+                <strong>Estimated Time Allocation</strong>
+              </ion-col>
+              <ion-col size="1" class="text-center ion-align-self-end">
+                <strong>Estimated Cost</strong>
+              </ion-col>
+              <ion-col size="2" class="text-center ion-align-self-end">
+                <strong>Provider</strong>
+              </ion-col>
+              <ion-col size="2">
+              </ion-col>
+            </ion-row>
+            <ion-row class="landingListItem p-b-10 p-t-10 b-t-lightgray" *ngFor="let training of _trainingNeeds; let iTraining = index">
+              <ion-col size="5">
+                <strong class="pointer ion-hide-lg-down" (click)="training['bMoreInfo'] = !training['bMoreInfo']">
+                  <ion-icon class="icon arrow-16" color="primary" name="chevron-forward-circle" [ngClass]="{' rotate-90': training['bMoreInfo'], '': !training['bMoreInfo']}">
+                  </ion-icon>
+                </strong>
+                {{training['sModule']}}
+              </ion-col>
+              <ion-col size="2" class="textsm-left-center">
+                <ion-text>
+                  {{training['sDuration']}} hours
+                </ion-text>
+              </ion-col>
+              <ion-col size="1" class="textsm-left-center">
+                <ion-text>
+                  R {{training['sCost']}}
+                </ion-text>
+              </ion-col>
+              <ion-col size="2" class="textsm-left-center">
+                <ion-text>
+                  {{training['sProvider']}}
+                </ion-text>
+              </ion-col>
+              <ion-col size="2">
+                <ion-select [interfaceOptions]='{ showBackdrop: false }' interface="popover" class="trainingNeedInput" name="sStatus" id="sStatus" [(ngModel)]="training['sStatus']"
+                            placeholder="Please Select An Option" label="Please Select a Priority">
+                  <ion-select-option disabled="true" value="Pending"> * Select Option</ion-select-option>
+                  <ion-select-option value="Approved"> Approve</ion-select-option>
+                  <ion-select-option value="Rejected"> Reject</ion-select-option>
+                </ion-select>
+              </ion-col>
+              <ion-col size="12" class="p-t-5 p-b-5 m-l-17 djustify m-b-10" *ngIf="training['bMoreInfo']">
+                <ion-text>
+                  <small>{{training['sDescription']}}</small>
+                </ion-text>
+              </ion-col>
+              <ion-col size="12" class="p-t-10 p-b-5" *ngIf="training['sStatus'] === 'Rejected'">
+                <textarea id="sDeclinedMessage" name="sDeclinedMessage" class="form-control fs-12" placeholder="Please enter the reason for rejecting the module"
+                          [(ngModel)]="training['sDeclinedMessage']"></textarea>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+
+          <ion-card-content *ngIf="!_bNoData" class="training-col-mobile">
+            <ion-row class="landingListHeader p-b-10 b-b-1 m-b-10" *ngFor="let training of _trainingNeeds; let iTraining = index">
+              <ion-col size="12">
+                <ion-row>
+                  <ion-col size="6" class="ion-align-self-end">
+                    <strong>Module:</strong>
+                  </ion-col>
+                  <ion-col size="6">
+                    {{training['sModule']}}
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="6" class="ion-align-self-end">
+                    <strong>Estimated Time Allocation:</strong>
+                  </ion-col>
+                  <ion-col size="6">
+                    {{training['sDuration']}} hours
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="6" class="ion-align-self-end">
+                    <strong>Estimated Cost:</strong>
+                  </ion-col>
+                  <ion-col size="6">
+                    {{training['sCost']}}
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="6" class="ion-align-self-end">
+                    <strong>Provider:</strong>
+                  </ion-col>
+                  <ion-col size="6">
+                    {{training['sProvider']}}
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="6" class="ion-align-self-end">
+                  </ion-col>
+                  <ion-col size="6">
+                    <ion-select [interfaceOptions]='{ showBackdrop: false }' interface="popover" class="trainingNeedInput" name="sStatus" id="sStatus" [(ngModel)]="training['sStatus']"
+                                placeholder="Please Select An Option" label="Please Select a Priority">
+                      <ion-select-option disabled="true" value="Pending"> * Select Option</ion-select-option>
+                      <ion-select-option value="Approved"> Approve</ion-select-option>
+                      <ion-select-option value="Rejected"> Reject</ion-select-option>
+                    </ion-select>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="12" class="p-t-5 p-b-5 m-l-17 djustify m-b-10" *ngIf="training['bMoreInfo']">
+                    <ion-text>
+                      <small>{{training['sDescription']}}</small>
+                    </ion-text>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="12" class="p-t-10 p-b-5" *ngIf="training['sStatus'] === 'Rejected'">
+                    <textarea id="sDeclinedMessage" name="sDeclinedMessage" class="form-control fs-12" placeholder="Please enter the reason for rejecting the module"
+                              [(ngModel)]="training['sDeclinedMessage']"></textarea>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+          <ion-card-content class="mHeight-100" *ngIf="_bNoData">
+            <strong class="noDataDisplay">
+              *There is Currently No Training Data Available
+            </strong>
+          </ion-card-content>
+        </ion-card>
+      </ng-container>
+    </ng-container>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-button shape="round" type="button" class="btn btn-primary btn-mini f-left" (click)="validateProfileManager()" *ngIf="!_employeeView && !_bNoData">
+    Submit To Employee
+  </ion-button>
+  <ion-button shape="round" type="button" class="btn btn-primary btn-mini f-left" (click)="validateProfileEmployee()" *ngIf="!_bView && !_bNoData && _employeeView">
+    Submit To Manager
+  </ion-button>
+</ion-footer>

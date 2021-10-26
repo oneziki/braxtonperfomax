@@ -1,0 +1,27 @@
+<ion-content class="acedmyModal">
+  <ion-grid>
+    <ion-card class="card" *ngIf="resUpload">
+      <ion-card-header>
+        <ion-card-title>
+          <strong class="text-lite-charcoal">
+            {{ resUpload["sItemName"] }}</strong>
+          <ion-button size="small" shape="round " type="button" class="text-right f-right" (click)="dismiss()">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="content" *ngIf="type !== ''">
+        <!-- Embedded Video -->
+        <iframe *ngIf="type === 'embed'" [src]="resUpload['sDocumentUploadName'] | safe" title="video player" frameborder="0" controls="0" allowfullscreen="true" loading="lazy">
+        </iframe>
+
+        <!-- Linked Video -->
+        <video *ngIf="type === 'video'" controls>
+          <source [src]="resUpload['sUploadFileName'] | safe" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </ion-card-content>
+    </ion-card>
+
+  </ion-grid>
+</ion-content>

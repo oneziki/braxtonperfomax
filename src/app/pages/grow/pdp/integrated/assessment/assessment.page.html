@@ -1,0 +1,87 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper pdpAssessmentGrid" *ngIf="!_isLoading">
+    <ion-row>
+      <ion-col sizeXs="12" sizeMd="6">
+        <ion-text>
+          <h2 class="contentHeader">
+            Personal Development Plan
+          </h2>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="assHeader">
+      <ion-col size="6" class="p-0-impo">
+        <div class="col-header ion-text-left">
+          <h1 class="m-l-20">Select Competencies to Develop</h1>
+        </div>
+      </ion-col>
+      <ion-col size="6" class="p-0-impo">
+        <div class="col-header ion-text-right">
+          <h1 class="m-r-20">Steps 1 of 2</h1>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="6" class="p-0-impo">
+        <div class="ion-text-left">
+          <h5 class="m-l-20">{{_selectedAssessment['sSurveyName']}}</h5>
+        </div>
+      </ion-col>
+      <ion-col size="6" class="p-0-impo">
+        <ion-item lines="none" class="f-right">
+          <ion-checkbox slot="start" [disabled]="_bViewMode" (click)="IncludeAllCheckboxChange($event)" value="false" name="chckAllOutcome">
+          </ion-checkbox>
+          <ion-label>Include All Competencies</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ng-container *ngFor="let outcome of _threeSixtyAssessment; let iOutcome = index">
+        <ion-col size="12" class="p-0-impo" class="ion-no-padding">
+          <ion-card class="card card-transparent">
+            <ion-card-header class="sub-title bg-primary">
+              <ion-card-title>
+                <ion-row>
+                  <ion-col sizeXs="12" (click)="toggleOutcome(outcome)">
+                    <span class="pointer" style="font-size: 14px;">{{ outcome.sOutcomeName }}</span>
+                  </ion-col>
+                </ion-row>
+              </ion-card-title>
+            </ion-card-header>
+            <ion-card-content *ngIf="outcome['showDetails']">
+              <ion-grid>
+                <ion-col sizeXs="12" sizeMd="6" class="p-0-impo">
+                  <ng-container *ngFor="let indicator of outcome['Indicators']; let iIndicator = index">
+                    <ion-item lines="none">
+                      <ion-checkbox class="checkbox" slot="start" id="chckOutcome-{{ iOutcome }}-{{iIndicator}}" value="1" ngmodel [(ngModel)]="indicator['bIncludeInPDP']"
+                                    name="chckOutcome-{{ iOutcome }}-{{iIndicator}}" [disabled]="_bViewMode">
+                      </ion-checkbox>
+                      <ion-label>{{iIndicator + 1}}. {{ indicator.sIndicatorName }}</ion-label>
+                      <p>
+                        <span class="color-dot" [ngStyle]="{ 'background': indicator.sColor  }" *ngIf="indicator.bShowColorDot == 1 && indicator.sScore != 'N/A'"></span>
+                        {{ indicator.sScore }}
+                        <span *ngIf="indicator.bShowPercentage == 1">%</span>
+                      </p>
+                    </ion-item>
+                    <!-- <ion-col sizeXs="12" sizeMd="6" class="p-0-impo">
+                    </ion-col> -->
+                  </ng-container>
+                </ion-col>
+              </ion-grid>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ng-container>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-button class="btnRound" shape="round" (click)="goBack()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-button>
+  <ion-button shape="round" class="f-right" (click)="conductPDP()">{{ _conductPDPButton['text']}}</ion-button>
+</ion-footer>

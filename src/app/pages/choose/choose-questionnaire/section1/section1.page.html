@@ -1,0 +1,183 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper chooseSection1Grid" *ngIf="!isLoading">
+    <ion-row>
+      <ion-col sizeXs="12" sizeMd="6">
+        <ion-text>
+          <h2 class="contentHeader">
+            Choose Questionnaire
+          </h2>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+    
+    <ion-card>
+      <ion-card-content class="survey-wrapper">
+        <ion-row class="survey-container">
+          <ion-col size="12">
+            <h4 class="header">
+              Please complete the Choose Questionnaire
+            </h4>
+          </ion-col>
+          <ion-col size="12" class="chooseImg">
+            <img [src]="_userQuestionnaire['sProfilePic']" style="object-fit: fill;" class="color-avi"  (error)="_userQuestionnaire['srcFail'] = true" *ngIf="!_userQuestionnaire['srcFail']">
+            <ion-icon class="default-img" name="person-circle-outline" *ngIf="_userQuestionnaire['srcFail']"></ion-icon>      
+            <h6 class="color-avi-name">
+              {{ _userQuestionnaire['sEmployeeFullName'] }}
+            </h6>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="12">
+            <h1 class="sectionHeading">
+              SECTION 1 - LANGUAGE PREFERENCES
+            </h1>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="m-t-20">
+          <!-- <ion-col size="3">
+            <strong class="text-charcoal">
+              Language Preferences
+            </strong>
+          </ion-col> -->
+          <ion-col>
+
+            <ion-row class="b-b-1">
+              <ion-col size="2">
+                <strong><h3>Language</h3></strong>
+              </ion-col>
+              <ion-col size="3">
+                <strong><h3>Conversing</h3></strong>
+              </ion-col>
+              <ion-col size="3">
+                <strong><h3>Reading</h3></strong>
+              </ion-col>
+              <ion-col size="3">
+                <strong><h3>Writing</h3></strong>
+              </ion-col>
+            </ion-row>
+            <ion-row *ngFor="let language of _languageObj; let i = index">
+              <ion-col size="2">
+                <strong class="text-charcoal">
+                  {{ language['sLanguageName'] }}
+                </strong>
+              </ion-col>
+              <ion-col size="3">
+                <ion-select class="section1Input" [interfaceOptions]='{ showBackdrop: false }' interface="popover" name="sConversing{{i}}" id="sConversing{{i}}"
+                  [(ngModel)]="language['sConversing']" placeholder="*Please select" label="*Please select" [ngClass]="{'disabled': language['sConversing'] === '' }">
+                  <ion-select-option *ngFor="let conversing of _sLanguageOptions" [value]="conversing">
+                    {{ conversing }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-col>
+              <ion-col size="3">
+                <ion-select class="section1Input" [interfaceOptions]='{ showBackdrop: false }' interface="popover" name="sReading{{i}}" id="sReading{{i}}"
+                  [(ngModel)]="language['sReading']" placeholder="*Please select" label="*Please select" [ngClass]="{'disabled': language['sReading'] === '' }">
+                  <ion-select-option *ngFor="let reading of _sLanguageOptions" [value]="reading">
+                    {{ reading }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-col>
+              <ion-col size="3">
+                <ion-select class="section1Input" [interfaceOptions]='{ showBackdrop: false }' interface="popover" name="sWriting{{i}}" id="sWriting{{i}}"
+                  [(ngModel)]="language['sWriting']" placeholder="*Please select" label="*Please select" [ngClass]="{'disabled': language['sWriting'] === '' }">
+                  <ion-select-option *ngFor="let writing of _sLanguageOptions" [value]="writing">
+                    {{ writing }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="12">
+            <h1 class="sectionHeading">
+              SECTION 2 - CURRENT STATUS
+            </h1>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="m-t-20">
+          <ion-col size="3">
+            <strong class="text-charcoal">
+              Length of Service In The Business
+            </strong>
+          </ion-col>
+          <ion-col>
+            <ion-select class="section1Input" [interfaceOptions]='{ showBackdrop: false }' interface="popover" name="sLengthOfService" id="sLengthOfService"
+              #sLengthOfService="ngModel" [(ngModel)]="_userQuestionnaire['sLengthOfService']" placeholder="*Please select" label="*Please select"
+              [ngClass]="{'disabled': _userQuestionnaire['sLengthOfService'] === '' }">
+              <ion-select-option *ngFor="let length of _lengthOfService" [value]="length">
+                {{ length }}
+              </ion-select-option>
+            </ion-select>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="m-t-20">
+          <ion-col size="3" class="align-center">
+            <strong class="text-charcoal">
+              Past and Current Experiences
+            </strong>
+          </ion-col>
+          <ion-col size="4" class="align-center">
+            <strong><h3>Department</h3></strong>
+          </ion-col>
+          <ion-col size="4" class="align-center">
+            <strong><h3>Months</h3></strong>
+          </ion-col>
+          <ion-col size="1">
+            <ion-button shape="round" size="small" (click)="addExperienceRow()">
+              +
+            </ion-button>
+          </ion-col>
+        </ion-row>
+
+        <hr>
+
+        <ng-container *ngFor="let experience of _experienceObj;let i = index">
+          <ion-row>
+            <ion-col size="3">
+              <h3>
+              </h3>
+            </ion-col>
+            <ion-col size="4">
+              <ion-input ngModel #sDepartmentName="ngModel" id="sDepartmentName{{i}}" name="sDepartmentName{{i}}" placeholder="Enter Department Name..."
+                [(ngModel)]="experience.sDepartmentName"></ion-input>
+            </ion-col>
+            <ion-col size="4">
+              <ion-input ngModel #sMonths="ngModel" [(ngModel)]="experience.sMonths" id="sMonths{{i}}" name="sMonths{{i}}" placeholder="Enter Months..." type="number"></ion-input>
+            </ion-col>
+            <ion-col size="1">
+              <ion-button shape="round" size="small" (click)="deleteExperienceRow(i)">
+                -
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ng-container>
+
+        <ion-row class="m-t-20">
+          <ion-col size="3">
+            <strong class="text-charcoal">
+              Community Roles or Other Interests
+            </strong>
+          </ion-col>
+          <ion-col>
+            <ion-textarea autoGrow="true" name="sInterests" id="sInterests" [(ngModel)]="_userQuestionnaire['sInterests']" rows="3" maxlength="300" placeholder="Enter here...">
+            </ion-textarea>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-button class="btnRound" shape="round" (click)="goChoosePage()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-button>
+
+  <ion-button shape="round" class="f-right" (click)="validate()">Next</ion-button>
+</ion-footer>

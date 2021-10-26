@@ -1,0 +1,139 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper academyGrid">
+    <ion-toolbar class="toolbar">
+      <ion-title class="ion-padding-start colHeader text-primary">Academy</ion-title>
+      <ion-searchbar *ngIf="_currentFilter === ''" slot="primary" placeholder="Search Here..." class="supSearch" [(ngModel)]="_searchText"></ion-searchbar>
+    </ion-toolbar>
+
+    <ion-row>
+      <ng-container *ngFor="let resCat of _academies| searchPipe: _searchText :'sResourcesCategoryName'; let lResCat = last;">
+        <ion-col sizeXs="12" sizeMd="6" *ngIf="resCat['sFlag'] === 'Academy' && _currentFilter === ''" class="animated fadeInLeft">
+          <ion-card>
+            <ion-card-content>
+              <ion-row>
+                <ion-col size="6">
+                  <img [src]="resCat['sIconName']" class="sourceLogo">
+                </ion-col>
+                <ion-col size="6">
+                  <ion-label class="academy-label">
+                    <h3><strong>{{ resCat['sResourcesCategoryName'] }}</strong></h3>
+                    <p *ngFor="let subCat of resCat['subCategory']">{{ subCat['sSubCategoryName'] }}<br></p>
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="f-right">
+                <a href="javascript:;" class="loadMore hover" (click)="_currentFilter = resCat['ResourcesCategoryUID']">...learn more</a>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <ion-col *ngIf="resCat['sFlag'] === 'Academy' && _currentFilter === resCat['ResourcesCategoryUID']" size="12" class="animated fadeInLeft">
+          <ion-card>
+            <ion-card-content>
+              <!-- <ion-list>
+                <ion-item lines="none"> -->
+              <ion-row>
+                <ion-col sizeMd="4" sizeSm="12" sizeXs="12">
+                  <img [src]="resCat['sIconName']" class="sourceLogoBig">
+                </ion-col>
+                <ion-col sizeMd="8" sizeSm="12" sizeXs="12">
+                  <!-- <ion-label class="academy-label"> -->
+                  <p class="academy-label">
+                    <strong class="acdemy-heading">{{ resCat['sResourcesCategoryName'] }}</strong>
+                  </p>
+                  <!-- </ion-label> -->
+                  <ng-container *ngFor="let subCat of resCat['subCategory']">
+                    <ion-row>
+                      <!-- <ion-label class="academy-label"> -->
+                      <p class="academy-label">{{ subCat['sSubCategoryName'] }}<br></p>
+                      <!-- </ion-label> -->
+                    </ion-row>
+                    <ion-row class="m-l-20">
+                      <p lines="none" *ngFor="let resUpload of subCat['resourceItemUploads']">
+                        <ng-container *ngIf="resUpload['sItemName'] && resUpload['sItemName'].length">
+                          <ng-container *ngIf="!_searchText.length || resUpload['sItemName'].toLowerCase().indexOf(_searchText.toLowerCase()) > -1">
+
+                            <!-- Video -->
+                            <a class="text-muted d-inline-block m-5 fs-20 tooltip" (click)="open(resUpload);trackAcademyActivity(resUpload, subCat['sSubCategoryName']);"
+                              *ngIf="resUpload['sTypeName'] === 'Video'">
+                              <span class="tooltiptext"> {{ resUpload['sItemName'] }}</span>
+                              <i class="fa fa-file-video m-5 fs-20"></i>
+                            </a>
+
+                            <!-- Link -->
+                            <ng-container *ngIf="resUpload['sTypeName'] === 'Link'">
+                              <!-- YOUTUBE -->
+                              <a class="text-muted d-inline-block m-5 fs-20 tooltip" (click)="open(resUpload);trackAcademyActivity(resUpload, subCat['sSubCategoryName']);"
+                                *ngIf="resUpload['sDocumentUploadName'].indexOf('youtube.com') > -1">
+                                <span class="tooltiptext"> {{ resUpload['sItemName'] }}</span>
+                                <i class="fa fa-youtube"></i>
+                              </a>
+                              <a class="text-muted d-inline-block m-5 fs-20 tooltip" (click)="trackAcademyActivity(resUpload, subCat['sSubCategoryName']);"
+                                [href]="resUpload['sDocumentUploadName']" target="_blank" *ngIf="resUpload['sDocumentUploadName'].indexOf('youtube.com') === -1">
+                                <!-- EXTERNAL LINK -->
+                                <span class="tooltiptext"> {{ resUpload['sItemName'] }}</span>
+                                <i class="fa fa-link m-5"></i>
+                              </a>
+                            </ng-container>
+
+                            <!-- Document | Presentation | Workbook -->
+                            <a class="text-muted d-inline-block m-5 fs-20 tooltip" (click)="trackAcademyActivity(resUpload, subCat['sSubCategoryName']);"
+                              [href]="resUpload['sUploadFileName']" target="_blank" *ngIf="['Document', 'Presentation', 'Workbook'].indexOf(resUpload['sTypeName']) > -1">
+                              <!-- WORD -->
+                              <span class="tooltiptext"> {{ resUpload['sItemName'] }}</span>
+                              <i class="fa fa-file-word m-5"
+                                *ngIf="['doc', 'docx'].indexOf(resUpload['sDocumentUploadName'].split('.')[resUpload['sDocumentUploadName'].split('.').length - 1]) > -1"></i>
+                              <!-- EXCEL -->
+                              <i class="fa fa-file-excel m-5"
+                                *ngIf="['xls', 'xlsx'].indexOf(resUpload['sDocumentUploadName'].split('.')[resUpload['sDocumentUploadName'].split('.').length - 1]) > -1"></i>
+                              <!-- POWER POINT -->
+                              <i class="fa fa-file-powerpoint m-5"
+                                *ngIf="['ppt'].indexOf(resUpload['sDocumentUploadName'].split('.')[resUpload['sDocumentUploadName'].split('.').length - 1]) > -1"></i>
+                              <!-- PDF -->
+                              <i class="fa fa-file-pdf m-5"
+                                *ngIf="['pdf'].indexOf(resUpload['sDocumentUploadName'].split('.')[resUpload['sDocumentUploadName'].split('.').length - 1]) > -1"></i>
+                              <!-- TEXT -->
+                              <i class="fa fa-file-text m-5"
+                                *ngIf="['txt'].indexOf(resUpload['sDocumentUploadName'].split('.')[resUpload['sDocumentUploadName'].split('.').length - 1]) > -1"></i>
+                              <!-- JPG | PNG -->
+                              <i class="fa fa-file-image m-5"
+                                *ngIf="['jpg', 'png'].indexOf(resUpload['sDocumentUploadName'].split('.')[resUpload['sDocumentUploadName'].split('.').length - 1]) > -1"></i>
+                            </a>
+
+                            <!-- <app-modal-basic #resModal
+                                  [dialogClass]="'modal-lg card card-transparent card-slate-border animated fadeIn'">
+                                  <div class="app-modal-header">
+                                    <strong class="d-block">
+                                      {{ resUpload["sItemName"] }}
+                                      <button type="button" class="close basic-close f-right" (click)="resModal.hide();">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </strong>
+                                  </div>
+                                  <div class="app-modal-body">
+                                    <app-media [media]="resUpload"></app-media>
+                                  </div>
+                                </app-modal-basic> -->
+                          </ng-container>
+                        </ng-container>
+                      </p>
+                    </ion-row>
+                  </ng-container>
+                </ion-col>
+              </ion-row>
+              <!-- </ion-item>
+              </ion-list> -->
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ng-container>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-button class="btnRound" shape="round" (click)="goBack(_currentFilter)">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-button>
+</ion-footer>

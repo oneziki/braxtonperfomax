@@ -1,0 +1,52 @@
+.vacancyViewGrid {
+  .section-header {
+    text-align: left;
+    font-weight: bolder;
+    font-size: 35px;
+  }
+  .sub-header {
+    font-weight: 600;
+    background: #e5e5e5;
+  }
+
+  :host p.paragraph::ng-deep p {
+    line-height: 1.6;
+  }
+  
+  p.paragraph {
+    margin-left: 0.8em;
+    text-indent: -0.8em;
+  }
+
+  .b-r-lightgray {
+    border-right: 2px solid #e0e0e0;
+  }
+
+  .b-b-lightgray {
+    border-bottom: 2px solid #e0e0e0;
+  }
+
+  ion-button[class^='success']::part(native) {
+    --background: var(--success)
+  }
+
+
+  .list-dash {
+    ul {
+      margin: 0;
+      padding-left: 5px;
+    }
+    ul.dashed {
+      list-style-type: none;
+      margin-left: 10px;
+      margin-top: 20px;
+    }
+    ul.dashed > li {
+      text-indent: -10px;
+    }
+    ul.dashed > li:before {
+      content: "-";
+      text-indent: -5px;
+    }
+  }
+}

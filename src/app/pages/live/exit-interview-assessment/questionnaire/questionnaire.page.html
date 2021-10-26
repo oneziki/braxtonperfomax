@@ -1,0 +1,38 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper  survey-wrapper">
+    <ion-row>
+      <ion-col>
+        <ion-text>
+          <h2 class="contentHeader">Exit Interview Questionnaire</h2>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+
+    <ion-card>
+      <ion-card-content class="survey-wrapper">
+        <ion-row class="row survey-container">
+
+          <ion-col size="12">
+            <h4 class="sub-title">
+              {{ _selectedAssessment['sSurveyName'] }}
+            </h4>
+          </ion-col>
+          <ion-col size="12">
+            <div id="surveyContainer" class="contentcontainer codecontainer">
+              <div id="surveyElement"></div>
+            </div>
+          </ion-col>
+
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+
+  </ion-grid>
+</ion-content>
+
+
+<ion-footer>
+  <ion-button class="btnRound" shape="round" (click)="goActivitySummary()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-button>
+</ion-footer>

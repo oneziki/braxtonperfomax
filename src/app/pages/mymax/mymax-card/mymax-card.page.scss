@@ -1,0 +1,553 @@
+.mymaxCard {
+  margin-bottom: 0px;
+  padding-bottom: 5px;
+
+  .card-header {
+    h5,
+    h5 + span {
+      color: var(--text-main);
+    }
+    h5 {
+      z-index: 5;
+    }
+
+    .body-extraInfo {
+      float: right;
+      margin-right: 10px;
+      color: var(--lite-grey);
+      font-weight: 400;
+      line-height: 40px;
+      i {
+        font-size: 14px;
+        margin-left: 5px;
+      }
+    }
+  }
+
+  .myMax-btnGroup {
+    z-index: 100;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+
+    .btn-light {
+      color: var(--primary);
+      background: transparent;
+      border: 0;
+      font-size: 30px;
+      line-height: 2px;
+      font-family: cursive;
+
+      &:after {
+        content: none;
+      }
+    }
+    .dropdown-menu {
+      font-size: 14px;
+
+      .dropdown-item {
+        &:hover {
+          background: var(--primary);
+          color: var(--primary-alt);
+        }
+      }
+    }
+    .dropdown-menu i {
+      font-size: 18px;
+    }
+  }
+
+  .card-body {
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    &.MeasureList {
+      overflow: visible;
+    }
+  }
+
+  // HIDE / SHOW CARD CONTENT
+  &.cardHeader {
+    background-color: transparent;
+    border: 0;
+    box-shadow: none !important;
+    .card-header div[class^='col-6'] {
+      display: none;
+    }
+  }
+
+  &.cardContent {
+    background-color: transparent;
+    border: 0;
+    box-shadow: none !important;
+    .card-header {
+      display: none;
+    }
+  }
+
+  .card-title,
+  .card-title + span {
+    display: block;
+  }
+  .trendFilter {
+    .trendInfo-wrapper {
+      margin-right: 5px;
+    }
+    .trendInfo-bar {
+      display: inline-block !important;
+      height: 7px;
+      width: 10px;
+
+      &.stripe {
+        background: repeating-linear-gradient(135deg, transparent, white 5px);
+      }
+    }
+  }
+
+  &.summary {
+    height: 100%;
+
+    .myMax-btnGroup {
+      display: inline-block;
+    }
+    .myMax-btnList {
+      display: none;
+    }
+
+    td {
+      background: transparent !important;
+    }
+    th,
+    tr td:first-of-type {
+      background: var(--table-head);
+    }
+    i.icofont-navigation-menu {
+      font-size: 13px;
+    }
+    .card-header {
+      padding: 5px 10px 0;
+      h5 {
+        font-size: var(--fs-max);
+        margin-right: 0;
+        font-weight: 500;
+        letter-spacing: 0.6px;
+      }
+      h5 + span {
+        display: block;
+      }
+      span {
+        font-size: var(--fs-min);
+        margin-top: 0;
+      }
+    }
+    .card-body {
+      padding: 5px 10px;
+      // height: 80%;
+      height: calc(50vH - 200px);
+      width: 100%;
+      // border: 1px solid;
+
+      .card-body-inner {
+        height: 100%;
+        width: 100%;
+      }
+
+      .table-uno {
+        margin-bottom: 0;
+      }
+
+      &.rows-2 {
+        height: calc(100vH - 310px);
+      }
+    }
+
+    .card-body[class*='Datagrid'] {
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    
+    .card-body.Circle {
+      height: 100%;
+      padding-bottom: 15px;
+      padding-top: 0px;
+    }
+    .card-body.ArrowList,
+    .card-body.CardList {
+      padding-bottom: 15px;
+    }
+    .context-content {
+      top: 40px;
+    }
+  }
+  &.detailed {
+    .myMax-btnPopover {
+      display: none;
+    }
+    .myMax-btnGroup {
+      display: none;
+    }
+    .myMax-btnList {
+      float: right;
+
+      a {
+        font-size: 14px;
+        padding: 2px 5px;
+        margin: 2px 0px;
+        color: var(--lite-charcoal);
+        border-right: 1px solid var(--lite-charcoal);
+        text-decoration: none;
+        line-height: 37px;
+        i {
+          margin-right: 2px;
+        }
+        &:last-child {
+          border-right: 0;
+        }
+      }
+    }
+
+    .card-header.Datagrid,
+    .card-header.DatagridLabel {
+      padding-bottom: 5px;
+    }
+    .card-body.Datagrid,
+    .card-body.DatagridLabel {
+      min-height: 50vh;
+      padding-top: 0;
+      width: 100%;
+    }
+    .card-body:not(.Datagrid):not(.DatagridLabel):not(.ColumnGrid):not(.MeasureList) {
+      min-height: 300px;
+    }
+    .context-content {
+      top: 55px;
+    }
+
+    table {
+      th {
+        padding: 5px;
+      }
+    }
+  }
+
+  .card-header {
+    padding: 5px 10px 0;
+  }
+  .card-header,
+  .card-body {
+    z-index: 10;
+    position: relative;
+  }
+  .card-body {
+    padding: 1px 15px;
+  }
+
+  .context-content {
+    transition: all 1s ease;
+    font-size: 90%;
+    background: var(--bg-grey);
+    // background: #dee2e6;
+    border-radius: 10px;
+    padding: 10px 5px;
+    position: absolute;
+    left: 15px;
+    min-width: 50%;
+    max-width: 75%;
+
+    .close-context {
+      cursor: pointer;
+      background: var(--bg-grey);
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      font-size: 16px;
+      padding: 5px;
+      border-radius: 100%;
+    }
+
+    &.zoomOut {
+      z-index: 5;
+    }
+    &.zoomIn {
+      z-index: 15;
+    }
+  }
+
+  .mytooltip .tooltip-item {
+    padding: 0;
+  }
+  .tooltip-content {
+    ul,
+    ol {
+      margin-left: 15px;
+      list-style: inherit;
+    }
+
+    .tooltip-content-table {
+      width: 100%;
+      margin: 0 auto;
+      color: var(--slate-grey) !important;
+
+      tr:nth-child(1) td {
+        border-top: 0;
+      }
+      tr {
+        td:nth-child(1) {
+          width: 74%;
+        }
+        td:nth-child(2) {
+          width: 24%;
+        }
+      }
+      th,
+      td {
+        white-space: normal;
+        padding: 3px 5px;
+        background: transparent !important;
+        border: 0;
+      }
+      .label {
+        font-size: 80%;
+        text-align: center;
+        white-space: nowrap;
+        width: 100%;
+        margin-right: 0;
+        margin-left: 0;
+      }
+    }
+  }
+
+  .podActions {
+    .btn {
+      padding: 2px 1px;
+      font-size: 20px;
+      height: 26px;
+      line-height: 22px;
+    }
+
+    i.icofont-info-circle,
+    i.icofont-ui-zoom-in,
+    i.icofont-ui-zoom-out {
+      font-size: 16px;
+      margin-right: 3px;
+    }
+  }
+
+  .podStatus {
+    font-size: 10px;
+    margin: 10px 10px 0;
+  }
+  .radial-smilies {
+    position: absolute;
+    right: 5px;
+    bottom: 6px;
+    width: 33%;
+    font-size: 14px;
+
+    td {
+      padding: 3px 2px !important;
+      font-weight: 600;
+    }
+  }
+  .footerLegend {
+    font-size: 12px;
+    span.color-dot {
+      display: inline-block;
+      border-radius: 100%;
+      height: 10px;
+      width: 10px;
+    }
+  }
+
+  $printFont-large: 13px;
+  $printFont-normal: 11px;
+  $printFont-Weight: 500;
+  $printFont-LetterSpace: 1.4px;
+
+  &.forPrint {
+    height: auto;
+    margin: 5px auto !important;
+    border: 1px solid #757575;
+  }
+
+  &.forPrintLegacy {
+    background-color: transparent;
+    box-shadow: none;
+    padding-top: 15px;
+
+    &.MeasureList {
+      min-height: unset;
+    }
+
+    .printLeftCol {
+      padding-right: 10px;
+    }
+    .printRightCol {
+      padding-left: 0;
+    }
+
+    .card-header {
+      padding: 0;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid grey;
+    }
+
+    .card-title,
+    span,
+    strong {
+      color: black;
+      font-weight: $printFont-Weight;
+      letter-spacing: $printFont-LetterSpace;
+    }
+    .card-title {
+      font-size: $printFont-large;
+      padding-top: 10px;
+    }
+
+    span,
+    strong {
+      font-size: $printFont-normal;
+    }
+
+    table {
+      width: 100%;
+      color: black;
+      font-weight: $printFont-Weight;
+    }
+
+    th,
+    td,
+    p {
+      border-top: 0;
+      white-space: normal;
+      font-size: $printFont-normal;
+      letter-spacing: $printFont-LetterSpace;
+      padding: 2px !important;
+
+      .label {
+        color: white;
+        min-width: 100%;
+        text-align: center;
+        font-weight: $printFont-Weight;
+        font-size: $printFont-normal;
+        padding: 5px;
+      }
+    }
+    th {
+      border-top: 1px solid #dee2e6;
+    }
+
+    .legendList {
+      .label {
+        min-width: 100%;
+      }
+    }
+
+    .printerGraph {
+      display: block;
+      text {
+        // color: black;
+        // font-size: $printFont-large;
+        // font-weight: $printFont-Weight;
+        // letter-spacing: 1.35px;
+      }
+    }
+
+    .printerDetails {
+      margin-top: 4px;
+      display: block;
+
+      .dbb-bottom {
+        display: block;
+        font-size: $printFont-large;
+        font-weight: $printFont-Weight;
+        margin-bottom: 5px;
+        padding-bottom: 2px;
+        border-bottom: 1px solid grey;
+      }
+    }
+  }
+
+  .mymaxPieListGrid {
+    strong {
+      font-size: 16px;
+      color: var(--lite-grey);
+    }
+    p {
+      font-size: 14px;
+      font-weight: 600;
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .mymaxCard:not(.page-header) {
+//     // padding-bottom: 15px;
+    .card-body:not(.Datagrid):not(.DatagridLabel):not(.ColumnGrid):not(.MeasureList):not(.CardStairway) {
+      min-height: 250px;
+    }
+    .card-body.CardStairway {
+      height: 100%;
+    }
+  }
+}
+
+.barone {
+  .podholder {
+    &.mymaxCard.portal-card {
+      margin: 0;
+    }
+    .card-title {
+      color: var(--primary);
+      margin: 0 !important;
+    }
+    .card-title + span {
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.card-body.PieList {
+  padding: 0 !important;
+}
+.forModal {
+  div {
+    margin: 0 auto !important;
+  }
+  table th {
+    background: var(--table-head);
+  }
+  table th,
+  table td {
+    padding: 8px 4px !important;
+  }
+}
+
+.tooltip-content-table {
+  ion-row {
+    padding-bottom: 5px;
+  }
+  .legend-label {
+    font-size: 80%;
+    text-align: center;
+    white-space: nowrap;
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .label {
+    border-radius: 4px;
+    font-size: 75%;
+    padding: 4px 7px;
+    margin-right: 5px;
+    font-weight: 400;
+    color: #fff !important;
+  }
+
+  .label.label-lg {
+    padding: 8px 21px;
+  }
+}

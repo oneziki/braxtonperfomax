@@ -1,0 +1,71 @@
+<div class="rPanelWrapper">
+
+  <strong class="rPanelHeading withSource">
+    Personal
+    <img src="../../assets/imgs/demo/personal4.png" class="sourceLogo">
+  </strong>
+  <ion-list class="rPanelConversations">
+    <ion-item lines="none" class="transparent"
+      [ngClass]="{'active': sessionUser['P6_userUID'] === _selectedEmployeeUID}"
+      (click)="setSelectedUser(_sessionUser)">
+      <ion-avatar slot="start">
+        <ion-img [src]="sessionUser['profilePhoto']" *ngIf="sessionUser['empSrcFail'] !== true"></ion-img>
+        <ion-icon class="default-img iconAvatar" name="person-circle-outline"
+          *ngIf="sessionUser['empSrcFail'] === true">
+        </ion-icon>
+      </ion-avatar>
+      <ion-label>
+        <h3>
+          {{ sessionUser['sFullName'] }}
+          <ion-badge class="animated pulse" color="danger"
+            [class]="_personalNotification > 9? 'actionBadgeGt9':'actionBadge'" *ngIf="_personalNotification > 0">
+            {{_personalNotification}}</ion-badge>
+        </h3>
+        <p>{{ sessionUser['sJobTitle'] }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <strong class="rPanelHeading withSource b-t-2">
+    My Team
+    <img src="../../assets/imgs/demo/personal4.png" class="sourceLogo">
+  </strong>
+  <ion-list class="rPanelConversations">
+    <ng-container *ngFor="let employee of _directReports; let i = index">
+      <ion-item lines="none" class="transparent" (click)="setSelectedUser(employee)"
+        [ngClass]="{'active': employee['userUUID'] === _selectedEmployeeUID}">
+        <ion-avatar slot="start">
+          <img [src]="employee['sProfilePic']" (error)="employee['srcFail'] = true"
+            *ngIf="employee['srcFail'] !== true">
+          <ion-icon class="default-img iconAvatar" name="person-circle-outline" *ngIf="employee['srcFail'] === true">
+          </ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h3>{{ employee['sFirstName'] }} {{ employee['sLastName'] }}
+            <ion-badge class="animated pulse" [class]="employee['iNumNotification'] > 9? 'actionBadgeGt9':'actionBadge'"
+              color="danger" *ngIf="employee['iNumNotification'] > 0">
+              {{employee['iNumNotification']}}</ion-badge>
+          </h3>
+          <p>{{ employee['sJobTitleName'] }}</p>
+        </ion-label>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+
+  <ng-container *ngIf="_myMaxReportingTemplateViews.length > 0">
+    <strong class="rPanelHeading withSource b-t-2">
+      Team Reporting
+      <img src="../../assets/imgs/demo/personal4.png" class="sourceLogo">
+    </strong>
+    <ion-list class="rPanelConversations">
+      <ng-container *ngFor="let menu of _myMaxReportingTemplateViews;">
+        <ion-item lines="none" class="transparent pointer" (click)="updateFilter('Department',menu)">
+          <i class="icofont icofont-dashboard-web icofont-appPage"></i>
+          <ion-label>
+            <h3>{{menu['name']}}</h3>
+          </ion-label>
+        </ion-item>
+      </ng-container>
+    </ion-list>
+  </ng-container>
+</div>

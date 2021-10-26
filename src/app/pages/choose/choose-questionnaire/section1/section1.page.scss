@@ -1,0 +1,56 @@
+.chooseSection1Grid {
+
+  .sectionHeading {
+    color: var(--charcoal);
+    border-top: 1px solid var(--lite-grey);
+    border-bottom: 1px solid var(--lite-grey);
+    font-size: 30px;
+    font-weight: 600;
+    padding: 10px;
+    margin-top: 15px;
+  }
+  strong {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  h3 {
+    font-size: 18px;
+  }
+
+  .chooseImg {
+    text-align: center;
+    bottom: 40px !important;
+    margin-bottom: -40px !important;
+    .default-img{
+      margin-top: 25px;
+      height: 150px;
+      width: 150px;
+      border-radius: 100%;
+      object-fit: fill !important;
+      color: var(--lite-grey) !important;
+    }
+  }
+
+  .section1Input {
+    height: 30px;
+    font-size: 13px;
+  }
+
+  .header {
+    font-size: 16px !important;
+    font-weight: 600;
+  }
+
+  .align-center {
+    align-self: center;
+  }
+
+  @media (max-width: 800px) {
+    .chooseImg {
+        text-align: center;
+        bottom: 0px !important;
+        margin-bottom: 0px !important;
+    }
+  }
+    
+}

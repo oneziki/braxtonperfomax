@@ -1,0 +1,586 @@
+<section id="customLayout" class="ptPDFMain ptPDF customlayout nav-{{ _navStatus }}">
+  <section id="prePrintContent">
+    <section class="prePrintContent" *ngIf="_contentData">
+
+      <!-- Header -->
+      <ion-row>
+        <ion-col sizeXs="6" sizeMd="8" class="ptPageHeader">
+          <strong class="headerText fs-18">
+            {{ _coverData['coverTitle'] }}
+            <small class="d-block">
+              {{ _contentData['personalDetails']['sEmployeeName'] }}
+            </small>
+          </strong>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="4" class="text-right">
+          <ion-button type="button" class="btn btn-primary" (click)="printPDFReport()">
+            <ion-icon name="print-outline"></ion-icon>
+            Print Report
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+
+      <!--  -->
+      <!-- PERSONAL DETAILS-->
+      <!--  -->
+      <ion-row class="spacing-header">
+        <ion-col sizeXs="12" sizeMd="12">
+          <strong>Personal Details</strong>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="m-tb-10-20 a-center">
+        <!-- row 1 -->
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block"> Employee Name </strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["personalDetails"]["sEmployeeName"] }}</p>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block"> Self Signed </strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["personalDetails"]["sEmployeeSigned"] }}</p>
+        </ion-col>
+        <!-- row 2 -->
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block"> Manager </strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["personalDetails"]["sAdminFullName"] }}</p>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block"> Manager Signed </strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["personalDetails"]["sManagerSigned"] === '' ? 'Not signed' :
+            _contentData["personalDetails"]["sManagerSigned"] }}</p>
+        </ion-col>
+        <!-- row 3 -->
+        <ng-container *ngIf="_contentData['personalDetails']['sAdmin2UUID'] !== ''">
+          <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Second Manager </strong></ion-col>
+          <ion-col sizeXs="6" sizeMd="3">
+            <p>{{ _contentData["personalDetails"]["sAdmin2FullName"] }}</p>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="3"><strong class="d-block"> Second Manager Signed </strong></ion-col>
+          <ion-col sizeXs="6" sizeMd="3">
+            <p> {{ _contentData["personalDetails"]["sManager2Signed"] }}</p>
+          </ion-col>
+        </ng-container>
+        <!-- row 4 -->
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block"> Agreement Period </strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["personalDetails"]["agreementPeriod"] }}</p>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block"> Role </strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["personalDetails"]["sKraRoleName"] }}</p>
+        </ion-col>
+        <!-- row 5 -->
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block"> Department </strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p [innerHTML]="_contentData['personalDetails']['sUserStructure'] "></p>
+        </ion-col>
+        <!-- row 6 -->
+        <ng-container *ngIf="_contentData['settings']['bShowEmployeeMissionStatement'] && _contentData['personalDetails']['sNormalUserMissionStatement'] !== ''">
+          <ion-col sizeXs="12" sizeMd="12">
+            <strong>{{_contentData['settings']['sEmployeeMissionStatement']}}</strong>
+            <p> {{ _contentData["personalDetails"]["sNormalUserMissionStatement"] }}</p>
+          </ion-col>
+        </ng-container>
+      </ion-row>
+
+      <!-- SECTION 1: KEY RESULT AREA SUMMARY -->
+      <ion-row class="row">
+        <ion-col size="12" class="section-header">
+          <strong>Section {{sectionA}}</strong>
+          <small class="m-l-10">{{ _contentData['settings']['sKraNameChange'] }} Summary</small>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="12">
+          <ion-row class="sub-header">
+            <ion-col sizeSm="6" sizeXs="8" sizeMd="10">
+              <strong>{{ _contentData['settings']['sKraNameChange'] }}</strong>
+            </ion-col>
+            <ion-col sizeSm="6" sizeXs="4" sizeMd="2" class="text-center" *ngIf="_contentData['settings']['bShowWeightingsOnAgreement']">
+              <strong>Weight</strong>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+
+      <ng-container *ngFor="let bpp of _contentData['performanceAgreement'][0]['bpp']; let iBPP = index">
+        <ion-row class="row b-b-lightgray" *ngFor="let kra of bpp['kras']; let iKRA = index">
+          <ion-col sizeSm="6" sizeXs="8" sizeMd="10">
+            <p>{{ kra["kraIndex"] }}. {{ kra["sKraName"] }}</p>
+          </ion-col>
+          <ion-col sizeSm="6" sizeXs="4" sizeMd="2" class="text-center" *ngIf="_contentData['settings']['bShowWeightingsOnAgreement']">
+            <p>
+              {{ kra["fWeight"] }}%
+            </p>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+
+      <!-- SECTION 2: PERFORMANCE AGREEMENT DETAILS -->
+      <ion-row class="row">
+        <ion-col size="12" class="section-header">
+          <strong>Section {{sectionB}}</strong>
+          <small class="m-l-10">Performance Agreement Details</small>
+        </ion-col>
+      </ion-row>
+
+      <ng-container *ngFor="let bpp of _contentData['performanceAgreement'][0]['bpp']; let iBPP = index">
+        <ng-container *ngFor="let kra of bpp['kras']; let iKRA = index">
+
+          <!-- KRA NAME -->
+          <ion-row class="row">
+            <ion-col size="12" class="sub-header kraHeader">
+              <strong>
+                {{ _contentData['settings']['sKraNameChange'] }}
+                <span class="p-l-5"> {{ kra["kraIndex"] }}</span>
+                <span *ngIf="_contentData['settings']['sKraNameChangeEndText'] !== ''">
+                  {{_contentData['settings']['sKraNameChangeEndText'] }}
+                </span>
+              </strong>
+              <span class="fw-thin p-l-10"> {{ kra["sKraName"] }} </span>
+            </ion-col>
+          </ion-row>
+
+          <ng-container *ngFor="let kpi of kra['kpis']; let iKPI = index">
+            <ion-row class="m-t-10 m-b-10">
+              <ion-col size="12" class="section-sub-header header-light kpiHeader">
+                <strong>
+                  {{ _contentData['settings']['sKpiNameChange'] }}
+                  <span> {{ iKPI + 1 }}</span>
+                  <span *ngIf="_contentData['settings']['sKpiNameChangeEndText'] !== ''">
+                    {{ _contentData['settings']['sKpiNameChangeEndText'] }}</span>
+                </strong>
+                <span class="fw-thin p-l-10"> {{ kpi["sKpiDisplayName"] }} </span>
+              </ion-col>
+            </ion-row>
+
+            <!-- KPI NAME -->
+            <ion-row class="no-gutters kpiBorderBottom">
+              <ion-col size="6" sizeXs="12" sizeMd="6" class="b-r-lightgray b-b-lightgray">
+                <!-- Indicators of Achievement -->
+                <ion-row class="no-gutters" *ngIf="_contentData['settings']['bShowKraDescription']">
+                  <ion-col sizeXs="12" sizeMd="3">
+                    <p>
+                      <strong> {{ _contentData['settings']['sKpiDescriptionNameChange'] }} </strong>
+                    </p>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="9">
+                    <p *ngIf="kpi['sKpidescription'].length">
+                      {{ kpi["sKpidescription"] }}
+                    </p>
+                  </ion-col>
+                </ion-row>
+                <!-- Budget Line -->
+                <ion-row class="no-gutters" *ngIf="_contentData['settings']['bShowBudgetLine']">
+                  <ion-col sizeXs="12" sizeMd="3">
+                    <p>
+                      <strong> {{ _contentData['settings']['sKpiBudgetLineNameChange'] }} </strong>
+                    </p>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="9">
+                    <p *ngIf="kpi['sKpiBudgetLine'] !== ''" [innerHTML]="kpi['sKpiBudgetLine'] "></p>
+                    <p class="text-muted" *ngIf="kpi['sKpiBudgetLine'] === ''">
+                      <em>No information provided</em>
+                    </p>
+                  </ion-col>
+                </ion-row>
+                <!-- Target/Indicators of Achievement -->
+                <ion-row class="no-gutters" *ngIf="kpi['sKpiTarget'] !== ''">
+                  <ion-col sizeXs="12" sizeMd="3">
+                    <p>
+                      <strong> {{ _contentData['settings']['sKpiTargetsNameChange'] }} </strong>
+                    </p>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="9">
+                    <p>
+                      {{ kpi["sKpiTarget"] }}
+                    </p>
+                  </ion-col>
+                </ion-row>
+                <!-- CRPs -->
+                <ion-row class="no-gutters" *ngIf="_contentData['settings']['bShowCRPs']">
+                  <ion-col sizeXs="12" sizeMd="3">
+                    <p>
+                      <strong> CRPs </strong>
+                    </p>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="9">
+                    <p *ngIf="!kpi['crps'].length">
+                      N/A
+                    </p>
+                    <ng-container *ngIf="kpi['crps'].length">
+                      <ng-container *ngFor="let crp of kpi['crps']; let iCRP = index">
+                        <p class="m-b-10">
+                          {{crp.sCRPName}}
+                        </p>
+                      </ng-container>
+                    </ng-container>
+
+                  </ion-col>
+                </ion-row>
+                <!-- Weight -->
+                <ion-row class="no-gutters" *ngIf="_contentData['settings']['bShowWeightingsOnAgreement']">
+                  <ion-col sizeXs="12" sizeMd="3">
+                    <p>
+                      <strong> Weight </strong>
+                    </p>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="9">
+                    <p>
+                      {{ kpi["fWeight"] }}%
+                    </p>
+                  </ion-col>
+                </ion-row>
+                <!-- Months -->
+                <ion-row class="no-gutters">
+                  <ion-col sizeXs="12" sizeMd="3">
+                    <p>
+                      <strong> Months </strong>
+                    </p>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="9">
+                    <p>
+                      {{ kpi["sScoringMonths"] }}
+                    </p>
+                  </ion-col>
+                </ion-row>
+                <!-- Perspective -->
+                <ng-container *ngIf="_contentData['settings']['bShowPerspective'] && bpp['sBppName'] !== ''">
+                  <ion-row class="no-gutters">
+                    <ion-col sizeXs="12" sizeMd="3">
+                      <p>
+                        <strong>{{ _contentData['settings']['sPerspectiveNameChange'] }}</strong>
+                      </p>
+                    </ion-col>
+                    <ion-col sizeXs="12" sizeMd="9">
+                      <p>{{ bpp['sBppName'] }}</p>
+                    </ion-col>
+                  </ion-row>
+                </ng-container>
+                <!-- Business objective -->
+                <ng-container *ngIf=" !_contentData['settings']['bHideBusinessUnitObjective'] && kra['sObjectivesName'] !== ''">
+                  <ion-row class="no-gutters">
+                    <ion-col sizeXs="12" sizeMd="3">
+                      <p>
+                        <strong>{{ _contentData['settings']['sBusinessUnitObjective'] }}</strong>
+                      </p>
+                    </ion-col>
+                    <ion-col sizeXs="12" sizeMd="9">
+                      <p>
+                        {{ kra['sObjectivesName'] }}
+                      </p>
+                    </ion-col>
+                  </ion-row>
+                </ng-container>
+              </ion-col>
+
+              <ion-col size="6" sizeXs="12" sizeMd="6" class="b-b-lightgray">
+                <ion-row class="no-gutters" *ngIf="_contentData['settings']['bShowGlobalScales']">
+                  <ion-col sizeXs="12" sizeMd="12" class="m-l-30">
+                    <strong style="font-size: 19px;">{{ _contentData['settings']['sScaleNameChange'] }}</strong>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="12" class="p-t-10">
+                    <ul>
+                      <ng-container *ngFor="let scale of kpi['scales'];">
+                        <li>
+                          <ng-container *ngIf="scale['fScaleScoreValue'] > -1">
+                            <strong>{{ scale['fScaleScoreValue'] }}: </strong>
+                            {{ scale['sScaleDescription'] }}
+                          </ng-container>
+                        </li>
+                      </ng-container>
+                    </ul>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+            <!-- Enabling Factors/Comments -->
+            <ion-row class="no-gutters" *ngIf="kpi['employeeContractComment'].length !== 0 || kpi['managerContractComment'].length !== 0">
+              <ion-col sizeSm="6" size="6" sizeXs="12" sizeMd="6">
+                <ion-row>
+                  <ion-col sizeXs="12" sizeMd="3">
+                    <p>
+                      <strong style="word-break: break-word;">{{ _contentData['settings']['sKpiCommentsNameChange']
+                        }}</strong>
+                    </p>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="9">
+                    <p class="m-b-10" *ngFor="let comment of kpi['employeeContractComment'];">
+                      <b> {{ _contentData['personalDetails']['sEmployeeName'] }} <small>( {{ comment["sCommentDate"] }}
+                          )</small> </b>
+                      {{ comment["sComment"]}}
+                      <i class="text-muted" *ngIf="comment['sComment'] === ''">
+                        No comment provided
+                      </i>
+                    </p>
+                    <p class="m-b-10" *ngFor="let comment of kpi['managerContractComment'];">
+                      <b> {{ _contentData['personalDetails']['sAdminFullName'] }} </b> <small>( {{
+                        comment["sCommentDate"] }} )</small>
+                      {{ comment["sComment"]}}
+                      <i class="text-muted" *ngIf="comment['sComment'] === ''">
+                        No comment provided
+                      </i>
+                    </p>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+
+      <!-- Second Manager Comment -->
+      <ng-container *ngIf="_contentData['personalDetails']['sAdmin2UUID'] !== ''">
+        <ion-row>
+          <ion-col size="12" class="section-header">
+            <small>Second Manager Comment</small>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="12" class="sub-header">
+            <strong>Comments from second manager</strong>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="12">
+            <!-- No Second Manager Comment -->
+            <i class="text-muted" *ngIf="_contentData['personalDetails']['sManager2Signed'] === ''">
+              *No Second Manager comment
+            </i>
+            <!-- Second Manager Comment -->
+            <p *ngIf="_contentData['personalDetails']['sManager2Signed'] !== ''">
+              {{ _contentData['personalDetails']['sSecondManagerComments'] }}
+            </p>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+
+      <!--SECTION 3:  Personal Development Plan -->
+      <ng-container *ngIf="_contentData['settings']['bShowCombinedPortalLayout'] && _contentData['pdpData'].length !== 0">
+        <ion-row>
+          <ion-col size="12" class="section-header">
+            <strong>Section {{sectionC}}</strong>
+            <small class="m-l-10">Personal Development Plan</small>
+          </ion-col>
+        </ion-row>
+
+        <ng-container *ngFor="let pdp of _contentData['pdpData']; let iPDP = index">
+
+          <ion-row>
+            <ion-col size="12" class="sub-header">
+              <strong>{{ _contentData['settings']['sPDPDevelopmentNeedChange'] }} {{ iPDP + 1 }} -</strong>
+              {{ pdp["sDevelopmentPriority"] }}
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="12">
+              <!-- PDP Category -->
+              <ion-row class="b-b-lightgray no-gutters">
+                <ion-col sizeXs="12" sizeMd="3">
+                  <p> PDP {{ _contentData['settings']['sPDPCategoryChange'] }} </p>
+                </ion-col>
+                <div sizeXs="12" sizeMd="9">
+                  <p>
+                    <b>{{ _contentData['settings']['sPDPCategoryChange'] }}: </b> {{ pdp["sCategoryName"] }}
+                  </p>
+                  <p>
+                    <b>Learning: </b> {{ pdp["slearningName"] }}
+                  </p>
+                </div>
+              </ion-row>
+              <!-- Development Need Details -->
+              <ion-row class="b-b-lightgray no-gutters">
+                <ion-col sizeXs="12" sizeMd="3">
+                  <p>
+                    {{ _contentData['settings']['sPDPDevelopmentNeedChange'] }} Details
+                    <small>
+                      <br>
+                      ( a brief explanation of what the need is eg.Advanced Level Business Writing Skills )
+                    </small>
+                  </p>
+                </ion-col>
+                <ion-col sizeXs="12" sizeMd="9">
+                  <p>
+                    {{ pdp["sDescription"] }}
+                  </p>
+                </ion-col>
+              </ion-row>
+              <!-- DUE DATE -->
+              <ion-row class="b-b-lightgray no-gutters">
+                <ion-col sizeXs="12" sizeMd="3">
+                  <p> {{ _contentData['settings']['sPDPDueDateChange'] }} </p>
+                </ion-col>
+                <ion-col sizeXs="12" sizeMd="9">
+                  <p>
+                    {{ pdp["dPeriodOfImprovementEnd"] }}
+                  </p>
+                </ion-col>
+              </ion-row>
+              <!-- PRIORITY -->
+              <ion-row class="b-b-lightgray no-gutters">
+                <ion-col sizeXs="12" sizeMd="3">
+                  <p> {{ _contentData['settings']['sPDPPriorityChange'] }} </p>
+                </ion-col>
+                <ion-col sizeXs="12" sizeMd="9">
+                  <p>
+                    {{ pdp["sPriority"] }}
+                  </p>
+                </ion-col>
+              </ion-row>
+              <!-- COMMENTS -->
+              <ion-row class="b-b-lightgray no-gutters">
+                <ion-col sizeXs="12" sizeMd="3">
+                  <p> {{ _contentData['settings']['sKpiCommentsNameChange'] }} </p>
+                </ion-col>
+                <ion-col sizeXs="12" sizeMd="9">
+                  <p class="m-b-10" *ngFor="let comment of pdp['comments'];">
+                    <b>{{ comment["sCommentBy"] }} <small>( {{ comment["dCommentDate"] }} )</small></b>
+                    {{ comment["sComment"] }}
+                  </p>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+
+        </ng-container>
+
+      </ng-container>
+
+      <!-- SECTION 4:  CAREER OBJECTIVES -->
+      <ng-container *ngIf="_contentData['settings']['bShowCombinedPortalLayout']">
+
+        <ion-row>
+          <ion-col class="col-12 section-header">
+            <strong>Section {{sectionD}}</strong>
+            <small class="m-l-10">Career Objectives</small>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="col-12 sub-header">
+            <strong>My career objectives/inspirations are</strong>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="b-b-lightgray">
+          <ion-col sizeXs="12" sizeMd="3">
+            <p>
+              My immediate career objectives/inspirations
+              <small> <br> ( next 6 months )</small>
+            </p>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="9">
+            <p *ngIf="_contentData['careerPlanData']['sMediumObjectives'] !== ''">
+              {{ _contentData['careerPlanData']['sMediumObjectives'] }} </p>
+            <p class="text-muted" *ngIf="_contentData['careerPlanData']['sMediumObjectives'] === ''">
+              <em>No information provided</em>
+            </p>
+          </ion-col>
+        </ion-row>
+        <ion-row class="b-b-lightgray">
+          <ion-col sizeXs="12" sizeMd="3">
+            <p>
+              Medium Term
+              <small> <br> ( 6 months to 2/3 years )</small>
+            </p>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="9">
+            <p *ngIf="_contentData['careerPlanData']['sMediumObjectives2'] !== ''">
+              {{ _contentData['careerPlanData']['sMediumObjectives2'] }} </p>
+            <p class="text-muted" *ngIf="_contentData['careerPlanData']['sMediumObjectives2'] === ''">
+              <em>No information provided</em>
+            </p>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="b-b-lightgray">
+          <ion-col sizeXs="12" sizeMd="3">
+            Are there any other comments you would like to add?
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="9">
+            <p *ngIf="_contentData['careerPlanData']['sComments'] !== ''">
+              {{ _contentData['careerPlanData']['sComments'] }} </p>
+            <p class="text-muted" *ngIf="_contentData['careerPlanData']['sComments'] === ''">
+              <em>No information provided</em>
+            </p>
+          </ion-col>
+        </ion-row>
+        <ion-row class="b-b-lightgray">
+          <ion-col sizeXs="12" sizeMd="3">
+            <p>
+              Overall Manager Comments
+            </p>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="9">
+            <p *ngIf="_contentData['careerPlanData']['sManagerComments'] !== ''">
+              {{ _contentData['careerPlanData']['sManagerComments'] }} </p>
+            <p class="text-muted" *ngIf="_contentData['careerPlanData']['sManagerComments'] === ''">
+              <em>No information provided</em>
+            </p>
+          </ion-col>
+        </ion-row>
+        <ng-container *ngIf="_contentData['careerPlanData']['goals'].length > 0">
+          <ion-row class="no-gutters">
+            <ion-col sizeXs="12" sizeMd="3">
+              <span class="d-block sub-header">
+                <strong> Career Objective </strong>
+              </span>
+            </ion-col>
+            <ion-col sizeXs="12" sizeMd="3">
+              <span class="d-block sub-header">
+                <strong> Activities </strong>
+              </span>
+            </ion-col>
+            <ion-col sizeXs="12" sizeMd="1">
+              <span class="d-block sub-header">
+                <strong> Timelines </strong>
+              </span>
+            </ion-col>
+            <ion-col sizeXs="12" sizeMd="1">
+              <span class="d-block sub-header">
+                <strong> Status </strong>
+              </span>
+            </ion-col>
+            <ion-col sizeXs="12" sizeMd="4">
+              <span class="d-block sub-header">
+                <strong> Comments/Resources Needed </strong>
+              </span>
+            </ion-col>
+          </ion-row>
+
+          <ng-container *ngFor="let goal of _contentData['careerPlanData']['goals']; let iGoal = index">
+            <ion-row class="no-gutters b-b-lightgray">
+              <ion-col sizeXs="12" sizeMd="3">
+                <p>{{ goal['sCareerGoal'] }}</p>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="3">
+                <p>{{ goal['sActivities'] }}</p>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="1">
+                <p>{{ goal['dDateTimelines'] }}</p>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="1">
+                <p>{{ goal['sAcceptStatus'] }}</p>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="4">
+                <p class="m-b-10" *ngFor="let comment of goal['comments'];">
+                  <b>{{ comment["sCommentBy"] }} <small>( {{ comment["dCommentDate"] }} )</small></b>
+                  {{ comment["sComment"] }}
+                </p>
+              </ion-col>
+            </ion-row>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+
+    </section>
+  </section>
+
+  <!--  -->
+
+</section>

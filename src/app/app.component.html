@@ -1,0 +1,293 @@
+<app-loader></app-loader>
+<ion-app>
+  <ion-split-pane contentId="mainContent" when="(min-width: 1024px)">
+    <ion-menu menuId="MainMenu" contentId="mainContent" type="overlay" class="appMenu {{ _selectedAppTab }}" [ngClass]="{'noExpandedPanel': !_expandPanel}">
+      <!-- BG -->
+      <div class="appMenuBG" *ngIf="!_sessionUser">
+      </div>
+      <!-- Menus -->
+      <ng-container *ngIf="_sessionUser">
+
+        <ion-grid class="appMenuGrid">
+          <ion-row class="appMenuGridRowStyle">
+            <!-- Left Col -->
+            <ion-col sizeXs="12" [sizeMd]="_expandPanel ? '5': '12'" class="appMenuGridLeft bg-primary text-center">
+              <ion-grid class="aviGrid">
+                <ion-row>
+                  <ion-col size="12" class="tabBarWrapper">
+                    <ion-toolbar>
+                      <ion-toolbar class="tabBar" *ngIf="_companyTemplate && _companyTemplate['tabs']">
+                        <ng-container *ngFor="let tab of _companyTemplate['tabs']">
+                          <ion-button fill="clear" (click)="tabTo(tab['sDisplayNameInverse'])" [ngClass]="{'tabMenuActive': tab['sDisplayNameInverse'] === _selectedAppTab }">
+                            <ion-label>{{tab['sDisplayName']}}</ion-label>
+                          </ion-button>
+                        </ng-container>
+                      </ion-toolbar>
+                      <!-- <hr> -->
+                    </ion-toolbar>
+
+                  </ion-col>
+
+                  <ion-col size="12" class="humBurgerMobile">
+                    <ion-buttons class="mobile-view-log-out">
+                      <ion-button color="light" size="small" (click)=logOut()>
+                        <ion-icon name="log-out-outline"></ion-icon>
+                      </ion-button>
+                      <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                  </ion-col>
+
+
+
+                  <ion-col sizeXs="4" sizeMd="">
+                    <img [src]="_sessionUser['profilePhoto']" style="object-fit: fill;" class="appAvi" (error)="_sessionUser['empSrcFail'] = true"
+                      *ngIf="_sessionUser['empSrcFail'] !== true">
+                    <ion-icon class="default-img" name="person-circle-outline" *ngIf="_sessionUser['empSrcFail'] === true"></ion-icon>
+                  </ion-col>
+                  <ion-col sizeMd="12" class="hidden-sm-up">
+                    <h1 class="appUserHeading">
+                      {{ _sessionUser['sFullName'] }}
+                      <small>
+                        <br>{{ _sessionUser['sJobTitle'] }}
+                      </small>
+                    </h1>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <!-- Mobile Menu -->
+              <ion-grid class="menuMobile hidden-sm-up">
+                <ion-row>
+                  <ng-container *ngFor="let p of appIconPages; let i = index">
+                    <ion-col sizeXs="4" sizeSm="4" *ngIf="!p['bDisabled']" [ngClass]="{'ion-hide-sm-down': p.url === '/aspire'}">
+
+                      <ion-item lines="none" class="transparent menuHomeItem" (click)="tabTo(p.url)" routerDirection="root" lines="none" detail="false"
+                        [class.menuActive]="p.url === '/'+_selectedAppTab" [ngStyle]="{'background-image': 'url(' + p['image'] + ')'}">
+                        <span class="tileOverlay"></span>
+                        <!-- <ion-icon [name]="p.icon" class="mdMenuItem"></ion-icon> -->
+                        <!-- <img [src]="p['image']" class="appMenuIcon"> -->
+                        <ion-label>
+                          <p class="text-size-md font-regular">
+                            {{ p.title }}
+                            <ion-badge class="animated pulse" color="danger" [class]="(p.iNumNotificationPersonal + p.iNumNotificationTeam) > 9? 'actionBadgeGt9':'actionBadge'"
+                              *ngIf="p.iNumNotificationPersonal > 0 || p.iNumNotificationTeam > 0">
+                              {{ p.iNumNotificationPersonal + p.iNumNotificationTeam }}
+                            </ion-badge>
+                          </p>
+                        </ion-label>
+                      </ion-item>
+                    </ion-col>
+                  </ng-container>
+                </ion-row>
+              </ion-grid>
+              <!-- Desktop Menu -->
+              <ion-list class="menuDesk hidden-sm-down hideOnMobile" id="inbox-list">
+                <ion-menu-toggle auto-hide="false">
+                  <!-- [routerLink]="['/home']" -->
+                  <ion-item lines="none" class="transparent text-center menuHomeItem" (click)="tabTo('/home')" routerDirection="root" lines="none" detail="false"
+                    [class.menuActive]="_selectedAppTab === 'home' || _selectedAppTab === 'personal' || _selectedAppTab === 'team'">
+
+                    <ion-label>
+                      <ion-icon name="home" class="appHomeIcon"></ion-icon>
+                      <br>
+                      <p class="text-size-md font-regular">Home</p>
+                    </ion-label>
+                  </ion-item>
+                </ion-menu-toggle>
+                <ion-menu-toggle auto-hide="false" *ngFor="let p of appIconPages; let i = index">
+                  <!-- [routerLink]="[p.url]" -->
+                  <ion-item lines="none" class="transparent menuHomeItem" (click)="tabTo(p.url)" routerDirection="root" lines="none" detail="false"
+                    [class.menuActive]="p.url === '/'+_selectedAppTab" *ngIf="!p['bDisabled']">
+                    <i class="icofont {{p['icon']}} icofont-appPage"></i>
+                    <ion-label>
+                      <p class="text-size-md font-regular">
+                        {{ p.title }}
+                        <ion-badge class="animated pulse" color="danger" [class]="(p.iNumNotificationPersonal + p.iNumNotificationTeam) > 9? 'actionBadgeGt9':'actionBadge'"
+                          *ngIf="p.iNumNotificationPersonal > 0 || p.iNumNotificationTeam > 0">
+                          {{ p.iNumNotificationPersonal + p.iNumNotificationTeam }}
+                        </ion-badge>
+                      </p>
+                    </ion-label>
+                  </ion-item>
+                </ion-menu-toggle>
+              </ion-list>
+
+              <div class="nav-footer-logo text-center">
+                <img alt="Performax-Logo" src="../../assets/imgs/logo/PeformaxLogoTransparent.png">
+                <br>
+                <a class="m-l-5" [routerLink]="['/maintenance/privacy-policy']">
+                  <small>Privacy Policy</small>
+                </a>
+                <strong><small> | </small></strong>
+                <a class="m-l-5" [routerLink]="['/maintenance/cookie-policy']">
+                  <small>Cookie Policy</small>
+                </a>
+              </div>
+
+            </ion-col>
+            <!-- Home Col -->
+            <!-- *ngIf="_expandPanel" -->
+            <!-- [ngClass]="{'d-none': !_expandPanel}" -->
+            <ion-col sizeXs="12" sizeMd="7" class="appMenuGridRight bg-muted personalCol">
+
+              <ng-container *ngIf="_expandPanel">
+                <h1 class="appUserHeading">
+                  {{ _sessionUser['sFullName'] }}
+                  <small>
+                    <br>
+                    <span class="userJobTitle">{{ _sessionUser['sJobTitle'] }}</span>
+                    <br>
+
+                  </small>
+                </h1>
+
+           
+                  <!-- home -->
+                  <ng-container *ngIf="_selectedAppTab === 'home'">
+                    <app-menus type="appHome" [companyTemplate]="_companyTemplate" [notificationsList]="_notificationsList" [conversationFeed]="_conversationFeedCat"
+                      [activitySummery]="{'_totalOverdueTasks': _totalOverdueTasks, '_totalDraftTasks': _totalDraftTasks, '_totalPendingTasks': _totalPendingTasks, '_totalCompletedTasks': _totalCompletedTasks}"
+                      *ngIf="_companyTemplate">
+                    </app-menus>
+                  </ng-container>
+
+                  <!-- personal -->
+                  <ng-container *ngIf="_selectedAppTab === 'personal'">
+                    <app-menus type="appPersonal" [managers]="_myManagers" [sessionUser]="_sessionUser" [companyTemplate]="_companyTemplate" *ngIf="_myManagers && _sessionUser">
+                    </app-menus>
+                  </ng-container>
+
+                  <!-- team -->
+                  <ng-container *ngIf="_selectedAppTab === 'team'">
+                    <app-menus type="appTeam" [companyTemplate]="_companyTemplate" [managers]="_myManagers" [directReports]="_directReports" *ngIf="_myManagers && _directReports">
+                    </app-menus>
+                  </ng-container>
+               
+
+                <!-- perform -->
+                <ng-container *ngIf="_selectedAppTab === 'perform'">
+                  <app-menus type="perform" [sessionUser]="_sessionUser"></app-menus>
+                </ng-container>
+
+                <!-- grow -->
+                <ng-container *ngIf="_selectedAppTab === 'grow'">
+                  <app-menus type="grow" [sessionUser]="_sessionUser"></app-menus>
+                </ng-container>
+
+                <!-- live -->
+                <ng-container *ngIf="_selectedAppTab === 'live'">
+                  <app-menus type="live" [sessionUser]="_sessionUser"></app-menus>
+                </ng-container>
+
+                <!-- choose -->
+                <ng-container *ngIf="_selectedAppTab === 'choose'">
+                  <app-menus type="choose" [sessionUser]="_sessionUser"></app-menus>
+                </ng-container>
+
+                <!-- aspire -->
+                <ng-container *ngIf="_selectedAppTab === 'aspire'">
+                  <app-menus type="aspire" [sessionUser]="_sessionUser"></app-menus>
+                </ng-container>
+
+                <!-- coach -->
+                <ng-container *ngIf="_selectedAppTab === 'coach'">
+                  <app-menus type="coach" [sessionUser]="_sessionUser"></app-menus>
+                </ng-container>
+
+                <!-- mymax-reporting -->
+                <ng-container *ngIf="_selectedAppTab === 'mymax-reporting'">
+                  <app-menus type="mymax-reporting" [sessionUser]="_sessionUser"></app-menus>
+                </ng-container>
+              </ng-container>
+
+              <ion-grid class="app-team-grid" *ngIf="_selectedAppTab === 'home' && _myTeam.length > 0">
+                <ion-row class="app-team-header">
+                  My Team
+                </ion-row>
+                <ion-row class="text-center b-b-1">
+                  <ion-col *ngFor="let employee of _myTeam| slice:0:_imgDisplayTeamNum;let i = index">
+                    <img [src]="employee['sProfilePic']" (error)="employee['srcFail'] = true" *ngIf="employee['srcFail'] !== true">
+                    <ion-icon class="default-img" name="person-circle-outline" *ngIf="employee['srcFail'] === true"></ion-icon>
+                    <br>
+                    <ion-label>
+                      {{employee['sFirstName']}}
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+
+              <div class="nav-footer-logo text-center">
+                <!-- <img alt="Performax-Logo" src="../../assets/imgs/logo/PeformaxLogoTransparent.png"> -->
+                <img alt="Performax-Logo" class="menu-logo" [src]="_sessionUser['companyPdfLogo']">
+                <br>
+                <a class="m-l-5" [routerLink]="['/maintenance/privacy-policy']">
+                  <small>Privacy Policy</small>
+                </a>
+                <strong><small> | </small></strong>
+                <a class="m-l-5" [routerLink]="['/maintenance/cookie-policy']">
+                  <small>Cookie Policy</small>
+                </a>
+              </div>
+
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+
+      </ng-container>
+
+    </ion-menu>
+
+    <ion-router-outlet id="mainContent" main>
+      <ion-header [translucent]="true" class="bg-primary homeHeader" *ngIf="_sessionUser">
+
+        <h1 class="appUserHeading expandSideHeading ion-hide-sm-down" *ngIf="!_expandPanel">
+          {{ _sessionUser['sFullName'] }}
+          <small>
+            <br>
+            <span>
+              {{ _sessionUser['sJobTitle'] }}
+            </span>
+          </small>
+        </h1>
+
+
+        <img [src]="_sessionUser['companyPdfLogo']" class="headerLogo">
+        <ion-toolbar>
+          <ion-buttons class="secondButton" slot="start">
+            <!-- <span class="secondButton">
+              <ion-button color="tint" size="small" (click)=logOut() *ngIf="!_expandPanel" class="ion-hide-sm-down">
+                <ion-icon name="log-out-outline"></ion-icon>
+                <i class="fas fa-sign-out-alt"></i>
+                <span style="margin-left: 5px; font-size: 12px;">Sign Out</span>
+              </ion-button>
+            </span> -->
+            <ion-menu-button></ion-menu-button>
+          </ion-buttons>
+
+          <div class="menu-links">
+            <ion-toolbar class="tabBar bg-none" *ngIf="_companyTemplate && _companyTemplate['tabs']">
+              <div>
+                <ng-container *ngFor="let tab of _companyTemplate['tabs']">
+                  <ion-button fill="clear" (click)="tabTo(tab['sDisplayNameInverse'])" [ngClass]="{'tabMenuActive': tab['sDisplayNameInverse'] === _selectedAppTab }">
+                    <ion-label>{{tab['sDisplayName']}}</ion-label>
+                  </ion-button>
+                </ng-container>
+                <span class="logout-button-end">
+                  <ion-button style="width: 10%; margin-right: 20px; font-weight: 700;" color="primary-light" size="small" (click)=logOut()>
+                    <span>Log Out</span>
+                  </ion-button>
+                </span>
+              </div>
+            </ion-toolbar>
+          </div>
+        </ion-toolbar>
+      </ion-header>
+      <app-print-tool></app-print-tool>
+
+    </ion-router-outlet>
+  </ion-split-pane>
+
+  <ion-fab class="chatFab" vertical="bottom" horizontal="end" slot="fixed" *ngIf="_selectedAppTab !== 'auth'">
+    <app-chat-box [sizeOption]="'s'"></app-chat-box>
+  </ion-fab>
+
+</ion-app>

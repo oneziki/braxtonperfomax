@@ -1,0 +1,334 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper moduleLanding homeGrid">
+    <ion-row>
+      <ion-col sizeXs="12" sizeMd="12" sizeXl="9">
+
+        <ion-row>
+          <ion-col sizeXs="12" sizeXl="7"
+            *ngIf="_companyTemplate['bP7ShowCarousel'] || _companyTemplate['bP7DevelopmentTools']">
+            <!-- Slides  -->
+            <ion-card class="homeCard homeSlides" *ngIf="_companyTemplate['bP7ShowCarousel']">
+              <ion-card-content>
+                <ion-slides scrollbar="true" [options]="slideOpts">
+                  <ng-container *ngFor="let featCat of _featuredResourcesList;">
+                    <ng-container *ngFor="let subCat of featCat['subCategory']">
+                      <ng-container *ngFor="let resUpload of subCat['resourceItemUploads']">
+                        <ion-slide class="featSlider">
+                          <img [src]="resUpload['sAttachmentName']">
+                          <h4 class="centered">
+                            <div class="carousel-caption">
+                              <!-- Document -->
+                              <a href="{{ resUpload['sUploadFileName'] }}" target="_blank"
+                                *ngIf="resUpload['sTypeName'] === 'Document'">
+                                <span>
+                                  <h3>
+                                    {{ resUpload['sItemName'] }}
+                                  </h3>
+                                  <p>{{ resUpload['resourceItemDescription'] }}</p>
+                                </span>
+                              </a>
+                              <!-- Link -->
+                              <a href="{{ resUpload['sDocumentUploadName'] }}" target="_blank"
+                                *ngIf="resUpload['sTypeName'] === 'Link'">
+                                <span>
+                                  <h3>
+
+                                    {{ resUpload['sItemName'] }}
+                                  </h3>
+                                  <p>{{ resUpload['resourceItemDescription'] }}</p>
+                                </span>
+                              </a>
+                            </div>
+                          </h4>
+                        </ion-slide>
+                      </ng-container>
+                    </ng-container>
+                  </ng-container>
+                </ion-slides>
+              </ion-card-content>
+            </ion-card>
+
+            <!-- Development Needs -->
+            <ion-card class="homeCard homeDevNeeds" *ngIf="_companyTemplate['bP7DevelopmentTools']">
+              <ion-card-header>
+                <ion-card-title>
+                  {{_companyTemplate['sP7DisplayNameDevelopmentTools']}}
+                  <ion-button fill="clear" size="small" class="mobile-loadMoreBtn"
+                    (click)="_showHomeDevNeeds = !_showHomeDevNeeds">
+                    <ion-icon name="menu-sharp"></ion-icon>
+                  </ion-button>
+                </ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <ion-grid>
+                  <ion-row class="mobile-loadMore" [ngClass]="{'showLess': !_showHomeDevNeeds }">
+                    <ng-container *ngFor="let category of _survey_categories; let i=index">
+                      <ion-col sizeXs="12" sizeMd="" *ngIf="i<3">
+                        <img [src]="category['imgPath']">
+                        <ion-label>
+                          <strong>{{ category['sCategoryName'] }}</strong>
+                        </ion-label><br>
+                        <ion-label [innerHTML]="category['sDescriptionTrim']">
+                          {{ category['sDescriptionTrim'] }}
+                        </ion-label>
+                      </ion-col>
+                    </ng-container>
+                  </ion-row>
+                  <ion-row>
+                    <a [routerLink]="['/survey-assessment/sa-category-list']" style="float: right;">...learn more</a>
+                  </ion-row>
+                </ion-grid>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+
+          <!-- Tips & Tutorials -->
+          <ion-col sizeXs="12" sizeLg="6" sizeXl="5" *ngIf="_companyTemplate['bP7ShowTipsAndTutorials']">
+            <ion-card class="homeCard homeTips">
+              <ion-card-header>
+                <ion-card-title>
+                  {{_companyTemplate['sP7DisplayNameTipsAndTutorials']}}
+                  <ion-button fill="clear" size="small" class="mobile-loadMoreBtn"
+                    (click)="_showHomeTips = !_showHomeTips">
+                    <ion-icon name="menu-sharp"></ion-icon>
+                  </ion-button>
+                </ion-card-title>
+              </ion-card-header>
+              <ion-card-content class="mobile-loadMore" [ngClass]="{'showLess': !_showHomeTips }">
+                <ng-container *ngFor="let tips of _tipsAndTutorialsList;">
+                  <ng-container *ngFor="let subCat of tips['subCategory']">
+                    <ng-container *ngFor="let resUpload of subCat['resourceItemUploads']">
+                      <ion-slide class="featSlider" style="margin-bottom: 10px">
+                        <iframe width="350" height="180" [src]="resUpload['sUploadFileName'] | safe"
+                          title="YouTube video player" frameborder="0" allow="autoplay" controls="0"
+                          allowfullscreen></iframe>
+                      </ion-slide>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+
+          <!-- Team Directory -->
+          <ion-col sizeXs="12" sizeLg="6" sizeXl="12" class="ion-hide-sm-down" *ngIf="_companyTemplate['bP7ShowTeamDirectory']">
+            <ion-card class="homeCard homeTeamDir">
+              <ion-card-header>
+                <ion-card-title>
+                  <span class="deskManagerHeader">
+                    My Manager
+                  </span>
+                  <span class="deskTeamHeader">
+                    My Team
+                  </span>
+                </ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col sizeXs="12" sizeMd="6" sizeXl="" *ngFor="let manager of _myManagers;let ilast = last"
+                      [ngClass]="{'brg': ilast}">
+                      <div>
+                        <img [src]="manager['sProfilePic']" (error)="manager['srcFail'] = true"
+                        *ngIf="manager['srcFail'] !== true">
+                      <ion-icon class="default-img" name="person-circle-outline" *ngIf="manager['srcFail'] === true">
+                      </ion-icon>
+                      <br>
+                      <ion-label>
+                        <strong>{{manager['sFirstName']}} {{manager['sLastName']}}</strong>
+                        <small> <br>{{manager['sJobTitleName']}}</small>
+                      </ion-label>
+                      </div>
+                    </ion-col>
+                      <ion-col sizeXs="12" sizeMd="6" sizeXl=""
+                      *ngFor="let employee of _directReports| slice:0:_imgDisplayTeamNum;let i = index">
+                        <span class="mobileTeamHeader" *ngIf="i === 0">
+                          My Team<br>
+                        </span>
+                          <img [src]="employee['sProfilePic']" (error)="employee['srcFail'] = true"
+                          *ngIf="employee['srcFail'] !== true">
+                        <ion-icon class="default-img" name="person-circle-outline" *ngIf="employee['srcFail'] === true"></ion-icon>
+                        <br>
+                        <ion-label>
+                          <strong>{{employee['sFirstName']}} {{employee['sLastName']}}</strong>
+                          <small><br>{{employee['sJobTitleName']}}</small>
+                        </ion-label>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+
+          <ion-col size="12" class="ion-hide-sm-down">
+            <!-- MyMax -->
+            <ion-card class="homeCard homeMyMax">
+              <ion-card-content>
+                <ion-grid>
+                  <ion-row class="myMaxWrapper">
+                    <ion-col sizeXs="12" sizeXl="7" class="bRight">
+                      <div class="col-header">
+                        <h1>Grow</h1>
+                      </div>
+                      <ion-row style="min-height: 200px;">
+                        <ion-col sizeXs="12" sizeMd="8" class="colbRight">
+                          <p class="sub-Header">
+                            Competency
+                          </p>
+                          <div class="d-block mymaxCol text-center" *ngIf="_chartsLoaded">
+                            <app-graphHolder type="apex" [data]="_myMaxData['competency']['apexData']" *ngIf="_myMaxData['competency']['apexData']['series'].length !== 0"
+                              [options]="chartOptions1">
+                            </app-graphHolder>
+                            <ion-col size="12" *ngIf="_myMaxData['competency']['apexData']['series'].length === 0">
+                              <p class="text-muted no-data">*Reserved For Your Competency Results</p>
+                            </ion-col>
+                          </div>
+                        </ion-col>
+                        <ion-col sizeXs="12" sizeMd="4">
+                          <p class="sub-Header">
+                            Expertise
+                          </p>
+                          <div class="d-block mymaxCol" *ngIf="_chartsLoaded">
+                            <app-graphHolder type="statusDisplay" [data]="_myMaxData['expertise']['apexData']" *ngIf="_myMaxData['expertise']['apexData']['series'].length !== 0"
+                              [data2]="_myMaxData['expertise']['apexData2']" [options]="chartOptions2">
+                            </app-graphHolder>
+                            <ion-col size="12" *ngIf="_myMaxData['expertise']['apexData']['series'].length === 0">
+                              <div>
+                                <p class="text-center text-muted no-data">*Reserved For Your Expertise Results</p>
+                              </div>
+                            </ion-col>
+                          </div>
+                        </ion-col>
+                      </ion-row>
+                    </ion-col>
+                    <ion-col sizeXs="12" sizeLg="6" sizeXl="" class="bRight">
+                      <div class="col-header">
+                        <h1>Live</h1>
+                      </div>
+                      <ion-row>
+                        <ion-col size="12">
+                          <ion-row>
+                            <p class="sub-Header">
+                              Motivation
+                            </p>
+                            <div class="d-block mymaxCol" style="margin-bottom: -7vh;">
+                              <img src="../../assets/imgs/demo/Untitled3.png">
+                              <!-- <ion-col size="12">
+                                <p class="text-center text-muted no-data">*Reserved For Your Motivation</p>
+                              </ion-col> -->
+                            </div>
+                          </ion-row>
+                          <ion-row>
+                            <p class="sub-Header">
+                              Engagement
+                            </p>
+                            <div class="d-block mymaxCol">
+                              <img src="../../assets/imgs/demo/Untitled3-1.png">
+                              <!-- <ion-col size="12">
+                                <p class="text-center text-muted no-data">*Reserved For Your Engagement</p>
+                              </ion-col> -->
+                            </div>
+                          </ion-row>
+                        </ion-col>
+                      </ion-row>
+                    </ion-col>
+                    <ion-col sizeXs="12" sizeLg="">
+                      <div class="col-header">
+                        <h1>Aspire</h1>
+                      </div>
+                      <ion-row>
+                        <ion-col size="12">
+                          <p class="sub-Header">
+                            Training
+                          </p>
+                          <div class="d-block mymaxCol" *ngIf="_chartsLoaded">
+                            <app-graphHolder type="statusDisplay" [data]="_myMaxData['training']['apexData']" *ngIf="_myMaxData['training']['apexData']['series'] && _myMaxData['training']['apexData']['series'].length !== 0">
+                              [options]="chartOptions4">
+                            </app-graphHolder>
+                            <ion-col size="12" *ngIf="_myMaxData['training']['apexData'].length === 0 || _myMaxData['training']['apexData']['series'].length === 0">
+                              <p class="text-center text-muted no-data">*Reserved For Your Training</p>
+                            </ion-col>
+                          </div>
+                          <div>
+                            <small class="loadMore" style="float: right;">
+                              30 June 2021
+                            </small>
+                          </div>
+                        </ion-col>
+                      </ion-row>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col sizeXs="12" sizeMd="12" sizeLg="12" sizeXl="3">
+
+        <ion-grid>
+          <ion-row>
+            <!-- Resources -->
+            <ion-col sizeXs="12" sizeMd="6" sizeXl="12" *ngIf="_companyTemplate['bP7ShowResources']">
+              <ion-card class="homeCard homeResources">
+                <ion-card-header>
+                  <ion-card-title>{{_companyTemplate['sP7DisplayNameResources']}}</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                  <ion-list>
+                    <ng-container *ngFor="let resCat of _resourcesList">
+                      <ng-container *ngIf="resCat['sFlag'] === 'Resource P7'">
+                        <ng-container *ngFor="let subCat of resCat['subCategory']; let i=index;">
+                          <ng-container *ngIf="!subCat['bShowIcon']; else showDocs">
+                            <ng-container *ngFor="let resUpload of subCat['resourceItemUploads']">
+                              <ion-item lines="none" [routerLink]="resUpload['sDocumentUploadName']"
+                                *ngIf="resUpload['sTypeName'] === 'Link'">
+                                <ion-icon [name]="resUpload['sItemUploadIconName']" class="appResIcon"></ion-icon>
+                                <ion-label class="hover">{{ resUpload['sItemName'] }}</ion-label>
+                              </ion-item>
+                            </ng-container>
+                          </ng-container>
+                          <ng-template #showDocs>
+                            <ion-item lines="none">
+                              <ion-icon [name]="subCat['sSubCatIconName']" class="appResIcon"></ion-icon>
+                              <ion-label class="hover" (click)="toggleRecourse(subCat)">
+                                {{subCat['sSubCategoryName']}}
+                                <i class="icofont icofont-rounded-right activeSub"></i>
+                                <ion-icon style="padding-top: 3px;" slot="end"></ion-icon>
+                              </ion-label>
+                            </ion-item>
+                          </ng-template>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+                  </ion-list>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+
+            <ion-col sizeXs="12" sizeMd="6" sizeXl="12" class="bRight" style="height: 100vh;">
+              <!-- Scorecard -->
+              <ion-card class="homeCard homeScorecard"
+                *ngIf="_myMaxData['kraBusinessObjective'] && _myMaxData['kraBusinessObjective']['apexData'] && _myMaxData['kraBusinessObjective']['apexData']['series'].length !== 0">
+                <ion-card-header>
+                  <ion-card-title>Team KPI Scorecard</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                  <div class="d-block mymaxCol">
+                    <app-graphHolder type="apex" [data]="_myMaxData['kraBusinessObjective']['apexData']"
+                      [options]="chartOptionsRadial">
+                    </app-graphHolder>
+                  </div>
+                  <div class="d-block mymaxCol" *ngIf="_chartsLoaded">
+                    <app-graphHolder type="listTable" [data]="_myMaxData['overallKraResults']['apexData']">
+                    </app-graphHolder>
+                  </div>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

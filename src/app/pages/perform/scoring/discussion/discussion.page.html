@@ -1,0 +1,200 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper discussionGrid" *ngIf="!_isLoading">
+    <ion-row>
+      <ion-col>
+        <ion-col>
+          <ion-text>
+            <h2 class="contentHeader">Performance Discussion</h2>
+          </ion-text>
+          <ion-col size="12">
+            <ion-grid>
+              <ion-row class="userHeader">
+                <ion-col sizeXs="12" sizeXl="6" class="p-0-impo">
+                  <ion-item lines="none" class="aviUserDetails" [ngClass]="{'opacity': _sRoleToEmployee === 'Manager'}">
+                    <ion-avatar slot="start">
+                      <img [src]="_employeeDetails[0]['sEmployeeProfilePic']">
+                    </ion-avatar>
+                    <ion-label>
+                      <h3>{{_employeeDetails[0]['sNormalUserFullName']}}</h3>
+                      <p>{{_employeeDetails[0]['sNormalUserJobTitleName']}}</p>
+                    </ion-label>
+                  </ion-item>
+                  <div class="col-header">
+                    <h1>Employee</h1>
+                  </div>
+                </ion-col>
+                <ion-col sizeXs="12" sizeXl="6" class="p-0-impo">
+                  <ion-item lines="none" class="aviUserDetails">
+                    <ion-avatar slot="start">
+                      <img [src]="_employeeDetails[0]['sAdminProfilePic']">
+                    </ion-avatar>
+                    <ion-label>
+                      <h3>{{_employeeDetails[0]['sAdminFullName']}}</h3>
+                      <p>{{_employeeDetails[0]['sAdminJobTitleName']}}</p>
+                    </ion-label>
+                  </ion-item>
+                  <div class="col-header">
+                    <h1>Manager</h1>
+                  </div>
+                </ion-col>
+              </ion-row>
+
+              <ion-row class="ion-margin-top ion-margin-bottom">
+                <ion-col sizeXs="12" sizeSm="12" sizeMd="6" sizeLg="6" sizeXl="6">
+                  <strong class="d-block text-primary">
+                    Discussion Date:
+                    <input type="date" id="discussion-date" name="discussion-date" class="periodDate" placeholder="Select discussion date" value=""
+                      [(ngModel)]="_discussionNotes[0]['selectedDateCreated']" *ngIf="!_bViewMode">
+                    <span class="text-lite-charcoal" *ngIf="_bViewMode">
+                      {{_discussionNotes[0]['selectedDateCreated']}}
+                    </span>
+                  </strong>
+                </ion-col>
+                <ion-col sizeXs="12" sizeSm="12" sizeMd="6" sizeLg="6" sizeXl="6">
+                  <ion-label>
+                    Provide Evidence (optional):
+                  </ion-label>
+                  <input type="file" id="sEvidence" name="sEvidence" ng2FileSelect [uploader]="uploader" *ngIf="!_bViewMode">
+                  <ion-list *ngIf="!isEmpty(_discussionDocs)">
+                    <ion-item lines="none">
+                      <ion-label>
+                        <i class="icofont icofont-paper-clip text-muted"></i>
+                        <a [href]="_discussionDocs[0]['sUploadPath']" download target="_blank">
+                          {{ _discussionDocs[0]['sFileName'] }}
+                        </a>
+                      </ion-label>
+                    </ion-item>
+                  </ion-list>
+                </ion-col>
+              </ion-row>
+
+              <ion-row>
+                <ion-col>
+                  <h5 class="text-primary">Summarise Key Elements of Performance Conversation:</h5>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-item lines="none">
+                    <ion-textarea id="summary" name="summary" [(ngModel)]="_discussionNotes[0]['sComment']" autoGrow="true" *ngIf="!_bViewMode">
+                    </ion-textarea>
+                    <span class="text-lite-charcoal" *ngIf="_bViewMode">
+                      {{_discussionNotes[0]['sComment']}}
+                    </span>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+
+              <ng-container *ngIf="_kraCompanySettings.bShowPerformanceDiscussionRating">
+                <ion-row>
+                  <ion-col>
+                    <h5 class="text-primary">Greatest Strengths:</h5>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <ion-item lines="none">
+                      <ion-textarea id="strengths" name="strengths" required [(ngModel)]="_discussionNotes[0]['sStrengths']" *ngIf="!_bViewMode" autoGrow="true">
+                      </ion-textarea>
+                      <span class="text-lite-charcoal" *ngIf="_bViewMode">
+                        {{_discussionNotes[0]['sStrengths']}}
+                      </span>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+
+                <ion-row>
+                  <ion-col>
+                    <h5 class="text-primary">Areas requiring improvements:</h5>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <ion-item lines="none">
+                      <ion-textarea id="improvements" name="improvements" required [(ngModel)]="_discussionNotes[0]['sImprovements']" *ngIf="!_bViewMode" autoGrow="true">
+                      </ion-textarea>
+                      <span class="text-lite-charcoal" *ngIf="_bViewMode">
+                        {{_discussionNotes[0]['sImprovements']}}
+                      </span>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+
+                <ion-row>
+                  <ion-col>
+                    <h5 class="text-primary">Goals for next review period:</h5>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <ion-item lines="none">
+                      <ion-textarea id="goals" name="goals" required [(ngModel)]="_discussionNotes[0]['sGoals']" *ngIf="!_bViewMode" autoGrow="true">
+                      </ion-textarea>
+                      <span class="text-lite-charcoal" *ngIf="_bViewMode">
+                        {{_discussionNotes[0]['sGoals']}}
+                      </span>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+
+                <ion-row>
+                  <ion-col>
+                    <h5 class="text-primary">{{ _kraCompanySettings.sPerformanceReviewDiscussionRatingNameChange}}</h5>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <div class="radio cutom-radio-ratings radio-inline-icons">
+                      <label class="d-inline-block inline-icons-outer" *ngFor="let scaleItem of _discussionScaleItems; let iScale = index">
+                        <input name="radioScaleAccuracy-{{iScale}}" type="radio" class="d-none" [value]="scaleItem['PerformanceDiscussionScaleUID']"
+                          [(ngModel)]="_discussionRating['PerformanceDiscussionScaleUID']" *ngIf="!_bViewMode"
+                          [checked]="scaleItem['PerformanceDiscussionScaleUID'] === _discussionRating['PerformanceDiscussionScaleUID'] ? true : false">
+                        <i class="helper p-relative" *ngIf="scaleItem['iValue'] == -1"> N/A</i>
+                        <i class="helper p-relative" *ngIf="scaleItem['iValue'] != -1">{{ scaleItem['iValue'] }}</i>
+                      </label>
+                    </div>
+                  </ion-col>
+                </ion-row>
+
+                <ion-row>
+                  <ion-col>
+                    <h5 class="text-primary">{{ _kraCompanySettings.sPerformanceReviewMotivationNameChange}}</h5>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <div class="cutom-radio-ratings radio-inline-icons">
+                      <label class="d-inline-block inline-icons-outer" *ngFor="let scaleItem of _discussionAccuracyScaleItems; let iScale = index">
+                        <input name="radioScale-{{iScale}}" type="radio" class="d-none" [value]="scaleItem['PerformanceAccuracyScaleUID']"
+                          [(ngModel)]="_discussionRating['PerformanceAccuracyScaleUID']"
+                          [checked]="scaleItem['PerformanceAccuracyScaleUID'] === _discussionRating['PerformanceAccuracyScaleUID'] ? true : false">
+                        <i class="helper p-relative" *ngIf="scaleItem['iValue'] == -1"> N/A</i>
+                        <i class="helper p-relative" *ngIf="scaleItem['iValue'] != -1">{{ scaleItem['iValue'] }}</i>
+                      </label>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ng-container>
+            </ion-grid>
+          </ion-col>
+        </ion-col>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer *ngIf="!_isLoading">
+  <ion-button class="btnRound" shape="round" (click)="goReview()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-button>
+  <div style="float: right" *ngIf="_bViewMode && !_kraService._bShowModerationMode && _sRoleToEmployee === 'Manager'">
+    <ion-button shape="round" (click)="handleModeration(true)">{{ _moderateButton['text'] }}</ion-button>
+  </div>
+  <div style="float: right" *ngIf="_bViewMode && _switchToModeration && !_bViewMode">
+    <ion-button shape="round" (click)="saveModeration()">{{ _moderateButton['text'] }}</ion-button>
+  </div>
+  <div style="float: right" *ngIf="!_bViewMode">
+    <ion-button shape="round" (click)="handleDraftButtonClick()">Save as Draft</ion-button>
+    <ion-button shape="round" (click)="validateDiscussionPage()">Submit</ion-button>
+  </div>
+</ion-footer>

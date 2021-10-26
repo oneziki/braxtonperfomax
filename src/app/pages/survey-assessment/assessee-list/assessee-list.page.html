@@ -1,0 +1,58 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper assesseeGrid">
+    <ion-card>
+      <ion-card-content>
+        <ion-title class="ion-padding-start colHeader text-primary text-center">
+          <strong>Thank you</strong> for for completing the review. <br>
+          Below you can view the assessment report
+        </ion-title>
+        <ion-row>
+          <ion-col size="12">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Profile</th>
+                  <th>Survey Name</th>
+                  <th>Assessor Type</th>
+                  <th>Date Completed</th>
+                  <th class="text-center" width="15%">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let survey of _allUserSurveyAssessments">
+                  <td class="text-left">
+                    <h6 class="color-avi bg-primary">
+                      <ion-icon class="default-img" name="person-circle-outline"></ion-icon>
+                    </h6>
+                  </td>
+                  <td> {{ survey['sSurveyRoleName'] }} </td>
+                  <td>{{ survey['sAssessorTypeDescription']}}</td>
+                  <td>{{ survey['dDateNormalUserSigned']}}</td>
+                  <td class="text-center" width="10%" *ngIf="survey['bIsComplete'] === 0">
+                    <ion-button type="button" (click)="getSurveyQuestionnaire(survey)">
+                      Complete Assessment <ion-icon name="chevron-forward-circle-outline"></ion-icon>
+                    </ion-button>
+                  </td>
+                  <td class="text-center" width="10%" *ngIf="survey['bIsComplete'] === 1">
+                    <ion-button shape="round" color="success" type="button" (click)="getAssessmentReport(survey)">
+                      View Report <ion-icon name="chevron-forward-circle-outline"></ion-icon>
+                      <small>Completed</small>
+                    </ion-button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12">
+            <!-- BACK button always on the left -->
+            <a class="text-primary" (click)="RouteBack()">
+              <ion-icon name="chevron-back-circle-outline"></ion-icon> Back to Survey Categories
+            </a>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </ion-grid>
+</ion-content>

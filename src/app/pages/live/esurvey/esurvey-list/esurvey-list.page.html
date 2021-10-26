@@ -1,0 +1,60 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper esurveyListGrid">
+    <ion-row>
+      <ion-col>
+        <ion-text>
+          <h2 class="contentHeader">Esurvey List</h2>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+
+    <ion-card class="transparentCard">
+      <ion-card-content>
+
+        <ion-row class="b-b-1">
+          <ion-col size="4">
+            <strong>Employee</strong>
+          </ion-col>
+          <ion-col>
+            <strong>Category</strong>
+          </ion-col>
+          <ion-col>
+            <strong>Survey</strong>
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngFor="let assessment of _assessments" class="pointer" (click)="getEsurveyAssessment(assessment)">
+          <ion-col size="4" class="task-contain">
+            <h6 class="d-inline-block text-center">
+              {{ assessment['initials'] }}
+            </h6>
+            <p class="d-inline-block">{{ assessment["sEsurvey_employeeFullName"] }}</p>
+          </ion-col>
+          <ion-col>
+            <ion-text>
+              <p class="d-inline-block">
+                {{ assessment['sCategoryName'] }}
+              </p>
+            </ion-text>
+          </ion-col>
+          <ion-col>
+            <ion-text>
+              <p class="d-inline-block">
+                {{ assessment['sSurveyName'] }}
+              </p>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+
+      </ion-card-content>
+    </ion-card>
+
+  </ion-grid>
+</ion-content>
+
+
+<ion-footer>
+  <ion-button class="btnRound" shape="round" (click)="goBack()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-button>
+</ion-footer>

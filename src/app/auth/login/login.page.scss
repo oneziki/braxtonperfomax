@@ -1,0 +1,218 @@
+$menuBreakPoint: 768px;
+
+.loginGrid {
+  width: 100%;
+  background: #393939;
+
+  .appMenuBG {
+    background: var(--bg-url);
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    // bottom: 10px;
+    width: 100%;
+    border-radius: 10px;
+    height: 100%;
+  }
+
+  .login-logo {
+    height: 25%;
+  }
+
+  .input-group {
+    // background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    text-align: -webkit-left;
+  }
+
+  .errors {
+    font-size: small;
+    color: #fff;
+    background: var(--ion-color-danger);
+    padding-left: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .input-group {
+    animation-duration: 0.5s;
+    animation-name: slidein;
+  }
+
+  @keyframes slidein {
+    from {
+      margin-left: 100%;
+      width: 300%;
+    }
+
+    to {
+      margin-left: 0%;
+      width: 100%;
+    }
+  }
+
+  .input-group2 {
+    animation-duration: 1s;
+    animation-name: fadeInOut;
+    p {
+      color: white;
+      font-size: clamp(15px, 2vw, 18px);
+    }
+  }
+
+  @keyframes fadeInOut {
+    from {
+      margin-bottom: 100%;
+      width: 300%;
+    }
+
+    to {
+      margin-bottom: 0%;
+      width: 100%;
+    }
+  }
+
+  .container {
+    margin: 0 auto;
+    width: 30%;
+  }
+  #authForm {
+    max-width: 100%;
+    margin: 0 auto;
+    background-color: rgba(17, 25, 40, 0.3);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125);
+
+    img.performaxLogo {
+      max-width: 60%;
+      margin: 10px;
+      opacity: 0.8;
+    }
+    img.braxtonLogo {
+      max-width: 45%;
+      opacity: 0.5;
+      margin-top: 20px;
+    }
+
+    ion-card-title {
+      color: white;
+      font-size: clamp(15px, 4vw, 20px);
+    }
+
+    #loginUser,
+    #loginPass {
+      height: 35px;
+      margin-bottom: 5px;
+      color: white;
+      font-size: clamp(12px, 3vw, 16px);
+      background-color: rgba(255, 255, 255, 0.3);
+      border-radius: 25px;
+      border: 1px solid rgba(255, 255, 255, 1);
+    }
+  }
+
+  ion-button[class^='btn-login']::part(native) {
+    border-radius: 15px;
+  }
+
+  ion-button[class^='btn-azure']::part(native) {
+    --background: #00a6ee;
+    font-weight: bold;
+    color: #fff;
+    background-image: url('../../../assets/imgs/MS-circle-cropped.png');
+    background-repeat: no-repeat;
+    background-position: left;
+    border-radius: 15px;
+  }
+
+  .invalid-email {
+    text-align: center;
+    color: red !important;
+    font-weight: bold;
+  }
+
+  .mobile-logo {
+    padding-top: 25px;
+    margin: 0 auto;
+    text-align: center;
+    img {
+      // filter: grayscale(1);
+      max-width: 20%;
+      max-height: 140px;
+    }
+  }
+
+  @media (max-width: $menuBreakPoint) {
+    .container {
+      width: 70%;
+      // top: 74% !important;
+      ion-card-header {
+        padding: 0;
+      }
+    }
+
+    .input-group {
+      margin: 10px;
+      text-align: -webkit-left;
+      ion-input .input {
+        padding: 3px;
+      }
+    }
+
+    .input-group2 {
+      margin: 10px;
+      ion-button {
+        height: 30px;
+        font-size: 11px !important;
+        font-weight: 400;
+      }
+
+      // .btn-azure ion-label {
+      //   padding-left: 20% !important;
+      // }
+    }
+
+    .inner-item {
+      padding-right: 20px !important;
+    }
+
+    .input-1 {
+      padding-left: 0px !important;
+      text-align: -webkit-left;
+    }
+
+    ion-input {
+      padding-left: 0px;
+    }
+
+    ion-card {
+      border-radius: 0;
+    }
+
+    ion-card-content {
+      padding: 0;
+      margin: 0;
+    }
+
+    .mobile-logo {
+      padding-top: 20%;
+      text-align: center;
+      img {
+        max-width: 50%;
+        max-height: 100px;
+      }
+    }
+
+    .text-primary {
+      font-size: 12px;
+    }
+
+    .appMenuBG {
+      // height: 45%;
+      right: 0;
+    }
+  }
+}

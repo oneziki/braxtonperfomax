@@ -1,0 +1,32 @@
+.summaryGrid {
+  .sub-title {
+    border-radius: 10px;
+    padding: 15px 23px !important;
+    color: var(--bg-white);
+  }
+
+  ion-col {
+    font-size: 16px;
+  }
+  
+  h3 {
+    margin: -8px !important;
+    padding: 0px !important;
+  }
+
+  .pdfDownload {
+    --border-radius: 25px;
+    height: 25px;
+    width: 45px;
+    margin-left: 20px;
+  }
+
+  @media (max-width: 760px) {
+    .task-contain {
+      p {
+        margin-left: 0 !important;
+      }
+    }
+  }
+
+}

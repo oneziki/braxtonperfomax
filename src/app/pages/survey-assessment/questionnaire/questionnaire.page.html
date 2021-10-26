@@ -1,0 +1,69 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper questionnaireGrid">
+    <!-- <ion-title class="ion-padding-start colHeader text-primary">QUESTIONNAIRE</ion-title> -->
+    <ion-card>
+      <ion-card-content class="survey-wrapper">
+
+        <ion-row class="row survey-container">
+          <ng-container *ngIf="_selfAssessmentQuestionnaire['sAssessorTypeDescription'] !== 'Self'">
+            <ion-col size="12" *ngIf="_showDeclineAlert">
+              <section class="container m-b-35-impo animated fadeIn">
+                <p> Are you sure you want to decline giving feedback to {{ _sAssesseeFullName }} ?</p>
+                <strong> If Yes, please provide a reason.</strong>
+                <br>
+                <br>
+                <ion-button type="button" (click)="_showDeclineAlert=false;toggleDeclineInvite()">Yes</ion-button>
+                <ion-button type="button" (click)="_showDeclineAlert=false">No</ion-button>
+              </section>
+            </ion-col>
+            <ion-col size="12" *ngIf="!_showDeclineAlert">
+              <section class="container m-b-35-impo animated fadeIn" *ngIf="!_showDeclineAlert">
+                <div class="row">
+                  <div class="col-12 text-right">
+                    <button class="m-b-10 btn btn-block btn-warning" type="button" (click)="alertDecline()">Decline Invitation</button>
+                  </div>
+                </div>
+              </section>
+            </ion-col>
+          </ng-container>
+          <ion-col size="12">
+            <div id="surveyContainer" class="contentcontainer codecontainer">
+              <div id="surveyElement"></div>
+            </div>
+          </ion-col>
+        </ion-row>
+
+      </ion-card-content>
+      <!--DECLINE-INVITATION SLIDER-->
+      <!-- <div [@slideInOut]="declinechatSlideInOut" id="sidebar" class="right-slider users p-chat-user showChat" [ngClass]="declinechatSlideInOut">
+        <div class="had-container">
+          <div class="users-main p-fixed">
+            <div class="user-box p-10">
+              <h4 class="sub-title">Decline Invitation</h4>
+              <form class="md-float-material" #declineForm="ngForm" (ngSubmit)="declineInvitation();">
+                <div class="form-group row">
+                  <label class="col-12 col-form-label">Message</label>
+                  <div class="col-12">
+                    <strong>
+                      Please provide a reason for declining this invitation
+                      <br> to provide feedback
+                    </strong>
+                    <textarea name="sDecline" class="form-control m-t-10" autofocus [(ngModel)]="_sDeclineReason" required ngModel #sDecline="ngModel"></textarea>
+                    <span class="help-block" *ngIf="sDecline.touched && sDecline.invalid && sDecline.errors.required">
+                      This field is required
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group  text-right m-10">
+                  <a class="btn m-10" (click)="toggleDeclineInvite()">Cancel</a>
+                  <button type="submit" class="btn btn-success m-10">Confirm</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </ion-card>
+
+  </ion-grid>
+</ion-content>

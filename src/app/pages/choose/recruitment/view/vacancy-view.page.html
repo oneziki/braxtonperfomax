@@ -1,0 +1,354 @@
+<ion-content [fullscreen]="true">
+    <ion-grid class="contentPageWrapper vacancyViewGrid">
+        <ion-card>
+            <ion-card-header>
+                <ion-row *ngIf="_vacancyData">
+                    <ion-col sizeXs="6" sizeMd="8">
+                        <h4 class="sub-title" style="font-size: 35px;">
+                            <strong>Role Profile:</strong>  {{ _vacancyData.sJobTitleRoleName }}
+                            <small> (rev.{{ _vacancyData.iRevision }})</small>
+                        </h4>
+                    </ion-col>
+                    <ion-col sizeXs="6" sizeMd="4" class="text-right">
+                        <ng-container *ngIf="!_bApplied">
+                            <ion-button type="button" shape="round" class="success" (click)="applyForVacancy()">
+                                <ion-icon name="print-outline"></ion-icon>
+                                Apply Now
+                            </ion-button>
+                        </ng-container>
+                        <ng-container *ngIf="_bApplied">
+                            <ion-button type="button" shape="round" class="btn btn-primary" (click)="printPDFReport()">
+                                <ion-icon name="print-outline"></ion-icon>
+                                View Application
+                            </ion-button>
+                        </ng-container>
+                        <div style="padding-top: 10px;">
+                            <a (click)="goChoosePage()">
+                                <ion-icon name="chevron-back-circle-outline"></ion-icon> Back
+                            </a>
+                        </div>
+                    </ion-col>
+                </ion-row>
+            </ion-card-header>
+            <ion-card-content>
+                <ng-container *ngIf="_vacancyData">
+                    <!-- SECTION 1 -->
+                    <ion-row>
+                        <ion-col size="12" class="section-header">
+                            <strong>Section 1</strong>
+                            <small class="m-l-10">Role Definition</small>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row class="sub-header">
+                        <ion-col size="12">
+                            <ion-col sizeSm="6" sizeXs="8" sizeMd="10">
+                                <strong>Reporting Relationship</strong>
+                            </ion-col>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row class="m-tb-10-20 a-center">
+                        <!-- row 1 -->
+                        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Department:</strong></ion-col>
+                        <ion-col sizeXs="6" sizeMd="3">
+                            <p>{{ _vacancyData['sOrganisationTierName'] }}</p>
+                        </ion-col>
+                        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Report to:</strong></ion-col>
+                        <ion-col sizeXs="6" sizeMd="3">
+                            <p>{{ _vacancyData['sReportToJobTitleName'] }}</p>
+                        </ion-col>
+                        <!-- row 2 -->
+                        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Location:</strong></ion-col>
+                        <ion-col sizeXs="6" sizeMd="3">
+                            <p>{{ _vacancyData['sLocation'] }}</p>
+                        </ion-col>
+                        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Reporting into role:</strong></ion-col>
+                        <ion-col sizeXs="6" sizeMd="3">
+                            <p>{{ _vacancyData['sReportIntoJobTitleName'] }}</p>
+                        </ion-col>
+                        <!-- row 3 -->
+                        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Level:</strong></ion-col>
+                        <ion-col sizeXs="6" sizeMd="3">
+                            <p>{{ _vacancyData['sLevel'] }}</p>
+                        </ion-col>
+                    </ion-row>
+
+                    <ion-row class="sub-header">
+                        <ion-col size="12">
+                            <strong>Purpose of the role</strong>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col size="12">
+                            <ion-row>
+                                <p [innerHTML]="_vacancyData['sJobTitlePurpose']"></p>
+                            </ion-row>
+                        </ion-col>
+                    </ion-row>
+
+                    <!-- SECTION 2 -->
+                    <ion-row>
+                        <ion-col size="12" class="section-header">
+                            <strong>Section 2</strong>
+                            <small class="m-l-10">Job Description</small>
+                        </ion-col>
+                    </ion-row>
+
+                    <!-- DUTIES AND RESPONSIBILITIES -->
+                    <ion-row class="sub-header">
+                        <ion-col size="12">
+                            <strong>Duties & Responsibilities</strong>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col size="12">
+                            <ion-row>
+                                <p [innerHTML]="_vacancyData['sJobResponsibilities']" class="paragraph"></p>
+                            </ion-row>
+                        </ion-col>
+                    </ion-row>
+
+                    <!-- QUALIFICATIONS -->
+                    <ion-row class="sub-header m-t-20">
+                        <ion-col size="12">
+                            <ion-col sizeSm="6" sizeXs="8" sizeMd="10">
+                                <strong>Qualifications</strong>
+                            </ion-col>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row class="m-tb-10-20">
+                        <ion-col sizeXs="6" sizeMd="6" class="b-r-lightgray">
+                            <ion-row>
+                                <strong class="d-block">Essential :</strong>
+                            </ion-row>
+                            <ion-row *ngFor="let qualification of _essentialQualifications">
+                                <p *ngIf="qualification['bEssential']" class="paragraph">
+                                    {{ qualification.sQualificationName }}
+                                </p>
+                            </ion-row>
+                            <p *ngIf="_essentialQualifications.length === 0" class="text-muted">To be confirmed</p>
+                        </ion-col>
+                        <ion-col sizeXs="6" sizeMd="6" class="text-center">
+                            <ion-row>
+                                <strong class="d-block">Optional :</strong>
+                            </ion-row>
+                            <ion-row *ngFor="let qualification of _optionalQualifications">
+                                <p *ngIf="qualification['bEssential']" class="paragraph">
+                                    {{ qualification.sQualificationName }}
+                                </p>
+                            </ion-row>
+                            <p *ngIf="_optionalQualifications.length === 0" class="text-muted">To be confirmed</p>
+                        </ion-col>
+                    </ion-row>
+
+                    <!-- KNOWLEDGE AND SKILLS -->
+                    <ng-container *ngIf="_vacancyData.skillsAndKnowledgeDimensions.length > 0">
+                        <ion-row class="sub-header m-t-20">
+                            <ion-col size="12">
+                                <strong>Skills & Knowledge</strong>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="12">
+                                <ion-row>
+                                    <ng-container *ngFor="let dimensions of _vacancyData['skillsAndKnowledgeDimensions']">
+                                        <p>
+                                            <b>{{ dimensions.sSkillsKnowledgeDimensionName }}</b>
+                                        </p>
+                                        <p *ngFor="let Indicatior of dimensions['skillsAndKnowledgeIndicator']" class="paragraph">
+                                            {{ Indicatior.sSkillsKnowledgeIndicatorName }}
+                                        </p>
+                                        <br />
+                                    </ng-container>
+                                </ion-row>
+                            </ion-col>
+                        </ion-row>
+                    </ng-container>
+
+                    <!-- ESSENTIAL EXPERIENCE -->
+                    <ng-container *ngIf="_vacancyData.experience.length > 0">
+                        <ion-row class="sub-header m-t-20">
+                            <ion-col size="12">
+                                <strong>Experience</strong>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="12">
+                                <ion-row>
+                                    <ng-container *ngFor="let experience of _vacancyData['experience']">
+                                        <p class="paragraph">{{ experience.sExperienceName }}</p>
+                                    </ng-container>
+                                </ion-row>
+                            </ion-col>
+                        </ion-row>
+                    </ng-container>
+
+                    <!-- WORKING CONDITIONS -->
+                    <ng-container *ngIf="_vacancyData.sWorkingConditions.length > 0">
+                        <ion-row class="sub-header m-t-20">
+                            <ion-col size="12">
+                                <strong>Working Conditions</strong>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="12">
+                                <ion-row>
+                                    <p [innerHTML]="_vacancyData.sWorkingConditions" class="paragraph"></p>
+                                </ion-row>
+                            </ion-col>
+                        </ion-row>
+                    </ng-container>
+
+                    <!-- Minimum amount of time to be served in this role -->
+                    <ng-container *ngIf="_vacancyData.sMinimumTime.length > 0">
+                        <ion-row class="sub-header m-t-20">
+                            <ion-col size="12">
+                                <strong>Minimum amount of time to be served in this role</strong>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="12">
+                                <ion-row>
+                                    <p [innerHTML]="_vacancyData.sMinimumTime" class="paragraph"></p>
+                                </ion-row>
+                            </ion-col>
+                        </ion-row>
+                    </ng-container>
+
+                    <!-- PHYSICAL REQUIREMENTS-->
+                    <ng-container *ngIf="_vacancyData.sPhysicalRequirements.length > 0">
+                        <ion-row class="sub-header m-t-20">
+                            <ion-col size="12">
+                                <strong>Physical Requirements</strong>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="12">
+                                <ion-row>
+                                    <p [innerHTML]="_vacancyData.sPhysicalRequirements" class="paragraph"></p>
+                                </ion-row>
+                            </ion-col>
+                        </ion-row>
+                    </ng-container>
+
+                    <!--Regulatory Requirements -->
+                    <ng-container *ngIf="_vacancyData.sRegulatoryRequirements.length > 0">
+                        <ion-row class="sub-header m-t-20">
+                            <ion-col size="12">
+                                <strong>Regulatory Requirements</strong>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="12">
+                                <ion-row>
+                                    <p *ngIf="_vacancyData.sRegulatoryRequirements.length > 0" [innerHTML]="_vacancyData.sRegulatoryRequirements"
+                                       class="paragraph"></p>
+                                </ion-row>
+                            </ion-col>
+                        </ion-row>
+                    </ng-container>
+
+                    <!-- SECTION 3 COMPETENCIES-->
+                    <ion-row>
+                        <ion-col size="12" class="section-header">
+                            <strong>Section 3</strong>
+                            <small class="m-l-10">Competencies</small>
+                        </ion-col>
+                    </ion-row>
+
+                    <ng-container *ngFor="let item of _vacancyData['competencyProfile']">
+                        <ion-row>
+                            <ion-col size="12">
+                                <strong style="font-size: 20px;">{{ item.sCompetencyTypeName }} View</strong>
+                            </ion-col>
+                        </ion-row>
+
+                        <ion-row>
+                            <ion-col size="12">
+                                <ion-row class="sub-header">
+                                    <ion-col size="6">
+                                        <strong>Competency</strong>
+                                    </ion-col>
+                                    <ion-col size="6">
+                                        <strong>Behavioral Indicator</strong>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-col>
+                        </ion-row>
+
+                        <ng-container *ngFor="let comp of item['competencies']; let i = index">
+                            <ion-col size="12" class="ion-no-padding">
+                                <ion-row>
+                                    <ion-col size="6" class="b-b-lightgray b-r-lightgray">
+                                        <h3><strong class="p-t-5">{{ comp["sCompetencyName"] }}</strong></h3>
+                                        <span style="color: var(--slate-grey);">{{comp["sCompetencyDescription"]}}</span>
+                                    </ion-col>
+                                    <ion-col size="6" class="b-b-lightgray">
+                                        <ng-container *ngFor="let outcome of comp['outcomes']">
+                                            <div class="list-dash">
+                                                <ul class="dashed">
+                                                    <li *ngFor="let Indicatior of outcome['indicators']">
+                                                        {{ Indicatior.sIndicatorName }}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </ng-container>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-col>
+                        </ng-container>
+                    </ng-container>
+
+                    <!-- SECTION 4 CAREER PLANNING-->
+                    <ng-container *ngIf="_vacancyData['sPotentialJobTitleJobTitleName'].length || _vacancyData['sFoundationJobTitleName'].length">
+                        <ion-row>
+                            <ion-col size="12" class="section-header">
+                                <strong>Section 4</strong>
+                                <small class="m-l-10">Career Planning</small>
+                            </ion-col>
+                        </ion-row>
+
+                        <ion-row>
+                            <ion-col size="12">
+                                <ion-row class="sub-header">
+                                    <ion-col size="6">
+                                        <strong>Potential next positions from this role</strong>
+                                    </ion-col>
+                                    <ion-col size="6">
+                                        <strong>Positions potentially leading to this role</strong>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-col>
+                        </ion-row>
+
+                        <ion-row>
+                            <ion-col size="12">
+                                <ion-row>
+                                    <ion-col size="6">
+                                        <p *ngIf="_vacancyData['sPotentialJobTitleJobTitleName'] !== 'To be confirmed'"
+                                           [innerHTML]="_vacancyData['sPotentialJobTitleJobTitleName']" class="paragraph"></p>
+                                        <p *ngIf="_vacancyData['sPotentialJobTitleJobTitleName'] === 'To be confirmed'"
+                                           [innerHTML]="_vacancyData['sPotentialJobTitleJobTitleName']" class="text-muted"></p>
+                                    </ion-col>
+                                    <ion-col size="6">
+                                        <p *ngIf="_vacancyData['sFoundationJobTitleName'] !== 'To be confirmed'"
+                                           [innerHTML]="_vacancyData['sFoundationJobTitleName']" class="paragraph"></p>
+                                        <p *ngIf="_vacancyData['sFoundationJobTitleName'] === 'To be confirmed'"
+                                           [innerHTML]="_vacancyData['sFoundationJobTitleName']" class="text-muted"></p>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-col>
+                        </ion-row>
+
+                    </ng-container>
+
+                </ng-container>
+            </ion-card-content>
+        </ion-card>
+    </ion-grid>
+</ion-content>
+
+<ion-footer>
+    <ion-button class="btnRound" shape="round" (click)="goChoosePage()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+</ion-footer>

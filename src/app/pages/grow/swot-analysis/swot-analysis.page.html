@@ -1,0 +1,128 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper swotGrid" *ngIf="_pageGO">
+    <ion-row>
+      <ion-col size="12">
+        <ion-text>
+          <h2 class="contentHeader">
+            PDP SWOT Analysis
+          </h2>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12" class="m-l-10">
+        <ion-text>
+          <h2>
+            General Instructions
+          </h2>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+    <hr>
+    <ion-row>
+      <ion-col>
+        <ion-text>
+          <p [innerHTML]="_kraCompanySettings['sSWOTAnalysisMatrixInst']">
+          </p>
+        </ion-text>
+      </ion-col>
+      <ion-col size="1"></ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ng-container *ngFor="let column of _SWOTAnalysisScale;">
+        <ion-col sizeXs="12" sizeLg="6" sizeXl="6">
+          <ion-card class="card card-transparent">
+            <ion-card-header class="sub-title bg-primary">
+              <ion-card-title>
+                <ion-row>
+                  <ion-col sizeXs="12" sizeSm="6" sizeLg="6" sizeXl="6" sizeMd="6">
+                    <span class="pointer">{{ column['sName'] }}</span>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeSm="6" sizeLg="6" sizeXl="6" sizeMd="6">
+                    <span class="f-right floatLeft">
+                      <small class="pointer" container="body" placement="top" (click)="addSWOTAnalysis(column)" *ngIf="!_bViewMode">
+                        <span class="d-xs-none">Add New {{ column['sName'] }} </span>
+                        <ion-icon name="add-circle-sharp"></ion-icon>
+                      </small>
+                    </span>
+                  </ion-col>
+                </ion-row>
+              </ion-card-title>
+            </ion-card-header>
+            <ion-card-content *ngIf="_personalSWOTAnalysis['SWOT'].length > 0">
+              <ion-grid>
+                <ion-col sizeXs="12" sizeMd="6">
+                  <ng-container *ngFor="let analysis of _personalSWOTAnalysis['SWOT']; let iSWOT = index">
+                    <ng-container *ngIf="analysis.SWOTscaleUID === column['SWOTscaleUID'] && !_bViewMode">
+                      <ion-row class="p-b-10">
+                        <ion-input type="text" id="sCompentency-{{ iSWOT }}" name="sCompentency-{{ iSWOT }}" [(ngModel)]="analysis['sSWOTAnalysis']"
+                          placeholder="Enter your {{ column['sName'] }} here"></ion-input>
+                        <ion-button class="p-l-10" (click)="removeSWOTAnalysis(iSWOT,column['sName'], analysis)">
+                          <ion-icon name="remove-circle-sharp"></ion-icon>
+                        </ion-button>
+                      </ion-row>
+                    </ng-container>
+                  </ng-container>
+                </ion-col>
+              </ion-grid>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ng-container>
+    </ion-row>
+
+    <!-- 3 MONTHS -->
+    <ion-col sizeXs="12" sizeLg="6" sizeXl="12" *ngIf="_kraCompanySettings.bSWOT3monthsObjective">
+      <ion-item lines="none">
+        <ion-label position="stacked">
+          {{ _kraCompanySettings.sSWOT3monthsObjectiveName }}
+        </ion-label>
+        <ion-textarea autoGrow="true" name="sSWOT3monthsManualObjectiveComment" [(ngModel)]="_personalSWOTAnalysis['sSWOT3monthsManualObjectiveComment']"
+          placeholder="Enter here..."></ion-textarea>
+      </ion-item>
+    </ion-col>
+
+    <!-- 6 MONTHS -->
+    <ion-col sizeXs="12" sizeLg="6" sizeXl="12" *ngIf="_kraCompanySettings.bSWOT6monthsObjective">
+      <ion-item lines="none">
+        <ion-label position="stacked">
+          {{ _kraCompanySettings.sSWOT6monthsObjectiveName }}
+        </ion-label>
+        <ion-textarea autoGrow="true" name="sSWOT6monthsManualObjectiveComment" [(ngModel)]="_personalSWOTAnalysis['sSWOT6monthsManualObjectiveComment']"
+          placeholder="Enter here..."></ion-textarea>
+      </ion-item>
+    </ion-col>
+
+    <!-- 12 MONTHS -->
+    <ion-col sizeXs="12" sizeLg="6" sizeXl="12" *ngIf="_kraCompanySettings.bSWOT12monthsObjective">
+      <ion-item lines="none">
+        <ion-label position="stacked">
+          {{ _kraCompanySettings.sSWOT12monthsObjectiveName }}
+        </ion-label>
+        <ion-textarea autoGrow="true" name="sSWOT12monthsManualObjectiveComment" [(ngModel)]="_personalSWOTAnalysis['sSWOT12monthsManualObjectiveComment']"
+          placeholder="Enter here..."></ion-textarea>
+      </ion-item>
+    </ion-col>
+
+    <!-- 2 TO 3 YEARS -->
+    <ion-col sizeXs="12" sizeLg="6" sizeXl="12" *ngIf="_kraCompanySettings.bSWOT2to3YearsObjective">
+      <ion-item lines="none">
+        <ion-label position="stacked">
+          {{ _kraCompanySettings.sSWOT2to3YearsObjectiveName }}
+        </ion-label>
+        <ion-textarea autoGrow="true" name="sSWOT2to3YearsManualObjectiveComment" [(ngModel)]="_personalSWOTAnalysis['sSWOT2to3YearsManualObjectiveComment']"
+          placeholder="Enter here..."></ion-textarea>
+      </ion-item>
+    </ion-col>
+
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-button class="btnRound" shape="round" (click)="goGrowPage()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-button>
+  <ion-button shape="round" class="f-right" (click)="saveSWOTAnalysisManual()">Confirm SWOT</ion-button>
+</ion-footer>

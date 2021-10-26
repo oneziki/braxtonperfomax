@@ -1,0 +1,118 @@
+.card-stairway-wrapper {
+  .card {
+    box-shadow: none;
+    border-radius: 10px;
+    margin-bottom: 5px;
+  }
+  .card-center,
+  .card-body {
+    height: unset !important;
+  }
+  @media only screen and (max-width: 768px) {
+    .card-body {
+      min-height: 0px !important;
+      text-align: center !important;
+    }
+    // .left-col i.icofont {
+    //   display: none !important;
+    // }
+    // .left-col .card:after {
+    //   position: fixed;
+    // }
+  }
+  @media only screen and (min-width: 768px) {
+    .show-mobile {
+      display: none !important;
+    }
+  }
+  .mobile-left-col i.icofont {
+    color: var(--primary);
+    // transform: translateY(-50%);
+    font-size: 20px;
+  }
+
+  @media only screen and (max-width: 768px) {
+    // .left-col .card:after {
+    //   content: '';
+    //   position: absolute;
+    //   right: -50%;
+    //   top: 50%;
+    //   height: 1px;
+    //   background: var(--primary);
+    //   width: 50%;
+    //   transform: translate(0, -50%);
+    //   z-index: 5;
+    // }
+    .left-col i.icofont {
+      color: var(--primary);
+      position: absolute;
+      right: -15px;
+      top: 51%;
+      transform: translateY(-50%);
+      font-size: 20px;
+    }
+    .right-col i.icofont {
+      color: var(--primary);
+      position: absolute;
+      left: -15px;
+      top: 51%;
+      transform: translateY(-50%);
+      font-size: 20px;
+    }
+    // .right-col .card:after {
+    //   content: '';
+    //   position: absolute;
+    //   left: -50%;
+    //   top: 50%;
+    //   height: 1px;
+    //   background: var(--primary);
+    //   width: 50%;
+    //   transform: translate(0, -50%);
+    //   z-index: 5;
+    // }
+  }
+
+  h5.card-title {
+    color: #f2f2f2;
+    font-size: 12px !important;
+  }
+  .img-radius {
+    height: 75px;
+    width: 75px;
+    margin: 5px;
+  }
+  .b-primary {
+    border: 1px solid var(--primary);
+    background: white;
+    border-radius: 10px;
+    z-index: 10;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .text-white {
+    color: #f2f2f2 !important;
+  }
+}
+
+.cs-Wrapper.modal-body {
+  padding: 5px;
+
+  button.close {
+    margin-top: 0;
+  }
+  .modal-mainHeading {
+    display: block;
+    font-size: 14px;
+    padding: 5px;
+    background: lightgray;
+    border-radius: 5px;
+  }
+  .modal-subHeading {
+    display: block;
+    font-size: 12px;
+    margin: 10px 5px 5px;
+  }
+  p {
+    margin: 10px 10px 15px;
+  }
+}

@@ -1,0 +1,14 @@
+<div class="image-displayer-wrapper">
+  <div class="row">
+    <div class="col" *ngFor="let listItem of data['data']; let iListItem = index">
+      <img class="coded-inner-navbar-img img-radius" crossOrigin="Anonymous" [alt]="listItem['sHeading']" [src]="listItem['propic']"
+        [ngStyle]="{ 'height': (overallHeight - 100) + 'px', 'width': (overallHeight - 100) + 'px' }">
+      <strong class="text-primary">
+        {{ listItem['sHeading'] }}
+        <small class="d-block text-muted" *ngFor="let d of listItem['data']; let iListItem = index" style="font-style: normal;">
+          {{ d['label'] }}
+        </small>
+      </strong>
+    </div>
+  </div>
+</div>

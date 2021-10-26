@@ -1,0 +1,466 @@
+<ion-content class="modal">
+  <ion-grid>
+    <ion-card class="card">
+      <ion-card-header>
+        <ion-card-title> <small class="text-lite-charcoal">Filter</small>
+          <ion-button size="small" shape="round " type="button" class="text-right f-right" (click)="dismiss()">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-card-title>
+      </ion-card-header>
+      <!--  -->
+      <ion-card-content class="content li-inverse nav-filter">
+        <ion-row class="row">
+          <!-- Single / Comparative View Set -->
+          <!-- <ng-container
+            *ngIf="!this._curFilter['node_bShowOnlyTrendView'] && _curFilter.node_bShowSingleViewFilters && _curFilter.node_bShowTrendViewFilters">
+            <div class="col-12">
+              <small>Select View</small>
+            </div>
+            <div class="col-12">
+              <select class="form-control form-control-primary" name="select" [(ngModel)]="_curFilter.currentView">
+                <option value="Single View" label="Single View" *ngIf="_curFilter.node_bShowSingleViewFilters">
+                  Single View
+                </option>
+                <option value="Comparative View" label="Comparative View" *ngIf="_curFilter.node_bShowTrendViewFilters">
+                  Comparative View
+                </option>
+              </select>
+              <hr>
+            </div>
+          </ng-container> -->
+          <!-- Single / Comparative View Display -->
+          <!-- <ng-container
+            *ngIf="this._curFilter['node_bShowOnlyTrendView'] || !_curFilter.node_bShowSingleViewFilters || !_curFilter.node_bShowTrendViewFilters">
+            <div class="col-12">
+              <small>Current View</small>
+              <p>{{ _curFilter.currentView }}</p>
+              <hr>
+            </div>
+          </ng-container> -->
+
+          <ng-container *ngIf="_bShowFilter && _curFilter.node_bShowBusinessFilters">
+
+            <ng-container *ngIf="_curFilter.businessids && _curFilter.businessids.length !== 0">
+              <!-- <div class="col-12">
+                <small>Filter</small>
+              </div> -->
+              <!-- <div class="col-12">
+                <select class="form-control form-control-primary" id="businessId" name="businessId" [(ngModel)]="_curFilter.businessId">
+                  <option *ngFor="let item of _curFilter.businessids" [value]="item.filterID" [label]="item.filterLabel">{{ item.filterLabel }}</option>
+                </select>
+                <hr>
+              </div> -->
+            </ng-container>
+            <ng-container *ngIf="_curFilter.filter1 && _curFilter.filter1.length !== 0">
+              <ion-col size="12">
+                <small>{{ _curFilter.filter1Name }}</small>
+              </ion-col>
+              <ion-col size="12">
+                <select class="form-control form-control-primary" id="filter1Id" name="filter1Id" [(ngModel)]="_curFilter.filter1Id" (ngModelChange)="filter1Change($event)">
+                  <option *ngFor="let item of _curFilter.filter1" [value]="item.filterID" [label]="item.filterLabel">{{
+                    item.filterLabel }}</option>
+                </select>
+                <hr>
+              </ion-col>
+            </ng-container>
+            <ng-container *ngIf="_curFilter.filter2 && _curFilter.filter2.length !== 0">
+              <ion-col size="12">
+                <small>{{ _curFilter.filter2Name }}</small>
+              </ion-col>
+              <ion-col size="12">
+                <select class="form-control form-control-primary" id="filter2Id" name="filter2Id" [(ngModel)]="_curFilter.filter2Id">
+                  <option *ngFor="let item of _curFilter.filter2" [value]="item.filterID" [label]="item.filterLabel">{{
+                    item.filterLabel }}</option>
+                </select>
+                <hr>
+              </ion-col>
+            </ng-container>
+            <ng-container *ngIf="_curFilter.filter3 && _curFilter.filter3.length !== 0">
+              <ion-col size="12">
+                <small>{{ _curFilter.filter3Name }}</small>
+              </ion-col>
+              <ion-col size="12">
+                <select class="form-control form-control-primary" id="filter3Id" name="filter3Id" [(ngModel)]="_curFilter.filter3Id">
+                  <option *ngFor="let item of _curFilter.filter3" [value]="item.filterID" [label]="item.filterLabel">{{
+                    item.filterLabel }}</option>
+                </select>
+                <hr>
+              </ion-col>
+            </ng-container>
+            <ng-container *ngIf="_curFilter.filter4 && _curFilter.filter4.length !== 0">
+              <ion-col size="12">
+                <small>{{ _curFilter.filter4Name }}</small>
+              </ion-col>
+              <ion-col size="12">
+                <select class="form-control form-control-primary" id="filter4Id" name="filter4Id" [(ngModel)]="_curFilter.filter4Id">
+                  <option *ngFor="let item of _curFilter.filter4" [value]="item.filterID" [label]="item.filterLabel">{{
+                    item.filterLabel }}</option>
+                </select>
+                <hr>
+              </ion-col>
+            </ng-container>
+            <ng-container *ngIf="_curFilter.filter5 && _curFilter.filter5.length !== 0">
+              <ion-col size="12">
+                <small>{{ _curFilter.filter5Name }}</small>
+              </ion-col>
+              <ion-col size="12">
+                <select class="form-control form-control-primary" id="filter5Id" name="filter5Id" [(ngModel)]="_curFilter.filter5Id">
+                  <option *ngFor="let item of _curFilter.filter5" [value]="item.filterID" [label]="item.filterLabel">{{
+                    item.filterLabel }}</option>
+                </select>
+                <hr>
+              </ion-col>
+            </ng-container>
+          </ng-container>
+          <!--  -->
+          <ng-container *ngIf="_bShowFilter && _curFilter.node_bShowBusinessFilters">
+            <ng-container *ngIf="_curFilter.businessids && _curFilter.businessids.length">
+              <!-- <ion-col size="12">
+                
+              </ion-col> -->
+              <ion-col size="12">
+                <div class="row radio-filters form-radio filterNameMargin">
+                  <!-- MAIN LEVEL -->
+                  <ion-col size="12" *ngFor="let bchild of _curFilter.businessids; let iBC = index;">
+                    <div class="radio radio-default radiofill animated fadeIn">
+                      <label [ngClass]="{'text-primary': _curBusiness.indexOf(bchild['filterID']) === 0}">
+                        <input name="radioFilters" type="radio" [value]="bchild['filterID']" [(ngModel)]="_curFilter.businessId" (ngModelChange)="filterNav($event, 1, bchild)">
+
+                        <div class="ico-wrapper">
+                          <div class="iw-icon">
+                            <i class="icofont icofont-circled-right"
+                              [ngClass]="{'rotate-down': _curBusiness.indexOf(bchild['filterID']) > -1 && bchild.children && bchild.children.length}"></i>
+                          </div>
+                          <div class="iw-text">
+                            <i class="helper"></i>{{ bchild['filterLabel'] }}
+                            <span *ngIf="bchild.children && bchild.children.length">
+                              ( {{ bchild.children.length }} )
+                            </span>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                    <!-- SUB A1 LEVEL -->
+                    <ng-container *ngIf="_curBusiness.indexOf(bchild['filterID']) >= 0">
+                      <ion-col size="12" *ngFor="let bchildSubA of bchild.children; let iBCA = index;">
+                        <div class="radio radio-default radiofill animated fadeIn">
+                          <label [ngClass]="{'text-primary': _curBusiness.indexOf(bchildSubA['filterID']) === 0}">
+                            <input name="radioFilters" type="radio" [value]="bchildSubA['filterID']" [(ngModel)]="_curFilter.businessId"
+                              (ngModelChange)="filterNav($event, 1, bchildSubA)">
+
+                            <div class="ico-wrapper">
+                              <div class="iw-icon">
+                                <i class="icofont icofont-rounded-right"
+                                  [ngClass]="{'rotate-down': _curBusiness.indexOf(bchildSubA['filterID']) > -1 && bchildSubA.children && bchildSubA.children.length}"></i>
+                              </div>
+                              <div class="iw-text">
+                                <i class="helper"></i>{{ bchildSubA['filterLabel'] }}
+                                <span *ngIf="bchildSubA.children.length">
+                                  ( {{ bchildSubA.children.length }} )
+                                </span>
+                              </div>
+                            </div>
+
+                          </label>
+                        </div>
+                        <!-- SUB B2 LEVEL -->
+                        <ng-container *ngIf="_curBusiness.indexOf(bchildSubA['filterID']) >= 0">
+                          <ion-col size="12" *ngFor="let bchildSubB of bchildSubA.children; let iBCB = index;">
+                            <div class="radio radio-default radiofill animated fadeIn">
+                              <label [ngClass]="{'text-primary': _curBusiness.indexOf(bchildSubB['filterID']) === 0}">
+                                <input name="radioFilters" type="radio" [value]="bchildSubB['filterID']" [(ngModel)]="_curFilter.businessId"
+                                  (ngModelChange)="filterNav($event, 2, bchildSubB)">
+                                <div class="ico-wrapper">
+                                  <div class="iw-icon">
+                                    <i class="icofont icofont-double-right"
+                                      [ngClass]="{'rotate-down': _curBusiness.indexOf(bchildSubB['filterID']) > -1 && bchildSubB.children && bchildSubB.children.length}"></i>
+                                  </div>
+                                  <div class="iw-text">
+                                    <i class="helper"></i>{{ bchildSubB['filterLabel'] }}
+                                    <span *ngIf="bchildSubB.children.length">
+                                      ( {{ bchildSubB.children.length }} )
+                                    </span>
+                                  </div>
+                                </div>
+
+                              </label>
+                            </div>
+                            <!-- SUB C3 LEVEL -->
+                            <ng-container *ngIf="_curBusiness.indexOf(bchildSubB['filterID']) >= 0">
+                              <ion-col size="12" *ngFor="let bchildSubC of bchildSubB.children; let iBCC = index;">
+                                <div class="radio radio-default radiofill animated fadeIn">
+                                  <label [ngClass]="{'text-primary': _curBusiness.indexOf(bchildSubC['filterID']) === 0}">
+                                    <input name="radioFilters" type="radio" [value]="bchildSubC['filterID']" [(ngModel)]="_curFilter.businessId"
+                                      (ngModelChange)="filterNav($event, 3, bchildSubC)">
+                                    <div class="ico-wrapper">
+                                      <div class="iw-icon">
+                                        <i class="icofont icofont-caret-right"
+                                          [ngClass]="{'rotate-down': _curBusiness.indexOf(bchildSubC['filterID']) > -1 && bchildSubC.children && bchildSubC.children.length}"></i>
+                                      </div>
+                                      <div class="iw-text">
+                                        <i class="helper"></i>{{ bchildSubC['filterLabel'] }}
+                                        <span *ngIf="bchildSubC.children.length">
+                                          ( {{ bchildSubC.children.length }} )
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </label>
+                                </div>
+                                <!-- SUB D4 LEVEL -->
+                                <ng-container *ngIf="_curBusiness.indexOf(bchildSubC['filterID']) >= 0">
+                                  <ion-col size="12" *ngFor="let bchildSubD of bchildSubC.children; let iBCD = index;">
+                                    <div class="radio radio-default radiofill animated fadeIn">
+                                      <label [ngClass]="{'text-primary': _curBusiness.indexOf(bchildSubD['filterID']) === 0}">
+                                        <input name="radioFilters" type="radio" [value]="bchildSubD['filterID']" [(ngModel)]="_curFilter.businessId"
+                                          (ngModelChange)="filterNav($event, 4, bchildSubD)">
+                                        <div class="ico-wrapper">
+                                          <div class="iw-icon">
+                                            <i class="icofont icofont-caret-right"
+                                              [ngClass]="{'rotate-down': _curBusiness.indexOf(bchildSubD['filterID']) > -1 && bchildSubD.children && bchildSubD.children.length}"></i>
+                                          </div>
+                                          <div class="iw-text">
+                                            <i class="helper"></i>{{ bchildSubD['filterLabel'] }}
+                                            <span *ngIf="bchildSubD.children.length">
+                                              ( {{ bchildSubD.children.length }} )
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </label>
+                                    </div>
+                                    <!-- SUB E5 LEVEL -->
+                                    <ng-container *ngIf="_curBusiness.indexOf(bchildSubD['filterID']) >= 0">
+                                      <ion-col size="12" *ngFor="let bchildSubE of bchildSubD.children; let iBCE = index;">
+                                        <div class="radio radio-default radiofill animated fadeIn">
+                                          <label [ngClass]="{'text-primary': _curBusiness.indexOf(bchildSubE['filterID']) === 0}">
+                                            <input name="radioFilters" type="radio" [value]="bchildSubE['filterID']" [(ngModel)]="_curFilter.businessId"
+                                              (ngModelChange)="filterNav($event, 5, bchildSubE)">
+                                            <div class="ico-wrapper">
+                                              <div class="iw-icon">
+                                                <i class="icofont icofont-caret-right"
+                                                  [ngClass]="{'rotate-down': _curBusiness.indexOf(bchildSubE['filterID']) > -1 && bchildSubE.children && bchildSubE.children.length}"></i>
+                                              </div>
+                                              <div class="iw-text">
+                                                <i class="helper"></i>{{ bchildSubE['filterLabel'] }}
+                                                <span *ngIf="bchildSubE.children.length">
+                                                  ( {{ bchildSubE.children.length }} )
+                                                </span>
+                                              </div>
+                                            </div>
+                                          </label>
+                                        </div>
+                                        <!-- SUB F6 LEVEL -->
+                                        <ng-container *ngIf="_curBusiness.indexOf(bchildSubE['filterID']) >= 0">
+                                          <ion-col size="12" *ngFor="let bchildSubF of bchildSubE.children; let iBCF = index;">
+                                            <div class="radio radio-default radiofill animated fadeIn">
+                                              <label [ngClass]="{'text-primary': _curBusiness.indexOf(bchildSubF['filterID']) === 0}">
+                                                <input name="radioFilters" type="radio" [value]="bchildSubF['filterID']" [(ngModel)]="_curFilter.businessId"
+                                                  (ngModelChange)="filterNav($event, 6, bchildSubF)">
+                                                <div class="ico-wrapper">
+                                                  <div class="iw-icon">
+                                                    <i class="icofont icofont-caret-right"
+                                                      [ngClass]="{'rotate-down': _curBusiness.indexOf(bchildSubF['filterID']) > -1 && bchildSubF.children && bchildSubF.children.length}"></i>
+                                                  </div>
+                                                  <div class="iw-text">
+                                                    <i class="helper"></i>{{ bchildSubF['filterLabel'] }}
+                                                    <span *ngIf="bchildSubF.children.length">
+                                                      ( {{ bchildSubF.children.length }} )
+                                                    </span>
+                                                  </div>
+                                                </div>
+                                              </label>
+                                            </div>
+                                            <!-- SUB G7 LEVEL -->
+                                            <ng-container *ngIf="_curBusiness.indexOf(bchildSubF['filterID']) >= 0">
+                                              <ion-col size="12" *ngFor="let bchildSubG of bchildSubF.children; let iBCG = index;">
+                                                <div class="radio radio-default radiofill animated fadeIn">
+                                                  <label [ngClass]="{'text-primary': _curBusiness.indexOf(bchildSubG['filterID']) === 0}">
+                                                    <input name="radioFilters" type="radio" [value]="bchildSubG['filterID']" [(ngModel)]="_curFilter.businessId"
+                                                      (ngModelChange)="filterNav($event, 7, bchildSubG)">
+                                                    <div class="ico-wrapper">
+                                                      <div class="iw-icon">
+                                                        <i class="icofont icofont-caret-right"
+                                                          [ngClass]="{'rotate-down': _curBusiness.indexOf(bchildSubG['filterID']) > -1 && bchildSubG.children && bchildSubG.children.length}"></i>
+                                                      </div>
+                                                      <div class="iw-text">
+                                                        <i class="helper"></i>{{ bchildSubG['filterLabel'] }}
+                                                        <span *ngIf="bchildSubG.children.length">
+                                                          ( {{ bchildSubG.children.length }} )
+                                                        </span>
+                                                      </div>
+                                                    </div>
+                                                  </label>
+                                                </div>
+                                                <!-- SUB H8 LEVEL -->
+                                                <ng-container *ngIf="_curBusiness.indexOf(bchildSubG['filterID']) >= 0">
+                                                  <ion-col size="12" *ngFor="let bchildSubH of bchildSubG.children; let iBCH = index;">
+                                                    <div class="radio radio-default radiofill animated fadeIn">
+                                                      <label [ngClass]="{'text-primary': _curBusiness.indexOf(bchildSubH['filterID']) === 0}">
+                                                        <input name="radioFilters" type="radio" [value]="bchildSubH['filterID']" [(ngModel)]="_curFilter.businessId"
+                                                          (ngModelChange)="filterNav($event, 8, bchildSubH)">
+                                                        <div class="ico-wrapper">
+                                                          <div class="iw-icon">
+                                                            <i class="icofont icofont-caret-right"
+                                                              [ngClass]="{'rotate-down': _curBusiness.indexOf(bchildSubH['filterID']) > -1 && bchildSubH.children && bchildSubH.children.length}"></i>
+                                                          </div>
+                                                          <div class="iw-text">
+                                                            <i class="helper"></i>{{ bchildSubH['filterLabel'] }}
+                                                            <span *ngIf="bchildSubH.children.length">
+                                                              ( {{ bchildSubH.children.length }} )
+                                                            </span>
+                                                          </div>
+                                                        </div>
+                                                      </label>
+                                                    </div>
+                                                    <!-- SUB J9 LEVEL -->
+                                                    <ng-container *ngIf="_curBusiness.indexOf(bchildSubH['filterID']) >= 0">
+                                                      <ion-col size="12" *ngFor="let bchildSubJ of bchildSubH.children; let iBCJ = index;">
+                                                        <div class="radio radio-default radiofill animated fadeIn">
+                                                          <label [ngClass]="{'text-primary': _curBusiness.indexOf(bchildSubJ['filterID']) === 0}">
+                                                            <input name="radioFilters" type="radio" [value]="bchildSubJ['filterID']" [(ngModel)]="_curFilter.businessId"
+                                                              (ngModelChange)="filterNav($event, 9, bchildSubJ)">
+                                                            <div class="ico-wrapper">
+                                                              <div class="iw-icon">
+                                                                <i class="icofont icofont-caret-right"
+                                                                  [ngClass]="{'rotate-down': _curBusiness.indexOf(bchildSubJ['filterID']) > -1 && bchildSubJ.children && bchildSubJ.children.length}"></i>
+                                                              </div>
+                                                              <div class="iw-text">
+                                                                <i class="helper"></i>{{ bchildSubJ['filterLabel'] }}
+                                                                <span *ngIf="bchildSubJ.children.length">
+                                                                  ( {{ bchildSubJ.children.length }} )
+                                                                </span>
+                                                              </div>
+                                                            </div>
+                                                          </label>
+                                                        </div>
+                                                        <!-- SUB K10 LEVEL -->
+                                                        <ng-container *ngIf="_curBusiness.indexOf(bchildSubJ['filterID']) >= 0">
+                                                          <ion-col size="12" *ngFor="let bchildSubK of bchildSubJ.children; let iBCK = index;">
+                                                            <div class="radio radio-default radiofill animated fadeIn">
+                                                              <label [ngClass]="{'text-primary': _curBusiness.indexOf(bchildSubK['filterID']) === 0}">
+                                                                <input name="radioFilters" type="radio" [value]="bchildSubK['filterID']" [(ngModel)]="_curFilter.businessId"
+                                                                  (ngModelChange)="filterNav($event, 10, bchildSubK)">
+                                                                <div class="ico-wrapper">
+                                                                  <div class="iw-icon">
+                                                                    <i class="icofont icofont-caret-right"
+                                                                      [ngClass]="{'rotate-down': _curBusiness.indexOf(bchildSubK['filterID']) > -1 && bchildSubK.children && bchildSubK.children.length}"></i>
+                                                                  </div>
+                                                                  <div class="iw-text">
+                                                                    <i class="helper"></i>{{ bchildSubK['filterLabel'] }}
+                                                                    <span *ngIf="bchildSubK.children.length">
+                                                                      ( {{ bchildSubK.children.length }} )
+                                                                    </span>
+                                                                  </div>
+                                                                </div>
+
+                                                              </label>
+                                                            </div>
+                                                          </ion-col>
+                                                        </ng-container>
+                                                        <!-- SUB J END -->
+                                                      </ion-col>
+                                                    </ng-container>
+                                                    <!-- SUB J END -->
+                                                  </ion-col>
+                                                </ng-container>
+                                                <!-- SUB H END -->
+                                              </ion-col>
+                                            </ng-container>
+                                            <!-- SUB G END -->
+                                          </ion-col>
+                                        </ng-container>
+                                        <!-- SUB F END -->
+                                      </ion-col>
+                                    </ng-container>
+                                    <!-- SUB E END -->
+                                  </ion-col>
+                                </ng-container>
+                                <!-- SUB D END -->
+                              </ion-col>
+                            </ng-container>
+                            <!-- SUB C END -->
+                          </ion-col>
+                        </ng-container>
+                        <!-- SUB B END -->
+                      </ion-col>
+                    </ng-container>
+                    <!-- SUB A END -->
+                  </ion-col>
+                  <!-- MAIN END -->
+                </div>
+              </ion-col>
+
+            </ng-container>
+          </ng-container>
+          <!--  -->
+
+          <!-- Survey by Name -->
+          <ng-container *ngIf="_curFilter.sFilterDateNameType && _curFilter.sFilterDateNameType === 'SurveyName'">
+            <ng-container *ngIf="_curFilter.surveyIds && _curFilter.surveyIds.length !== 0">
+              <ion-col size="12">
+                <small>Survey Names</small>
+              </ion-col>
+
+
+              <ion-col size="12">
+                <select class="form-control form-control-primary" id="surveyId" name="surveyId" [(ngModel)]="_curFilter.surveyId" (ngModelChange)="setSurveyByName($event)">
+                  <option *ngFor="let item of _curFilter.surveyIds" [value]="item.filterID" [label]="item.filterLabel">{{
+                    item.filterLabel }}</option>
+                </select>
+                <hr>
+              </ion-col>
+            </ng-container>
+          </ng-container>
+
+
+
+
+
+        </ion-row>
+      </ion-card-content>
+      <!--  -->
+      <!-- </li> -->
+      <ion-row class="footer nav-filter">
+        <!-- Survey by Date -->
+        <ng-container *ngIf=" !_curFilter.sFilterDateNameType || (_curFilter.sFilterDateNameType && _curFilter.sFilterDateNameType !== 'SurveyName')">
+
+          <!-- Filters -->
+          <ng-container *ngIf="_bShowFilter && _curFilter.node_bShowDateFilters">
+            <ion-col size="12">
+              <small *ngIf="_curFilter.currentView !== 'Comparative View'">Select From</small>
+              <small *ngIf="_curFilter.currentView === 'Comparative View'">Compare</small>
+            </ion-col>
+            <!-- Month -->
+            <ion-col size="6" *ngIf="!_bHideMonthFilterSW">
+              <select id="iFromMonth" name="iFromMonth" class="w-100 form-control form-control-primary" [(ngModel)]="_curFilter.iFromMonth" (ngModelChange)="fromMonthChange()">
+                <option *ngFor="let month of _curFilter.from_months" [value]="month.iMonth" [label]="month.sMonth">
+                  {{ month.sMonth }}
+                </option>
+              </select>
+            </ion-col>
+            <!-- Year -->
+            <ion-col size="6">
+              <select id="iFromYear" name="iFromYear" class="w-100 form-control form-control-primary" [(ngModel)]="_curFilter.iFromYear" (ngModelChange)="fromYearChanged($event)">
+                <option *ngFor="let year of _curFilter.from_dates" [value]="year.iYear" [label]="year.iYear">
+                  {{ year.iYear }}
+                </option>
+              </select>
+            </ion-col>
+            <!--  -->
+            <hr>
+          </ng-container>
+
+
+
+        </ng-container>
+        <ion-col size="12">
+          <ion-button color="primary" shape="round" type="button" class="w-100 btn btn-primary btn-block waves-effect waves-light nav-submit"
+            [disabled]="!_curBusinessLabel || _bDisableSubmitButton" (click)="search()">
+            Submit
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+
+  </ion-grid>
+</ion-content>

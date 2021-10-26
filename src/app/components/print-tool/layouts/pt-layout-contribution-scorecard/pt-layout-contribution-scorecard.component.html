@@ -1,0 +1,297 @@
+<section id="customLayout" class="ptPDFMain ptPDF customlayout nav-{{ _navStatus }}">
+  <section id="prePrintContent">
+    <section class="prePrintContent" *ngIf="_contentData">
+
+
+      <!-- Header -->
+      <ion-row>
+        <ion-col sizeXs="6" sizeMd="8" class="ptPageHeader">
+          <strong class="headerText fs-18">
+            {{ _coverData['coverTitle'] }}
+            <small class="d-block">
+              {{ _contentData['userDetails']['sEmployeeFullName'] }}
+            </small>
+          </strong>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="4" class="text-right">
+          <ion-button type="button" class="btn btn-primary" (click)="printPDFReport()">
+            <ion-icon name="print-outline"></ion-icon>
+            Print Report
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <!--  -->
+      <!-- PERSONAL DETAILS-->
+      <!--  -->
+      <ion-row class="spacing-header">
+        <ion-col sizeXs="12" sizeMd="12">
+          <strong>Personal Details</strong>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="m-tb-10-20 a-center">
+        <!-- row 1 -->
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block"> Employee </strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["userDetails"]["sEmployeeFullName"] }}</p>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block"> Manager </strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["userDetails"]["sAdminFullName"] }}</p>
+        </ion-col>
+        <!-- row 2 -->
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block"> Role </strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["userDetails"]["sKraRoleName"] }}</p>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block"> Month Reviewed </strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p> {{ _contentData["userDetails"]["dMonthScoredFor"] | date: "MMM y" }}</p>
+        </ion-col>
+        <!-- row 3 -->
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Department </strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="9">
+          <p [innerHTML]="_contentData['userDetails']['sUserStructure']"></p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="spacing-header">
+        <ion-col size="12">
+          <strong>Summary of Result</strong>
+        </ion-col>
+      </ion-row>
+      <ion-row class="m-tb-10-20">
+        <ion-col sizeXs="12" sizeMd="1">&nbsp;</ion-col>
+        <ion-col sizeXs="12" sizeMd="4">
+          <h4 class="text-center">Legend</h4><br>
+          <table>
+            <tr *ngFor="let legend of _contentData['legend']; let iLegend = index">
+              <td width="5%" class="b-t-lightgray" style="padding: 0.55rem">
+                <span class="color-dot" [ngStyle]="{ background: legend['sColor'] }"></span>
+              </td>
+              <td width="30%" class="text-left nowrap b-t-lightgray" style="padding: 0.55rem">
+                <strong class="p-l-10">{{ legend["fLegendFrom"] }} - {{ legend["fLegendTo"] }}</strong>
+              </td>
+              <td class="b-t-lightgray" style="padding: 0.55rem">{{ legend["sOrgLegend"] }}</td>
+            </tr>
+          </table>
+        </ion-col>
+        <ion-col sizeXs="12" sizeMd="1" class="b-r-lightgray">&nbsp;</ion-col>
+        <ion-col sizeXs="12" sizeMd="6" class="text-center">
+          <h4>Overall Result</h4>
+          <h1 class="fs-100 m-0" [ngStyle]="{ color:  _contentData['overallResult']['overallResult_color'] }">
+            {{ _contentData["overallResult"]["actualScore"] }}
+          </h1>
+        </ion-col>
+      </ion-row>
+
+
+      <!-- Key Result Area Summary -->
+      <ng-container *ngIf="_contentData['overallData'].length > 0">
+        <ion-row>
+          <ion-col size="12" class="section-header">
+            <strong>Section 1</strong>
+            <small class="m-l-10">Scorecard Summary</small>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12">
+            <ion-row class="sub-header">
+              <ion-col sizeXs="12" sizeMd="3">
+                <strong>Business Impact</strong>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="3">
+                <strong>Core Business of Role</strong>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="4">
+                <strong>What Achievement Means</strong>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="1">
+                <strong>Weight</strong>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="1">
+                <strong>Overall</strong>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="b-b-lightgray" *ngFor="let contrib of _contentData['overallData']; let iContrib = index">
+          <ion-col sizeXs="12" sizeMd="3">
+            <p>{{ contrib["sContributionHrDisciplineName"] }}</p>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="3">
+            <p>{{ contrib["sContributionTaskName"] }}</p>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="4">
+            <p class="paragraph" [innerHTML]="contrib['sDescription']"></p>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="1">
+            <p>{{contrib['taskWeight']}}%</p>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="1">
+            <p>
+              <span class="color-dot" [ngStyle]="{ background:  contrib['overallResult_color'] }"></span>
+              {{ contrib["actualScore"] }}
+            </p>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+
+      <ion-row class="row ptItem">
+        <ion-col size="12" class="section-header">
+          <strong>Section 2</strong>
+          <small class="m-l-10">Scorecard Details</small>
+        </ion-col>
+      </ion-row>
+
+      <!-- ROLES -->
+      <ng-container *ngFor="let objective of _contentData['contribData']; let iKRA = index">
+        <ng-container *ngFor="let kra of objective['tasks']; let iKRA = index">
+
+          <!-- KRA NAME -->
+          <ion-row>
+            <ion-col size="12" class="sub-header kraHeader">
+              <strong> {{ _contentData['settings']['sKraNameChange'] }} <span class="p-l-5">{{ iKRA + 1}}</span>
+                <span *ngIf="_contentData['settings']['sKraNameChangeEndText'] !== ''">
+                  {{_contentData['settings']['sKraNameChangeEndText'] }} </span>
+              </strong>
+              <span class="fw-thin p-l-10"> {{ kra["sContributionTaskName"] }} </span>
+            </ion-col>
+          </ion-row>
+          <!-- KPI NAME -->
+          <ng-container *ngFor="let kpi of kra['activities']; let iKPI = index">
+            <ion-row class="m-t-10 m-b-10">
+              <ion-col size="12" class="section-sub-header header-light kpiHeader">
+                <strong> {{ _contentData['settings']['sKpiNameChange'] }} <span>{{ iKPI + 1 }}</span>
+                  <span *ngIf="_contentData['settings']['sKpiNameChangeEndText'] !== ''">
+                    {{ _contentData['settings']['sKpiNameChangeEndText'] }} </span></strong>
+                <span class="fw-thin p-l-10"> {{ kpi["sContributionActivityName"] }} </span>
+              </ion-col>
+            </ion-row>
+            <ion-row class="no-gutters" class="kpiBorderBottom">
+              <ion-col sizeXs="12" sizeMd="6" class="b-r-lightgray b-b-lightgray">
+                <ion-row class="no-gutters b-b-lightgray" *ngIf="kpi['sTarget'] !== ''">
+                  <ion-col sizeXs="12" sizeMd="3">
+                    <p>
+                      <strong>{{ _contentData['settings']['sKpiTargetsNameChange'] }}</strong>
+                    </p>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="9">
+                    <p>
+                      {{ kpi["sTarget"] }}
+                    </p>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="row no-gutters b-b-lightgray" *ngIf="kpi['fWeight'] !== ''">
+                  <ion-col sizeXs="12" sizeMd="3">
+                    <p>
+                      <strong>Weight</strong>
+                    </p>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="9">
+                    <p>
+                      {{ kpi["fWeight"] }} %
+                    </p>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="row no-gutters b-b-lightgray">
+                  <ion-col sizeXs="12" sizeMd="3">
+                    <p>
+                      <strong>Month</strong>
+                    </p>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="9">
+                    <p>
+                      {{ kpi["dMonthScoredFor"] }}
+                    </p>
+                  </ion-col>
+                </ion-row>
+
+                <ng-container *ngIf="kpi['sObjectivesName'] !== ''">
+                  <ng-container *ngIf=" !_contentData['settings']['bHideBusinessUnitObjective'] ||
+                                        _contentData['settings']['bShowPerspective']">
+                    <ion-row class="row no-gutters b-b-lightgray">
+                      <ng-container *ngIf="!_contentData['settings']['bHideBusinessUnitObjective'];">
+                        <ion-col sizeXs="12" sizeMd="3">
+                          <p>
+                            <strong>{{ _contentData['settings']['sBusinessUnitObjective'] }}</strong>
+                          </p>
+                        </ion-col>
+                        <ion-col sizeXs="12" sizeMd="9">
+                          <p>{{ kpi["sObjectivesName"] }}</p>
+                        </ion-col>
+
+                      </ng-container>
+                    </ion-row>
+                  </ng-container>
+                </ng-container>
+              </ion-col>
+
+              <ion-col sizeXs="12" sizeMd="6" class="b-b-lightgray">
+                <ion-row class="no-gutters" style="border: 0;">
+                  <ion-col sizeXs="12" sizeMd="4" class="m-l-30">
+                    <strong style="font-size: 19px;">{{ _contentData['settings']['sScaleNameChange'] }}</strong>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="8" class="col p-t-10">
+                    <ul>
+                      <ng-container *ngFor="let scale of kpi['scales'];">
+                        <li>
+                          <strong>{{ scale['iScaleItemValue'] }}: </strong>
+                          {{ scale['sScaleItemName'] }}
+                        </li>
+                      </ng-container>
+                    </ul>
+                    <div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+
+                <!-- manager score -->
+                <ion-row class="no-gutters p-l-5">
+                  <ion-col sizeXs="12" sizeMd="3">
+                    <p>
+                      <strong style="font-size: 19px;">Review</strong>
+                    </p>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="9" class="p-t-10">
+                    <p>
+                      <ng-container *ngIf="!kpi['fScore_Admin'].toString().length">
+                        N/A
+                      </ng-container>
+                      <ng-container *ngIf="kpi['fScore_Admin'].toString().length">
+                        <ion-row class="m-r-40">
+                          <ion-col class="col text-right fw-thin" *ngFor="let col of progressCols; let i = index">
+                            <small>{{i+1}}</small>
+                          </ion-col>
+                        </ion-row>
+                        <ion-row class="m-r-40">
+                          <ion-col size="12" class="p-b-10">
+                            <div class="progressBar">
+                              <span [ngStyle]="{'background': kpi['fScore_AdminColor'],'width': getWidth(kpi['fScore_Admin'])}"></span>
+                            </div>
+                            <!-- <div class="progress">
+                                <div aria-valuemin="0" role="progressbar" class="progress-bar" aria-valuenow="100"
+                                  aria-valuemax="100" [style.background-color]="kpi['fScore_AdminColor']"
+                                  [style.width]="kpi['fScore_Admin'] | progressBarWidth: iMaxValue">
+                                </div>
+                              </div> -->
+                          </ion-col>
+                        </ion-row>
+                      </ng-container>
+                    </p>
+                  </ion-col>
+                </ion-row>
+
+              </ion-col>
+            </ion-row>
+
+          </ng-container>
+        </ng-container>
+      </ng-container>
+
+
+    </section>
+  </section>
+</section>

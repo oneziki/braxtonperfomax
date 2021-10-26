@@ -1,0 +1,28 @@
+.roleProfileListGrid {
+  
+    ion-label {
+      color: var(--charcoal);
+      font-weight: 400;
+    }
+
+    .supSearch{
+      .searchbar-search-icon.sc-ion-searchbar-md {
+        top: 5px!important;
+      }
+      .searchbar-input{
+        border-radius: 25px;
+        height: 28px;
+        text-align: left;
+      }
+      width: 20%;
+    }
+  
+    .toolbar{
+      --background: none !important;
+    }
+}
+
+.colHeader {
+  font-size: 20px !important;
+  font-weight: 600 !important;
+}

@@ -1,0 +1,114 @@
+.pdpAssessmentGrid {
+  .assHeader {
+    .col-header {
+      background: var(--bg-grey);
+      text-align: center;
+      h1 {
+        margin: 2px 0;
+        padding: 10px 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--lite-charcoal);
+        span {
+          color: var(--lite-charcoal);
+          padding-left: 10px;
+        }
+      }
+    }
+  }
+
+  $dot-size: 10px;
+  span.color-dot {
+    vertical-align: middle;
+    height: $dot-size;
+    width: $dot-size;
+
+    border-radius: 100%;
+    display: inline-block;
+    margin: 1px 5px;
+
+    background: var(--primary);
+
+    &.dot-accent {
+      background: var(--accent);
+    }
+    &.dot-icons {
+      background: var(--icons);
+    }
+    &.dot-success {
+      background: var(--success);
+    }
+    &.dot-danger {
+      background: var(--danger);
+    }
+    &.dot-transparent {
+      background: transparent;
+    }
+  }
+
+  .m-l-20 {
+    margin-left: 20px !important;
+  }
+  .m-r-20 {
+    margin-right: 20px !important;
+  }
+
+  .card {
+    transition: all 0.75s ease;
+    border-radius: 0;
+    margin-bottom: 10px;
+    width: 100%;
+    box-shadow: 0 1px 2.94px 0.06px rgba(0, 0, 0, 0.6);
+
+    &.card-transparent {
+      background: transparent !important;
+      box-shadow: none;
+      .card-header {
+        padding: 0 5px 25px;
+        .card-title {
+          display: block;
+          color: var(--primary);
+          border-top: 1px solid var(--slate-grey);
+          padding-top: 20px;
+          letter-spacing: 1px;
+          font-weight: 600;
+          font-size: 18px;
+
+          & + small {
+            color: var(--sub-grey);
+          }
+        }
+      }
+
+      ion-input {
+        border-radius: 25px 0 0px 25px;
+      }
+
+      ion-card-title {
+        color: white;
+      }
+
+      ion-button {
+        --background: var(--danger);
+      }
+
+      .sub-title {
+        border-radius: 10px;
+        color: var(--slate-grey);
+        margin-right: 20px;
+        margin-left: 20px;
+        padding: 0 !important;
+        padding-left: 10px !important;
+      }
+
+      .pointer {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .checkbox {
+    margin: 0;
+    margin-right: 12px !important;
+  }
+}

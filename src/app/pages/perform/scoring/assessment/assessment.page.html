@@ -1,0 +1,709 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper assessmentGrid" *ngIf="!_isLoading">
+    <ion-row>
+      <ion-col>
+        <ion-text>
+          <h2 class="contentHeader">Performance Review</h2>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+
+        <!-- NOT VIEW MODE -->
+        <ng-container *ngIf="!_bViewMode">
+          <ion-row class="userHeader">
+            <ion-col sizeXs="12" sizeXl="6" class="p-0-impo">
+              <ion-item lines="none" class="aviUserDetails" *ngIf="_userProfileData" [ngClass]="{'opacity': _sRoleToEmployee === 'Manager'}">
+                <ion-avatar slot="start">
+                  <img [src]="_userProfileData['sEmployeeProfileImageUrl']" (error)="_userProfileData['empSrcFail'] = true" *ngIf="_userProfileData['empSrcFail'] !== true">
+                  <ion-icon class="default-img" name="person-circle-outline" *ngIf="_userProfileData['empSrcFail'] === true"></ion-icon>
+                </ion-avatar>
+                <ion-label>
+                  <h3>{{ _userProfileData['sEmployeeName'] }}</h3>
+                  <p>{{_userProfileData['sJobTitleName']}}</p>
+                </ion-label>
+              </ion-item>
+              <div class="col-header" *ngIf="_sRoleToEmployee === 'Manager'">
+                <h1>Contract Period: <span>{{_userProfileData['sContractPeriodStart']}} -
+                    {{_userProfileData['sContractPeriodEnd']}}</span></h1>
+              </div>
+              <div class="col-header" *ngIf="_sRoleToEmployee !== 'Manager'">
+                <h1>Self-Review</h1>
+              </div>
+            </ion-col>
+            <ion-col sizeXs="12" sizeXl="6" class="p-0-impo">
+              <ion-item lines="none" class="aviUserDetails" *ngIf="_userProfileData" [ngClass]="{'opacity': _sRoleToEmployee !== 'Manager'}">
+                <ion-avatar slot="start">
+                  <img [src]="_userProfileData['sAdminProfileImageUrl']" (error)="_userProfileData['managerSrcFail'] = true" *ngIf="_userProfileData['managerSrcFail'] !== true">
+                  <ion-icon class="default-img" name="person-circle-outline" *ngIf="_userProfileData['managerSrcFail'] === true"></ion-icon>
+                </ion-avatar>
+                <ion-label>
+                  <h3>{{ _userProfileData['sAdminFullName'] }}</h3>
+                  <p>{{_userProfileData['sAdminJobTitle']}}</p>
+                </ion-label>
+              </ion-item>
+              <div class="col-header" *ngIf="_sRoleToEmployee === 'Manager'">
+                <h1>Manager Review</h1>
+              </div>
+              <div class="col-header" *ngIf="_sRoleToEmployee !== 'Manager'">
+                <h1>Contract Period: <span>{{_userProfileData['sContractPeriodStart']}} -
+                    {{_userProfileData['sContractPeriodEnd']}}</span></h1>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-grid class="busObjOuter" *ngFor="let busObj of _busObjectives; let iBusObj = index;">
+            <!-- Business Objective -->
+            <ion-row>
+              <ion-col>
+                <h2 class="sectionHeader no-m">Business Objective: <span class="text-lite-charcoal"> {{
+                    busObj['sObjectivesName'] }} </span></h2>
+              </ion-col>
+            </ion-row>
+            <!-- KRA -->
+            <ng-container *ngFor="let kra of busObj['Kra']; let iKRA = index;">
+              <ion-row class="busObjRow busObjRowKRA" *ngIf="iKRA === busObj['activeKra']">
+                <ion-col size="8" class="b-b-1">
+                  <strong class="text-primary">
+                    {{ iKRA + 1 }}. {{ _kraCompanySettings.sKraNameChange }}:
+                    <span class="text-lite-charcoal">{{ kra['sKraName'] }}</span>
+                  </strong>
+                </ion-col>
+                <ion-col class="busObjBadgeList text-right b-b-1">
+                  <span class="floorTabs">
+                    <ng-container *ngFor="let kraBtns of busObj['Kra']; let iKraTabBtn = index">
+                      <span class="badgeTab floorTab" [ngClass]="{ 'activeTab': iKraTabBtn === busObj['activeKra'] }" (click)="kraTabChanged(busObj, iKraTabBtn)">{{ iKraTabBtn + 1
+                        }}</span>
+                    </ng-container>
+                  </span>
+                  <ng-container *ngIf="_sRoleToEmployee !== 'SecondManager' && !_bViewMode">
+                    <ion-icon name="checkmark-circle-outline" color="success" class="fs-24 f-right" *ngIf="kra['isScored']"></ion-icon>
+                    <ion-icon name="close-circle-outline" color="danger" class="fs-24 f-right" *ngIf="!kra['isScored']">
+                    </ion-icon>
+                  </ng-container>
+                </ion-col>
+                <ion-col size="12">
+
+                  <ion-grid class="busObjKPI">
+                    <!-- KPI -->
+                    <ng-container *ngFor="let kpi of kra['kpis']; let iKPI = index;">
+                      <ion-row class="busObjRow busObjRowKPI" *ngIf="iKPI === kra['activeKpi']">
+                        <ion-col size="6" class="b-b-1">
+                          <strong class="text-primary d-block m-t-10">
+                            {{ iKRA + 1 }}.{{ iKPI + 1 }} {{ _kraCompanySettings.sKpiNameChange }}:
+                            <span class="text-lite-charcoal">{{ kpi['sKpiname'] }}</span>
+                          </strong>
+                        </ion-col>
+                        <ion-col class="busObjBadgeList text-right b-b-1">
+                          <span class="floorTabs">
+                            <ng-container *ngFor="let kpiBtns of kra['kpis']; let iKpiTabBtn = index;">
+                              <span class="badgeTab floorTab" [ngClass]="{ 'activeTab': iKpiTabBtn === kra['activeKpi'] }" (click)="kpiTabChanged(kra, iKpiTabBtn)">{{ iKRA + 1
+                                }}.{{
+                                iKpiTabBtn + 1 }}</span>
+                            </ng-container>
+                          </span>
+                        </ion-col>
+                        <ion-col size="6">
+
+                          <strong class="text-primary d-block m-t-10 m-l-25">
+                            {{ _kraCompanySettings['sKpiTargetsNameChange'] }}:
+                            <span class="text-lite-charcoal">{{ kpi['sKpiTargetHTML'] }}</span>
+                          </strong>
+
+                          <strong class="text-primary d-block m-t-10 m-l-25">
+                            Weight:
+                            <span class="text-lite-charcoal">{{ kpi['fWeight'] }}</span>
+                          </strong>
+
+                          <strong class="text-primary d-block m-t-10 m-l-25">
+                            {{ _kraCompanySettings['sScaleNameChange'] }}
+                          </strong>
+                          <!-- Employee -->
+                          <ion-list class="busObjBadgeList selectable" *ngIf="_sRoleToEmployee === 'Employee'">
+                            <!--  -->
+                            <ng-container *ngFor="let scale of kpi['scales']">
+                              <ion-item lines="none" [ngClass]="{'activeScale': kpi['fScore_self'] === scale['fScaleScoreValue']}" (click)="setEmployeeScale(kpi, scale)"
+                                [disabled]="_bViewMode">
+                                <ion-badge slot="start" *ngIf="scale['fScaleScoreValue'] === -1">N/A</ion-badge>
+                                <ion-badge slot="start" *ngIf="scale['fScaleScoreValue'] != -1">
+                                  {{ scale['fScaleScoreValue'] }}
+                                </ion-badge>
+                                <ion-input [(ngModel)]="scale['sScaleDescription']" required placeholder="{{ scale.placeholder }}" readonly="true"></ion-input>
+                              </ion-item>
+                            </ng-container>
+                          </ion-list>
+                          <!-- Manager -->
+                          <ion-list class="busObjBadgeList selectable" *ngIf="_sRoleToEmployee === 'Manager'">
+                            <!--  -->
+                            <ng-container *ngFor="let scale of kpi['scales']">
+                              <ion-item lines="none" [ngClass]="{'activeScale': kpi['fScore_admin'] === scale['fScaleScoreValue']}" (click)="setManagerScale(kpi, scale)">
+                                <ion-badge slot="start" *ngIf="scale['fScaleScoreValue'] === -1">N/A</ion-badge>
+                                <ion-badge slot="start" *ngIf="scale['fScaleScoreValue'] != -1">
+                                  {{ scale['fScaleScoreValue'] }}
+                                </ion-badge>
+                                <ion-input [(ngModel)]="scale['sScaleDescription']" required placeholder="{{ scale.placeholder }}" readonly="true"></ion-input>
+                              </ion-item>
+                            </ng-container>
+                          </ion-list>
+                          <strong class="text-primary d-block m-t-10 m-l-25">
+                            {{ _kraCompanySettings.sKpiCommentsNameChange }}
+                            in support of your score
+                          </strong>
+
+                          <ng-container *ngIf="_sRoleToEmployee === 'Employee'">
+                            <ion-item lines="none">
+                              <ion-textarea placeholder="Enter {{ _kraCompanySettings.sKpiCommentsNameChange }} here" [(ngModel)]="kpi['sActual_Self']" autoGrow="true"
+                                [disabled]="_bViewMode">
+                              </ion-textarea>
+                            </ion-item>
+                          </ng-container>
+
+                          <ng-container *ngIf="_sRoleToEmployee === 'Manager'">
+
+                            <ng-container *ngIf="kpi['comments'].length > 0">
+                              <ng-container *ngFor="let kpi of kpi['comments']">
+                                <ng-container *ngIf="_authService._sessionUser.P5Corp_userUID === kpi.sCommentBy_fkUserUID">
+                                  <ion-item lines="none" *ngIf="!_bViewMode">
+                                    <ion-textarea placeholder="Enter {{ _kraCompanySettings.sKpiCommentsNameChange }} here" [(ngModel)]="kpi['comment']" autoGrow="true"
+                                      [disabled]="_bViewMode">
+                                    </ion-textarea>
+                                  </ion-item>
+                                </ng-container>
+                              </ng-container>
+                            </ng-container>
+                            <ng-container *ngIf="!kpi['comments'].length ">
+                              <ion-item lines="none">
+                                <ion-textarea placeholder="Enter {{ _kraCompanySettings.sKpiCommentsNameChange }} here" [(ngModel)]="kpi['comment']" autoGrow="true"
+                                  [disabled]="_bViewMode">
+                                </ion-textarea>
+                              </ion-item>
+                            </ng-container>
+
+                          </ng-container>
+
+
+                        </ion-col>
+                        <!-- Employee -->
+                        <ion-col size="6" *ngIf="_sRoleToEmployee === 'Employee'">
+
+                          <strong class="text-lite-grey d-block m-t-20 m-l-15">
+                            {{ _kraCompanySettings.sKpiCommentsNameChange }} / Enabling Factors
+                          </strong>
+                          <ng-container *ngIf="kpi && kpi['employeeContractComment'] && kpi['employeeContractComment'].length > 0 ">
+                            <ion-item lines="none">
+                              <ng-container *ngFor="let comment of kpi['employeeContractComment']">
+                                <ion-textarea class="text-lite-grey" autoGrow="true" value="{{comment['sComment']}}">
+                                </ion-textarea>
+                              </ng-container>
+                            </ion-item>
+                          </ng-container>
+                          <ng-container *ngIf="kpi && kpi['employeeContractComment'] && kpi['employeeContractComment'].length === 0 ">
+                            <ion-item lines="none" class="text-muted">
+                              * No comments added
+                            </ion-item>
+                          </ng-container>
+
+                          <strong class="text-lite-grey d-block m-t-20 m-l-15">
+                            Manager's {{ _kraCompanySettings.sKpiCommentsNameChange }}
+                          </strong>
+                          <ng-container *ngIf="kpi && kpi['managerContractComment'] && kpi['managerContractComment'].length > 0 ">
+                            <ion-item lines="none">
+                              <ng-container *ngFor="let comment of kpi['managerContractComment']">
+                                <ion-textarea class="text-lite-grey" autoGrow="true" value="{{comment['sComment']}} - {{ comment['sFullName'] }}">
+                                </ion-textarea>
+                              </ng-container>
+                            </ion-item>
+                          </ng-container>
+                          <ng-container *ngIf="kpi && kpi['managerContractComment'] && kpi['managerContractComment'].length === 0 ">
+                            <ion-item lines="none" class="text-muted">
+                              * No comments added
+                            </ion-item>
+                          </ng-container>
+
+                          <strong class="text-lite-grey d-block m-t-10 m-l-15">
+                            Provide Evidence (optional)
+                          </strong>
+                          <ion-item lines="none" *ngIf="!_bViewMode">
+                            <input class="uploader" type="file" id="sEvidence-{{ iKRA }}{{ iKPI }}" name="sEvidence-{{ iKRA }}{{ iKPI }}" ng2FileSelect
+                              [uploader]="evidence_uploader">
+                          </ion-item>
+
+                          <ion-list *ngIf="kpi['documents']">
+                            <ion-item lines="none" *ngFor="let doc of kpi['documents']; let docIndex = index;">
+                              <a [href]="doc.bUploadFileName" download target="_blank">
+                                <ion-icon name="paper-plane-sharp"></ion-icon>
+                                {{doc.sAttachmentName}}
+                              </a>
+                              <span><a class="hover" (click)="setCurrentKPI(kpi);removeDoc(doc,docIndex)">
+                                  <ion-icon name="close-circle-outline"></ion-icon>
+                                </a></span>
+                            </ion-item>
+                          </ion-list>
+                          <ion-list *ngIf="!kpi['documents'].length">
+                            <ion-item lines="none" class="text-muted">
+                              * No evidence attached
+                            </ion-item>
+                          </ion-list>
+
+                        </ion-col>
+                        <!-- Manager -->
+                        <ion-col size="6" *ngIf="_sRoleToEmployee === 'Manager'">
+                          <strong class="text-primary d-block m-t-20">
+                            Employee's Self-Review
+                          </strong>
+                          <ion-item lines="none" class="radialProgressWrapper">
+                            <div class="radialProgressBar progress-{{ kpi['fScore_selfOverall'] }}" style="--bar-color: #{{ kpi['fScore_selfColor'] }};">
+                              <div class="overlay">
+                                {{ kpi['fScore_self'] }}
+                              </div>
+                            </div>
+                          </ion-item>
+
+                          <strong class="text-primary d-block m-t-20">
+                            Narrative
+                          </strong>
+                          <ion-item lines="none">
+                            <p *ngIf="kpi.sActual_Self && kpi.sActual_Self.length">{{kpi['sActual_Self']}}</p>
+                            <p class="text-muted" *ngIf="!kpi.sActual_Self || !kpi.sActual_Self.length">* No Narrative
+                              attached</p>
+                          </ion-item>
+
+                          <strong class="text-primary d-block m-t-10">
+                            Evidence ({{ kpi['documents'].length }})
+                          </strong>
+
+                          <ion-list *ngIf="kpi['documents']">
+                            <ion-item lines="none" *ngFor="let doc of kpi['documents']; let docIndex = index;">
+                              <ng-container *ngIf="doc.userUUID === _authService._sessionUser.P5Corp_userUID">
+                                <a [href]="doc.bUploadFileName" download target="_blank">
+                                  <ion-icon name="paper-plane-sharp"></ion-icon>
+                                  {{doc.sAttachmentName}}
+                                </a>
+                              </ng-container>
+                            </ion-item>
+                          </ion-list>
+                          <ion-list *ngIf="!kpi['documents'].length" class="m-b-40">
+                            <ion-item lines="none" class="text-muted">
+                              * No evidence attached
+                            </ion-item>
+                          </ion-list>
+
+                          <ng-container *ngIf="!_bViewMode">
+                            <strong class="text-primary d-block m-t-10">
+                              Provide Evidence (optional)
+                            </strong>
+                            <ion-item lines="none">
+                              <input class="uploader" type="file" id="sEvidence-{{ iKRA }}{{ iKPI }}" name="sEvidence-{{ iKRA }}{{ iKPI }}" ng2FileSelect
+                                [uploader]="evidence_uploader">
+                            </ion-item>
+                          </ng-container>
+                          <ion-list *ngIf="kpi['documents']">
+                            <ion-item lines="none" *ngFor="let doc of kpi['documents']; let docIndex = index;">
+                              <a [href]="doc.bUploadFileName" download target="_blank">
+                                <ion-icon name="paper-plane-sharp"></ion-icon>
+                                {{doc.sAttachmentName}}
+                              </a>
+                              <span><a class="hover" (click)="setCurrentKPI(kpi);removeDoc(doc,docIndex)">
+                                  <ion-icon name="close-circle-outline"></ion-icon>
+                                </a></span>
+                            </ion-item>
+                          </ion-list>
+                        </ion-col>
+                      </ion-row>
+                    </ng-container>
+                  </ion-grid>
+                </ion-col>
+              </ion-row>
+            </ng-container>
+          </ion-grid>
+        </ng-container>
+
+        <!-- VIEW MODE -->
+        <ng-container *ngIf="_bViewMode">
+          <ion-row class="userHeader ion-text-center">
+            <ion-col sizeXs="12" sizeXl="6" class="p-0-impo">
+              <ion-item lines="none" class="aviUserDetails" *ngIf="_userProfileData">
+                <ion-avatar slot="start">
+                  <img [src]="_userProfileData['sEmployeeProfileImageUrl']" (error)="_userProfileData['empSrcFail'] = true" *ngIf="_userProfileData['empSrcFail'] !== true">
+                  <ion-icon class="default-img" name="person-circle-outline" *ngIf="_userProfileData['empSrcFail'] === true"></ion-icon>
+                </ion-avatar>
+                <ion-label>
+                  <h3>{{ _userProfileData['sEmployeeName'] }}</h3>
+                  <p>{{_userProfileData['sJobTitleName']}}</p>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col sizeXs="12" sizeXl="6" class="p-0-impo aviUserDetails" *ngIf="_kraOverallResult.length > 0">
+              <h3>Overall Result</h3>
+              <ng-container *ngIf="!_kraCompanySettings['bShowLegendDescriptionAsScore']">
+                <h3 [ngStyle]="{ color: '#' + _kraOverallResult[0]['overallResult_color'] }">
+                  {{ _kraOverallResult[0]["combined_overallScore"] }}
+                </h3>
+              </ng-container>
+              <ng-container *ngIf="_kraCompanySettings['bShowLegendDescriptionAsScore']">
+                <h3 [ngStyle]="{ color: '#' + _kraOverallResult[0]['overallResult_color'] }">
+                  {{ _kraOverallResult[0]["combinedOverallResult_scoreDescription"] }}
+                </h3>
+              </ng-container>
+              <ng-container *ngIf="_kraCompanySettings['bShowCombinedPortalLayout']">
+                <strong>
+                  <span>Competency & Behavioural Results</span>
+                  <ng-container *ngIf=" _kraOverallResult[0]['competency_overAllScore'] === '0.00' || _kraOverallResult[0]['competency_overAllScore'] < 0 ">
+                    <p> N/A</p>
+                  </ng-container>
+                  <ng-container
+                    *ngIf="!_kraCompanySettings['bShowLegendDescriptionAsScore'] && _kraOverallResult[0]['competency_overAllScore'] !== '0.00' && _kraOverallResult[0]['competency_overAllScore']  >  0">
+                    <p>
+                      {{ _kraOverallResult[0]['competency_overAllScore'] }}</p>
+                  </ng-container>
+                  <ng-container
+                    *ngIf="_kraCompanySettings['bShowLegendDescriptionAsScore'] && _kraOverallResult[0]['competency_overAllScore'] !== '0.00' && _kraOverallResult[0]['competency_overAllScore']  >  0">
+                    <p [ngStyle]="{ color: '#' +   _kraOverallResult[0]['overallCompetencyResult_color'] }">
+                      {{ _kraOverallResult[0]['overallCompetencyResult_scoreDescription'] }}</p>
+                  </ng-container>
+                </strong>
+                <strong>
+                  <span>{{ _kraCompanySettings.sKraNameChange }} Overall Result</span>
+                  <ng-container *ngIf="!_kraCompanySettings['bShowLegendDescriptionAsScore']">
+                    <p>
+                      {{ _kraOverallResult[0]['kra_overAllScore'] }}</p>
+                  </ng-container>
+                  <ng-container *ngIf="_kraCompanySettings['bShowLegendDescriptionAsScore']">
+                    <p [ngStyle]="{ color: '#' +  _kraOverallResult[0]['overallResult_color'] }">
+                      {{ _kraOverallResult[0]['overallResult_scoreDescription'] }}</p>
+                  </ng-container>
+                </strong>
+              </ng-container>
+            </ion-col>
+          </ion-row>
+          <ion-row class="userHeader">
+            <ion-col size="12" class="p-0-impo">
+              <div class="col-header">
+                <h1 style="text-align: left; padding-left: 13%">Contract Period: <span>{{_userProfileData['sContractPeriodStart']}} -
+                    {{_userProfileData['sContractPeriodEnd']}}</span></h1>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <!-- KRA Summary-->
+          <ion-col size="12" class="p-0-impo" *ngIf="_bViewMode && _kraOverallSummary.length > 0">
+            <ion-row>
+              <ion-col class="summary-header">
+                <h4><strong>{{ _kraCompanySettings.sKraNameChange }} Summary</strong></h4>
+              </ion-col>
+              <ion-col size="2" class="summary-header" *ngIf="_reviewData['bScoreModeratedAmount'] !== 0">
+                <h4 class="f-center"><strong>Previous</strong></h4>
+              </ion-col>
+              <ion-col size="2" class="summary-header">
+                <h4 class="f-center"><strong>Current</strong></h4>
+              </ion-col>
+            </ion-row>
+            <ion-col size="12" class="m-0-impo p-0-impo">
+              <hr>
+            </ion-col>
+            <ng-container *ngFor="let kra of _kraOverallSummary; let iOverall = index">
+              <ion-row>
+                <ng-container *ngIf="_reviewData['bScoreModeratedAmount'] !== 0; else moderate">
+                  <ion-col class="p-l-20">
+                    <p class="m-0-impo">
+                      <b>{{ iOverall + 1 }}: </b> {{kra.sKraName}}
+                    </p>
+                  </ion-col>
+                </ng-container>
+                <ng-template #moderate>
+                  <ion-col class="p-l-20">
+                    <p class="m-0-impo">
+                      <b>{{ iOverall + 1 }}: </b> {{kra.sKraName}}
+                    </p>
+                  </ion-col>
+                </ng-template>
+
+                <ng-container *ngIf="_reviewData['bScoreModeratedAmount'] !== 0">
+                  <ion-col class="p-l-20" size="2" *ngIf="kra.fModeratedScore === -1">
+                    <span class="dot-wrapper">
+                      <span class="color-dot" [ngStyle]="{ 'background': '#c9cbce'  }"></span>
+                    </span>
+                    {{kra.fKraScore}}
+                  </ion-col>
+                  <ion-col class="p-l-20" size="2" *ngIf="kra.fModeratedScore !== -1">
+                    <span class="dot-wrapper">
+                      <span class="color-dot" [ngStyle]="{ 'background': '#c9cbce'  }"></span>
+                    </span>
+                    {{kra.fModeratedScore}}
+                  </ion-col>
+                </ng-container>
+                <ion-col class="p-l-20" *ngIf="kra.fKraScore === -1">
+                  N/A
+                </ion-col>
+                <ion-col class="p-l-20" size="2" *ngIf="kra.fKraScore !== -1">
+                  <ng-container *ngIf="!_kraCompanySettings['bShowLegendDescriptionAsScore']">
+                    <span class="dot-wrapper">
+                      <span class="color-dot" [ngStyle]="{ 'background': '#'+ kra.sColor  }"></span>
+                    </span>
+                    {{kra.fKraScore}}
+                  </ng-container>
+                  <ng-container *ngIf="_kraCompanySettings['bShowLegendDescriptionAsScore']">
+                    {{ kra["sOrgScaleLegend"] }}
+                  </ng-container>
+                </ion-col>
+              </ion-row>
+              <ion-col size="12" class="m-0-impo p-0-impo">
+                <hr>
+              </ion-col>
+            </ng-container>
+          </ion-col>
+
+          <!-- Business Objectives -->
+          <ion-row>
+            <ng-container class="busObjOuter" *ngFor="let busObj of _busObjectives; let iBusObj = index; let isFirstKRA = first; let isLastKRA = last">
+              <ion-col size="12" class="ion-no-padding m-b-0">
+                <ion-card class="transparentCard">
+                  <ion-card-header class="p-b-0 p-t-0">
+                    <ion-card-title>
+                      <ion-row>
+                        <ion-col>
+                          <h2 class="sectionHeader no-m">Business Objective: <span class="text-lite-charcoal"> {{
+                              busObj['sObjectivesName'] }} </span></h2>
+                        </ion-col>
+                      </ion-row>
+                    </ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content class="p-b-0 p-t-0">
+                    <ion-grid>
+                      <ion-col sizeXs="12" sizeMd="6" class="p-0-impo">
+                        <ng-container *ngFor="let kra of busObj['Kra']; let iKRA = index;">
+                          <ion-row>
+                            <ion-col size="12" class="hover" (click)="toggleKra(kra)">
+                              <i class="icofont icofont-rounded-right activeSub" [ngClass]="{'rotateDown': kra['showDetails']}"></i>
+                              <strong class="text-primary sectionHeader no-m">
+                                {{ iKRA + 1 }}. {{ _kraCompanySettings.sKraNameChange }}:
+                                <span class="text-lite-charcoal">{{ kra['sKraName'] }}</span>
+                              </strong>
+                            </ion-col>
+                            <ion-col size="12">
+                              <ion-grid class="busObjRowKPI">
+                                <ng-container *ngFor="let kpi of kra['kpis']; let iKPI = index;">
+                                  <ion-row class="busObjRow busObjRowKPI animated fadeInLeft b-b-1" *ngIf="kra['showDetails']">
+                                    <!-- KPI/TARGETS/COMMENTS -->
+                                    <ion-col sizeMd="4" sizeSm="12" class="b-r-1">
+                                      <ion-row>
+                                        <strong class="text-primary d-block m-t-10">
+                                          {{ _kraCompanySettings.sKpiNameChange }} {{ iKPI + 1 }}:
+                                          <span class="d-block text-lite-charcoal">{{ kpi['sKpiDisplayName'] }}</span>
+                                        </strong>
+                                      </ion-row>
+                                      <ion-row>
+                                        <strong class="text-primary d-block m-t-10">
+                                          {{ _kraCompanySettings['sKpiTargetsNameChange'] }}:
+                                          <span class="d-block text-lite-charcoal">{{ kpi['sKpiTargetHTML'] }}</span>
+                                        </strong>
+                                      </ion-row>
+
+                                      <!-- EMPLOYEE COMMENTS -->
+                                      <ion-row *ngIf="kpi && kpi['employeeContractComment'] && kpi['employeeContractComment'].length > 0 ">
+                                        <strong class="d-block m-t-10">
+                                          {{_kraCompanySettings.sKpiCommentsNameChange}}
+                                          <ng-container *ngFor="let comment of kpi['employeeContractComment']">
+                                            <span class="d-block text-lite-charcoal text-muted">
+                                              {{ comment['sComment']}}
+                                              <small><br>-{{ comment['sFullName'] }}</small>
+                                            </span>
+                                          </ng-container>
+                                        </strong>
+                                      </ion-row>
+                                      <ion-row *ngIf="kpi && kpi['employeeContractComment'] && kpi['employeeContractComment'].length == 0">
+                                        <strong class="d-block m-t-10">
+                                          {{_kraCompanySettings.sKpiCommentsNameChange}}
+                                          <span class="d-block text-lite-charcoal text-muted">*No comments added</span>
+                                        </strong>
+                                      </ion-row>
+
+                                      <!-- MANAGER COMMENTS -->
+                                      <ion-row>
+                                        <strong class="d-block m-t-10">
+                                          Manager Comments:
+                                          <ng-container *ngFor="let comment of kpi['managerContractComment']">
+                                            <span class="d-block text-lite-charcoal text-muted">
+                                              {{ comment['sComment']}}
+                                              <small><br>-{{ comment['sFullName'] }}</small>
+                                            </span>
+                                          </ng-container>
+                                          <ng-container *ngIf="!kpi['managerContractComment'].length">
+                                            <span class="d-block text-lite-charcoal text-muted">
+                                              *No comments added
+                                            </span>
+                                          </ng-container>
+                                        </strong>
+                                      </ion-row>
+                                    </ion-col>
+
+                                    <!-- SCORES -->
+                                    <ion-col>
+                                      <!-- EMPLOYEE -->
+                                      <ion-row>
+                                        <ion-col size="6">
+                                          <ion-row>
+                                            <strong class="text-primary d-block m-t-20 m-0-auto">
+                                              Employee's Self-Review
+                                            </strong>
+                                          </ion-row>
+                                          <ion-row>
+                                            <ion-item lines="none" class="radialProgressWrapper m-0-auto">
+                                              <div class="radialProgressBar progress-{{ kpi['fScore_selfOverall'] }}" style="--bar-color: #{{ kpi['fScore_selfColor'] }};">
+                                                <div class="overlay">
+                                                  {{ kpi['fScore_self'] }}
+                                                </div>
+                                              </div>
+                                            </ion-item>
+                                          </ion-row>
+                                        </ion-col>
+                                        <ion-col size="6">
+                                          <ion-row>
+                                            <strong class="d-block m-t-10">
+                                              Narrative
+                                              <span class="d-block text-lite-charcoal text-muted" *ngIf="kpi.sActual_Self && kpi.sActual_Self.length">
+                                                {{ kpi.sActual_Self }}
+                                              </span>
+                                              <span class="d-block text-lite-charcoal text-muted" *ngIf="!kpi.sActual_Self || !kpi.sActual_Self.length">
+                                                *No comments added
+                                              </span>
+                                            </strong>
+                                          </ion-row>
+                                          <ion-row>
+                                            <strong class="d-block m-t-10">
+                                              Evidence ({{ kpi['documentsCounterSelf'] }})
+                                              <ul class="p-l-0" *ngIf="kpi['documents']">
+                                                <ng-container *ngFor="let doc of kpi['documents']; let docIndex = index">
+                                                  <li class="media m-b-10 d-block" *ngIf="doc.userUUID === _userProfileData['sEmployeeUUID']">
+                                                    <i class="icofont icofont-paper-clip text-muted"></i>
+                                                    <a class="m-b-5" [href]="doc.bUploadFileName" download target="_blank">
+                                                      {{doc.sAttachmentName}}
+                                                    </a>
+                                                  </li>
+                                                </ng-container>
+                                              </ul>
+                                              <span class="d-block text-lite-charcoal text-muted" *ngIf="!kpi['documents'].length || !kpi['bEmployeeHasUploadedDoc']">
+                                                *No evidence attached
+                                              </span>
+                                            </strong>
+                                          </ion-row>
+                                        </ion-col>
+                                      </ion-row>
+
+                                      <!-- MANAGER -->
+                                      <ion-row>
+                                        <ion-col size="6">
+                                          <ion-row>
+                                            <strong class="text-primary d-block m-t-20 m-0-auto">
+                                              Manager Review
+                                            </strong>
+                                          </ion-row>
+                                          <ion-row>
+                                            <ion-item lines="none" class="radialProgressWrapper m-0-auto">
+                                              <div class="radialProgressBar progress-{{ kpi['fScore_adminOverall'] }}" style="--bar-color: #{{ kpi['fScore_AdminColor'] }};">
+                                                <div class="overlay">
+                                                  {{ kpi['fScore_admin'] }}
+                                                </div>
+                                              </div>
+                                            </ion-item>
+                                          </ion-row>
+                                        </ion-col>
+                                        <ion-col size="6">
+                                          <ion-row>
+                                            <strong class="d-block m-t-10">
+                                              Comments ({{ kpi['commentsCounterAdmin'] }})
+                                              <ul class="p-l-0" *ngIf="kpi['documents']">
+                                                <ng-container *ngFor="let kpiItemComments of kpi['comments']">
+                                                  <li class="media m-b-10 d-block" *ngIf="kpiItemComments.sCommentBy_fkUserUID == _userProfileData['sAdminUUID']">
+                                                    <i class="icofont icofont-paper-clip text-muted"></i>
+                                                    <p>
+                                                      {{ kpiItemComments.comment }}
+                                                      <small class="d-block">
+                                                        - {{ kpiItemComments.sFullName }} on
+                                                        {{ kpiItemComments.dDateCommentCreated | date:'fullDate' }}
+                                                      </small>
+                                                    </p>
+                                                  </li>
+                                                </ng-container>
+                                              </ul>
+                                              <span class="d-block text-lite-charcoal text-muted" *ngIf="kpi['comments'] && !kpi['comments'].length">
+                                                *No comments added
+                                              </span>
+                                            </strong>
+                                          </ion-row>
+                                          <ion-row>
+                                            <strong class="d-block m-t-10">
+                                              Evidence ({{ kpi['documentsCounterAdmin'] }})
+                                              <ul class="p-l-0" *ngIf="kpi['documents']">
+                                                <ng-container *ngFor="let doc of kpi['documents']; let docIndex = index">
+                                                  <li class="media m-b-10 d-block" *ngIf="doc.userUUID === _userProfileData['sAdminUUID']">
+                                                    <i class="icofont icofont-paper-clip text-muted"></i>
+                                                    <a class="m-b-5" [href]="doc.bUploadFileName" download target="_blank">
+                                                      {{doc.sAttachmentName}}
+                                                    </a>
+                                                  </li>
+                                                </ng-container>
+                                              </ul>
+                                              <span class="d-block text-lite-charcoal text-muted" *ngIf="!kpi['documents'].length || !kpi['bManagerHasUploadedDoc']">
+                                                *No evidence attached
+                                              </span>
+                                            </strong>
+                                          </ion-row>
+                                        </ion-col>
+                                      </ion-row>
+                                    </ion-col>
+                                  </ion-row>
+                                </ng-container>
+                              </ion-grid>
+                            </ion-col>
+                          </ion-row>
+                        </ng-container>
+                      </ion-col>
+                    </ion-grid>
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+            </ng-container>
+          </ion-row>
+        </ng-container>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-row *ngIf="_sErrorMessage.length > 0">
+    <ion-col size="12">
+      <div class="alert alert-primary icons-alert" role="alert">
+        <ion-button class="close" type="button" (click)="_sErrorMessage = []">
+          <ion-icon name="close-circle-outline"></ion-icon>
+        </ion-button>
+        <ng-container *ngFor="let e of _sErrorMessage;">
+          <strong>{{ e }}</strong>
+          <br>
+        </ng-container>
+      </div>
+    </ion-col>
+  </ion-row>
+  <ng-container *ngIf="_sErrorMessage.length === 0">
+    <ion-button class="btnRound" shape="round" (click)="goActivitySummary()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    <ion-button class="btnRound" shape="round" (click)="printKraScoringPDF()">
+      <ion-icon name="print"></ion-icon>
+    </ion-button>
+    <ion-button class="f-right" shape="round" *ngIf="_bViewMode && !_switchToModeration && _kraCompanySettings['bDisplayModerationButton'] && _sRoleToEmployee === 'Manager'"
+      (click)="handleModeration(true)">{{ _moderateButton['text'] }}
+    </ion-button>
+    <ion-button class="f-right" shape="round" *ngIf="!_bViewMode && _switchToModeration && _sRoleToEmployee === 'Manager'" (click)="handleModeration(false)">Cancel Moderation
+    </ion-button>
+    <ion-button class="f-right" shape="round" *ngIf="_bViewMode && _switchToModeration && _sRoleToEmployee === 'Manager'" (click)="saveModeration()">{{ _moderateButton['text'] }}
+    </ion-button>
+    <ion-button class="f-right" shape="round" *ngIf="!_bViewMode" (click)="validateContract()">{{_submitText}}</ion-button>
+    <ion-button class="f-right" shape="round" *ngIf="!_bViewMode && !_switchToModeration" (click)="handleDraftButtonClick()">Save as Draft
+    </ion-button>
+  </ng-container>
+
+</ion-footer>

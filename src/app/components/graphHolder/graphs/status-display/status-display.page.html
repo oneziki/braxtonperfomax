@@ -1,0 +1,12 @@
+<ion-grid class="status-display">
+  <ion-row>
+    <ion-col sizeXs="12" sizeMd="">
+      <ion-text *ngFor="let d of data['series']; let i = index">
+        <strong>{{ data['labels'][i] }}</strong>
+        <h2 [ngStyle]="{'color': data['colors'][i]}">
+          {{ d }}
+        </h2>
+      </ion-text>
+    </ion-col>
+  </ion-row>
+</ion-grid>

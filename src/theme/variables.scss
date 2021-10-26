@@ -1,0 +1,402 @@
+// Ionic Variables and Theming. For more info, please see:
+// http://ionicframework.com/docs/theming/
+
+//////////////////////////////////////////////////
+
+// Theme: Ionic UI Theme/Template App - Atom
+// Web Site: https://devspush.com/
+// Author: DEVSPUSH
+// Email support:  team@devspush.com or decouikit@gmail.com
+
+//////////////////////////////////////////////////
+:root {
+
+    /* Settings Fonts Size And Icon Size
+    =======================================================
+    =======================================================*/
+    --fallback-color: red;
+    --h1-font-size: 24px;
+    --h2-font-size: 18px;
+    --h3-font-size: 16px;
+    --h4-font-size: 14px;
+    --h5-font-size: 12px;
+    --h6-font-size: 10px;
+    --text-font-size: 12px;
+
+    /* Settings Fonts Size Icon
+    =======================================================
+    =======================================================*/
+    --icon-size-small: 20px;
+    --icon-size-medium: 32px;
+    --icon-size-large: 60px;
+
+    /* Settings Font Span
+    =======================================================
+    =======================================================*/
+    --span-size-small: 12px;
+    --span-size-medium: 24px;
+    --span-size-large: 30px;
+
+    /* Settings Color Background Our App
+    =======================================================
+    =======================================================*/
+    --dv-background-primary-basic: #F6F8FA;
+    --dv-background-primary: #fff;
+    --dv-background-secondary: #1DB293;
+    --dv-background-tertiary: #77D0BE;
+    --dv-background-accent-light: #5C6569;
+    --dv-background-accent: #056BFF;
+    --dv-background-accent-dark: #263238;
+ 
+   /* Settings Border Color
+    =======================================================
+    =======================================================*/
+    --dv-background-border: #E8EDF2;
+
+    /* Settings Color Text Our App
+    =======================================================
+    =======================================================*/
+    --dv-text-primary: #0E213D;
+    --dv-text-secondary: #556783;
+    --dv-text-accent: #056BFF;
+    --dv-text-light: #fff;
+
+
+    /* Settings Size Avatar
+    =======================================================
+    =======================================================*/
+    --size-avatar: 40px;
+
+    /* Settings Size Thumbnail
+  =======================================================
+  =======================================================*/
+    --size-thumbnail: 100px;
+
+    /* Settings Border Radius
+    =======================================================
+    =======================================================*/
+    --border-radius: 4px;
+
+    /* Settings Color Icon
+    =======================================================
+    =======================================================*/
+    --dv-icon-color-primary: #556783;
+    --dv-icon-color-secondary: #1DB293;
+    --dv-icon-color-accent: #056BFF;
+    --dv-icon-color-accent-dark: #0E213D;
+    --dv-icon-color-light: #fff;
+
+
+
+
+   /* Settings Fonts Size And Icon Size
+    =======================================================
+    =======================================================*/
+    --fallback-color: red;
+    --h1-font-size: 24px;
+    --h2-font-size: 18px;
+    --h3-font-size: 16px;
+    --h4-font-size: 14px;
+    --h5-font-size: 12px;
+    --h6-font-size: 10px;
+    --text-font-size: 12px;
+
+    /* Settings Fonts Size Icon
+    =======================================================
+    =======================================================*/
+    --icon-size-small: 20px;
+    --icon-size-medium: 32px;
+    --icon-size-large: 60px;
+
+    /* Settings Font Span
+    =======================================================
+    =======================================================*/
+    --span-size-small: 12px;
+    --span-size-medium: 24px;
+    --span-size-large: 30px;
+
+    /* Settings Color Background Our App
+    =======================================================
+    =======================================================*/
+    --dv-background-primary-basic: #F6F8FA;
+    --dv-background-primary: #fff; 
+    --dv-background-secondary: #1DB293;
+    --dv-background-tertiary: #77D0BE;
+    --dv-background-accent-light: #5C6569;
+    --dv-background-accent: #056BFF;
+    --dv-background-accent-dark: #263238;
+
+    /* Settings Border Color
+    =======================================================
+    =======================================================*/
+    --dv-background-border: #E8EDF2;
+
+    /* Settings Color Text Our App
+    =======================================================
+    =======================================================*/
+    --dv-text-primary: #0E213D;
+    --dv-text-secondary: #556783;
+    --dv-text-accent: #056BFF;
+    --dv-text-light: #fff;
+
+
+    /* Settings Size Avatar
+    =======================================================
+    =======================================================*/
+    --size-avatar: 40px;
+
+    /* Settings Size Thumbnail
+  =======================================================
+  =======================================================*/
+    --size-thumbnail: 100px;
+
+    /* Settings Border Radius
+    =======================================================
+    =======================================================*/
+    --border-radius: 4px;
+
+    /* Settings Color Icon
+    =======================================================
+    =======================================================*/
+    --dv-icon-color-primary: #556783;
+    --dv-icon-color-secondary: #1DB293;
+    --dv-icon-color-accent: #056BFF;
+    --dv-icon-color-accent-dark: #0E213D;
+    --dv-icon-color-light: #fff;
+}
+
+/* SETTINGS TOOLBAR
+=======================================================
+=======================================================*/
+
+ion-toolbar {
+  --background: var(--dv-background-accent, #056BFF);
+  --color: #fff;
+
+  [slot=start] {
+    margin-inline-end: 0;
+  }
+
+  ion-menu-button,
+  ion-back-button{
+    --color: #fff !important;
+  }
+
+  ion-title {
+      font-weight: 400 !important;
+      font-size: var(--h3-font-size) !important;
+  }
+}
+
+
+/* SETTINGS TEXT FONT SIZE
+=======================================================
+=======================================================*/
+
+.text-size-xl {
+  font-size: var(--h1-font-size, 24px) !important;
+  line-height: 29px;
+}
+
+.text-size-lg {
+  font-size: var(--h2-font-size, 18px) !important;
+  line-height: 27px;
+}
+
+.text-size-md {
+  font-size: var(--h3-font-size, 16px) !important;
+  line-height: 22px;
+}
+
+.text-size-xs {
+  font-size: var(--h4-font-size, 14px) !important;
+  line-height: 20px;
+}
+
+.text-size-sm {
+  font-size: var(--h5-font-size, 12px) !important;
+  line-height: 18px;
+}
+
+.text-size-sd {
+  font-size: var(--h6-font-size, 10px) !important;
+  line-height: 18px;
+}
+
+.text-size-p {
+  font-size: var(--text-font-size, 12px) !important;
+  line-height: 20px;
+}
+
+.text-nowrap {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* SETTINGS BUTTON SIZE
+=======================================================
+=======================================================*/
+
+.default-button {
+    --color: var(--dv-text-light);
+    --color-hover:  var(--dv-text-light) !important;
+    --color-activated: var(--dv-text-light);
+    --color-focused: var(--dv-text-light);
+    --padding-top: 13px;
+    --padding-bottom: 13px;
+    --padding-start: 15px;
+    --padding-end: 15px;
+    font-size: 14px;
+    font-weight: 500;
+    height: auto;
+    border-radius: 4px;
+    text-transform: capitalize;
+}
+
+
+/* SETTINGS BACKGROUND
+=======================================================
+=======================================================*/
+
+.color-basic {
+  --background: var(--dv-background-primary);
+  --background-hover: var(--dv-background-primary) !important;
+}
+
+.color-primary {
+  --background: var(--dv-background-secondary, #1DB293);
+  --background-hover:  var(--dv-background-secondary, #1DB293) !important;
+}
+
+.color-accent-light {
+  --background: var(--dv-background-accent-light, #465055);
+  --background-hover: var(--dv-background-accent-light, #465055) !important;
+}
+
+.color-accent {
+  --background: var(--dv-background-accent);
+  --background-hover:  var(--dv-background-accent) !important;
+}
+
+.color-accent-dark{
+  --background:  var(--dv-background-accent-dark) !important;
+  --background-hover:  var(--dv-background-accent-dark) !important;
+}
+
+.color-accent-tertiary{
+  --background:  var(--dv-background-tertiary) !important;
+  --background-hover:  var(--dv-background-tertiary) !important;
+}
+
+/* SETTINGS TEXT COLOR
+=======================================================
+=======================================================*/
+
+.text-color-primary {
+  color: var(--dv-text-primary, #0E213D) !important;
+}
+
+.text-color-secondary {
+  color: var(--dv-text-secondary, #556783) !important;
+}
+
+.text-color-accent {
+  color: var(--dv-text-accent, #056BFF) !important;
+}
+
+.text-color-light {
+  color: var(--dv-text-light, #fff) !important;
+}
+
+.error-color {
+  color: red !important;
+}
+
+/* SETTINGS ITEM
+=======================================================
+=======================================================*/
+
+ion-item {
+  --background-hover: transparent;
+  --background-activated: transparent;
+  --background-focused: transparent;
+  --ripple-color: transparent;
+}
+
+
+.transparent{
+  --background: transparent !important;
+  background: var(--background)
+}
+
+/* SETTINGS ICON COLOR
+=======================================================
+=======================================================*/
+
+.icon-color-primary {
+  color: var(--dv-icon-color-primary, #556783) !important;
+}
+
+.icon-color-secondary {
+  color: var(--dv-icon-color-secondary, #1DB293) !important;
+}
+
+.icon-color-accent {
+  color: var(--dv-icon-color-accent, #056BFF) !important;
+}
+
+.icon-color-accent-dark {
+  color: var(--dv-icon-color-accent-dark, #0E213D) !important;
+}
+
+.icon-color-light {
+  color: var(--dv-icon-color-light, #fff) !important;
+}
+
+
+/* Black&White Avatar and Image
+=======================================================
+=======================================================*/
+
+img {
+  object-fit: fill !important;
+}
+
+/* Default Overview Ionic Section
+=======================================================
+=======================================================*/
+.border {
+  border: 1px solid var(--dv-background-border);
+}
+
+.border-radius {
+  border-radius: 4px;
+}
+
+.transparent{
+  --background: transparent !important;
+  background: var(--background)
+}
+
+/* SETTINGS COLOR BACKGROUND OUR APP
+=======================================================
+=======================================================*/
+ion-content {
+  --background: var(--bg-white);
+}
+
+ion-list {
+  // background: var(--dv-background-primary-basic) !important;
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
+}
+
+.ion-padding-list {
+  padding: 10px;
+}
+
+.ion-padding-grid {
+  padding: 10px !important;
+}
+
+

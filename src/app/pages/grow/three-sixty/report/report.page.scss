@@ -1,0 +1,80 @@
+#three-sixty.reportGrid {
+  $dot-size: 10px;
+
+  span.color-dot {
+    vertical-align: middle;
+    height: $dot-size;
+    width: $dot-size;
+
+    border-radius: 100%;
+    display: inline-block;
+    margin: 1px 5px;
+
+    background: var(--primary);
+
+    &.dot-accent {
+      background: var(--accent);
+    }
+    &.dot-icons {
+      background: var(--icons);
+    }
+    &.dot-success {
+      background: var(--success);
+    }
+    &.dot-danger {
+      background: var(--danger);
+    }
+    &.dot-transparent {
+      background: transparent;
+    }
+  }
+
+  .bg-primary {
+    background-color: var(--primary) !important;
+    background: var(--primary) !important;
+    border-color: var(--primary);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    display: table;
+    text-align: left;
+    border-spacing: 2px;
+    thead {
+      tr {
+        th {
+          padding: 10px 5px 10px 5px;
+          border-bottom-color: #ccc;
+        }
+      }
+    }
+    tbody {
+      tr {
+        td {
+          padding-left: 5px;
+          p {
+            padding-top: 5px;
+            line-height: 1.4;
+            padding-bottom: 5px;
+          }
+          border-top: 1px solid #dee2e6;
+        }
+        th {
+          padding: 5px 5px 5px 5px;
+          vertical-align: middle;
+          white-space: normal;
+          border-top: 1px solid #dee2e6;
+        }
+      }
+    }
+  }
+
+  .sub-title {
+    display: block;
+    font-weight: 600;
+    color: var(--primary);
+    padding: 10px 5px;
+    font-size: 18px !important;
+  }
+}

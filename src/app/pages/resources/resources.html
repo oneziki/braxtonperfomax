@@ -1,0 +1,72 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper resourcesGrid">
+
+    <ion-toolbar class="toolbar">
+      <ion-title class="ion-padding-start colHeader text-primary">{{_companyTemplate['sP7DisplayNameResources']}}
+      </ion-title>
+      <ion-searchbar slot="primary" placeholder="Search Here..." class="resourceSearch" [(ngModel)]="_searchText">
+      </ion-searchbar>
+    </ion-toolbar>
+
+    <ion-row>
+      <!-- Resources -->
+      <ion-col sizeXs="12" sizeMd="12" sizeXl="12">
+        <ion-card class="homeCard homeResources">
+          <ion-card-content>
+            <ng-container *ngFor="let resCat of _resourcesList; let lResCat = last;">
+              <ng-container *ngIf="resCat['sFlag'] === 'Resource P7'">
+                <div class="categoryName card portal-card p-10 animated fadeIn">
+                  <ng-container *ngFor="let subCat of resCat['subCategory']">
+                    <section class="container-fluid" *ngIf="subCat['sSubCategoryName'] !== 'Resource Box P7'">
+                      <p class="d-inline-block pointer" (click)="setCurrentFilter(subCat['ResourcesSubCategoryUID'])">
+                        <i class="icofont icofont-rounded-right activeSub"
+                          [ngClass]="{'rotateDown': _currentFilter === subCat['ResourcesSubCategoryUID']}"></i>
+                        {{ subCat['sSubCategoryName'] }}
+                      </p>
+                      <ng-container
+                        *ngFor="let resUpload of subCat['resourceItemUploads'] | searchPipe: _searchText : 'sItemName';">
+                        <ng-container
+                          *ngIf="_currentFilter === subCat['ResourcesSubCategoryUID'] && resUpload['sItemName'] && resUpload['sItemName'].length">
+                          <ng-container
+                            *ngIf="!_searchText.length || resUpload['sItemName'].toLowerCase().indexOf(_searchText.toLowerCase()) > -1">
+                            <!-- Normal -->
+                            <a class="text-muted d-block m-15"
+                              *ngIf="['Link', 'Document'].indexOf(resUpload['sTypeName']) === -1">
+                              <!-- Video -->
+                              <i class="icofont icofont-play-alt-1" *ngIf="resUpload['sTypeName'] == 'Video'"></i>
+                              {{ resUpload['sItemName'] }}
+                            </a>
+                            <!-- Document -->
+                            <a class="text-muted d-block m-15" href="{{ resUpload['sUploadFileName'] }}" target="_blank"
+                              *ngIf="resUpload['sTypeName'] === 'Document'">
+                              <i class="icofont icofont-ui-file"></i>
+                              {{ resUpload['sItemName'] }}
+                            </a>
+                            <!-- Link -->
+                            <a class="text-muted d-block m-15" href="{{ resUpload['sDocumentUploadName'] }}"
+                              target="_blank" *ngIf="resUpload['sTypeName'] === 'Link'">
+                              <i class="icofont icofont-link"></i>
+                              {{ resUpload['sItemName'] }}
+                            </a>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+                    </section>
+                  </ng-container>
+                </div>
+              </ng-container>
+            </ng-container>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-button class="btnRound" shape="round" (click)="goBack()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-button>
+</ion-footer>

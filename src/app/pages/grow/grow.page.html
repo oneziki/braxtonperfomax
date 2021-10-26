@@ -1,0 +1,205 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper moduleLanding growGrid">
+    <ion-row *ngIf="!_isLoading">
+      <ion-col sizeXs="12" sizeMd="6">
+
+        <ion-text>
+          <h2 class="contentHeader">
+            {{_growTemplate['sName']}} : <span class="text-lite-charcoal fw-400">{{ _performUser['sFullName'] }}</span>
+            <small class="p-t-10 p-b-20 text-muted" [innerHTML]="_growTemplate['sDisplayDescription']"></small>
+          </h2>
+        </ion-text>
+
+        <div class="d-block text-center">
+          <!-- Default if nothing is uploaded -->
+          <img [src]="_growTemplate['sTileImageURL']" class="tileHeaderImage" *ngIf="_growTemplate['sTileDisplayUrlP7'] === ''">
+          <!-- Display P7 Specific Image -->
+          <img [src]="_growTemplate['sTileDisplayUrlP7']" class="tileHeaderImage" *ngIf="_growTemplate['sTileDisplayUrlP7'] === 'Image'">
+          <!-- Display P7 Document -->
+          <div class="container-document" *ngIf="_growTemplate['sTileDisplayUrlP7'] === 'Document'">
+            <img [src]="_growTemplate['sTileImageURL']" class="tileHeaderImage">
+            <a [href]="_growTemplate['sTileDisplayUrlP7']">
+              <span class="centered-document"> {{_growTemplate['sTileImageNameP7']}}</span>
+            </a>
+          </div>
+          <!-- Display P7 Video -->
+          <ion-slide class="tileHeaderImage" style="margin-bottom: 10px"
+            *ngIf="_growTemplate['sTileDisplayCategoryP7'] === 'Video Link' || _growTemplate['sTileDisplayCategoryP7'] === 'Video'">
+            <iframe width="420" height="225" [src]="_growTemplate['sTileDisplayUrlP7'] | safe" title="video player" frameborder="0" allow="autoplay" controls="0"
+              allowfullscreen></iframe>
+          </ion-slide>
+        </div>
+
+        <!-- <div class="d-block text-center">
+          <img [src]="_growTemplate['sTileImageURL']" class="tileHeaderImage">
+        </div> -->
+
+        <!-- Tile Actions -->
+        <ion-card class="homeCard tileActions">
+          <ion-card-content>
+            <ion-list>
+              <ion-item lines="none" *ngIf="_companyTemplate['bShowPDPLink']">
+                <i class="icofont {{_growTemplate['sIconP7']}} icofont-appPage"></i>
+                <ion-label class="hover" (click)="goPDP(_teamTasks)">
+                  Personal Development Plan
+                  <ion-badge class="animated pulse" color="danger" [class]="_pdpNumber > 9? 'actionBadgeGt9':'actionBadge'" *ngIf="_pdpNumber > 0">{{_pdpNumber}}
+                  </ion-badge>
+                </ion-label>
+              </ion-item>
+              <ion-item lines="none">
+                <i class="icofont {{_growTemplate['sIconP7']}} icofont-appPage"></i>
+                <ion-label class="hover" (click)="goSwotAnalysis()">
+                  PDP SWOT Analysis
+                  <ion-badge class="animated pulse" color="danger" [class]="_swotNumber > 9? 'actionBadgeGt9':'actionBadge'" *ngIf="_swotNumber > 0">{{_swotNumber}}
+                  </ion-badge>
+                </ion-label>
+              </ion-item>
+              <ion-item lines="none" *ngIf="_companyTemplate['bShowSkillsQuestionnaireLink']">
+                <i class="icofont {{_growTemplate['sIconP7']}} icofont-appPage"></i>
+                <ion-label class="hover" (click)="goActivitySummary('Expertise Review')">
+                  Expertise Review
+                  <ion-badge class="animated pulse" color="danger" [class]="_expertiseNumber > 9? 'actionBadgeGt9':'actionBadge'" *ngIf="_expertiseNumber > 0">
+                    {{_expertiseNumber}}
+                  </ion-badge>
+                </ion-label>
+              </ion-item>
+              <ion-item lines="none" *ngIf="_companyTemplate['bShowAnnualReviewLink']">
+                <i class="icofont {{_growTemplate['sIconP7']}} icofont-appPage"></i>
+                <ion-label class="hover" (click)="goActivitySummary('Competency Review')">
+                  Competency Review
+                  <ion-badge class="animated pulse" color="danger" [class]="_competencyNumber > 9? 'actionBadgeGt9':'actionBadge'" *ngIf="_competencyNumber > 0">
+                    {{_competencyNumber}}</ion-badge>
+                </ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+
+        <!-- Grow Dialogue -->
+        <ion-card class="homeCard personalLeave ion-hide-sm-down">
+          <ion-card-header>
+            <ion-card-title class="cardHeader">
+              <ion-item lines="none">
+                <i class="icofont icofont-ui-chat icofont-appPage"></i>
+                <ion-label>
+                  Grow Dialogue
+                </ion-label>
+              </ion-item>
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list class="rPanelConversations">
+              <ng-container *ngFor="let convo of _conversationFeedCat; let i=index">
+                <ion-item lines="none" class="transparent">
+                  <ion-avatar slot="start">
+                    <img [src]="convo['sProfilePic']">
+                  </ion-avatar>
+                  <ion-label>
+                    <h3>{{convo['sFullName'] }}</h3>
+                    <p>{{convo['sJobTitleName'] }}</p>
+                  </ion-label>
+                </ion-item>
+              </ng-container>
+              <ion-item lines="none" *ngIf="_conversationFeedCat.length === 0">
+                <ion-label class="text-muted">
+                  *Reserved for your Dialogues
+                </ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col sizeXs="12" sizeMd="6">
+
+        <ion-text>
+          <h2 class="contentHeader">Grow Individual Reporting</h2>
+        </ion-text>
+
+        <!-- Leave -->
+        <ion-card class="homeCard personalLeave" *ngIf="bLoadTiles">
+          <ion-card-header>
+            <ion-card-title class="cardHeader">
+              <ion-item lines="none">
+                <i class="icofont icofont-file-pdf icofont-appPage"></i>
+                <ion-label>
+                  PDF’s
+                </ion-label>
+              </ion-item>
+            </ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <ion-list *ngFor="let category of _linkedCategories; let i = index">
+              <ion-item lines="none">
+                <ion-label class="leaveHeader">
+                  {{category['sCategoryName']}}
+                </ion-label>
+              </ion-item>
+              <ng-container *ngFor="let task of category['task']; let j = index">
+                <ion-item lines="none" *ngIf="j < category['iTotal'] && category['task'].length !== 0">
+                  <ion-label>{{task['sSurveyName']}}
+                    <ion-badge class="actionBadgeNew animated pulse" color="danger" *ngIf="task['sHasReadNotification'] === 'NO'">
+                      NEW
+                    </ion-badge>
+                  </ion-label>
+                  <ion-button slot="end" color="primary" (click)=printPDF(task,false)>
+                    <ion-icon name="print"></ion-icon>
+                  </ion-button>
+                  <ion-button slot="end" color="primary" (click)=printPDF(task,true)>
+                    <ion-icon name="search"></ion-icon>
+                  </ion-button>
+                </ion-item>
+              </ng-container>
+              <ion-item lines="none" *ngIf="category['task'].length === 0">
+                <ion-label class="text-muted">*no pdf's available</ion-label>
+              </ion-item>
+              <ion-item lines="none" *ngIf="category['task'].length > 2" (click)="loadMore(category)">
+                <ion-label slot="end" class="loadMore hover" *ngIf="!category['bLoadMore']">
+                  Load more...
+                </ion-label>
+                <ion-label slot="end" class="loadMore hover" *ngIf="category['bLoadMore']">
+                  load less...
+                </ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+
+        <!-- Dashboards -->
+
+        <ion-card class="homeCard personalLeave">
+          <ion-card-header>
+            <ion-card-title class="cardHeader">
+              <ion-item lines="none">
+                <ion-label>
+                  Dashboards
+                </ion-label>
+              </ion-item>
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list>
+              <ng-container *ngFor="let menu of _myMaxReportingTemplateViews;">
+                <ion-item lines="none">
+                  <i class="icofont icofont-dashboard-web icofont-appPage"></i>
+                  <ion-label>{{menu['name']}}</ion-label>
+                  <ion-button slot="end" color="primary" class="m-0-impo" (click)="updateFilter('Personal',menu)">
+                    <ion-icon name="search"></ion-icon>
+                  </ion-button>
+                </ion-item>
+              </ng-container>
+              <ng-container *ngIf="_myMaxReportingTemplateViews.length === 0">
+                <ion-item lines="none" class="transparent">
+                  <ion-label>
+                    <h2 class="text-muted">* No reporting to display</h2>
+                  </ion-label>
+                </ion-item>
+              </ng-container>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

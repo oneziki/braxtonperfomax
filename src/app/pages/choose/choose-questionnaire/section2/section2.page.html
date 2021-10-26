@@ -1,0 +1,210 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper chooseSection2Grid">
+
+    <ion-row>
+      <ion-col sizeXs="12" sizeMd="6">
+        <ion-text>
+          <h2 class="contentHeader">
+            Choose Questionnaire
+          </h2>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+
+    <ion-card>
+      <ion-card-content class="survey-wrapper">
+        <ion-row class="survey-container">
+          <ion-col size="12">
+            <h4 class="header">
+              Please complete the Choose Questionnaire
+            </h4>
+          </ion-col>
+          <ion-col size="12" class="chooseImg">
+            <img [src]="_userQuestionnaire['sProfilePic']" style="object-fit: fill;" class="color-avi"  (error)="_userQuestionnaire['srcFail'] = true" *ngIf="!_userQuestionnaire['srcFail']">
+            <ion-icon class="default-img" name="person-circle-outline" *ngIf="_userQuestionnaire['srcFail']"></ion-icon>      
+            <h6 class="color-avi-name">
+              {{ _userQuestionnaire['sEmployeeFullName'] }}
+            </h6>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="12">
+            <h1 class="sectionHeading">
+              SECTION 3 - CAREER ASPIRATIONS
+            </h1>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="m-t-20">
+          <ion-col size="3">
+            <strong class="text-charcoal">
+              Your Future Roles
+            </strong>
+          </ion-col>
+          <ion-col size="3">
+            <strong>
+              Immediate - (Next 6 months)
+            </strong>
+          </ion-col>
+          <ion-col size="2">
+            <ion-select class="section1Input" [interfaceOptions]='{ showBackdrop: false }' interface="popover" id="iImmediateTerm" name="iImmediateTerm"
+                        ngModel #iImmediateTerm="ngModel" placeholder="*Please select" label="*Please select"
+                        (ngModelChange)="setOptionState(iImmediateTerm.value, 'bImmediateDisable', _searchImmediateRole)">
+              <ion-select-option *ngFor="let option of _sOption" [value]="option">
+                {{ option }}
+              </ion-select-option>
+            </ion-select>
+          </ion-col>
+          <ion-col size="4">
+            <ion-input class="section1Input" [(ngModel)]="_searchImmediateRole" id="_searchImmediateRole" name="_searchImmediateRole"
+                       placeholder="Search Immediate Role" type="text">
+              <ionic-selectable
+                                [(ngModel)]="_searchImmediateRole"
+                                [items]="_roleProfiles"
+                                itemValueField="JobTitleRoleUID"
+                                itemTextField="sJobTitleRoleName"
+                                [canSearch]="true"
+                                [disabled]="bImmediateDisable"
+                                (onChange)="roleChange($event, 'Immediate')">
+              </ionic-selectable>
+            </ion-input>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="m-t-20">
+          <ion-col size="3">
+          </ion-col>
+          <ion-col size="3">
+            <strong>
+              Short Term - (06 months to 2-3 years)
+            </strong>
+          </ion-col>
+          <ion-col size="2">
+            <ion-select class="section1Input" [interfaceOptions]='{ showBackdrop: false }' interface="popover" id="iShortTerm" name="iShortTerm"
+                        ngModel #iShortTerm="ngModel" placeholder="*Please select" label="*Please select"
+                        (ngModelChange)="setOptionState(iShortTerm.value, 'bShortDisable', '')">
+              <ion-select-option *ngFor="let option of _sOption" [value]="option">
+                {{ option }}
+              </ion-select-option>
+            </ion-select>
+          </ion-col>
+          <ion-col size="4">
+            <ion-input class="section1Input" [(ngModel)]="_searchShortTermRole" id="_searchShortTermRole" name="_searchShortTermRole"
+                       placeholder="Search Short Term Role" type="text">
+              <ionic-selectable
+                                [(ngModel)]="_searchShortTermRole"
+                                [items]="_roleProfiles"
+                                itemValueField="JobTitleRoleUID"
+                                itemTextField="sJobTitleRoleName"
+                                [canSearch]="true"
+                                [disabled]="bShortDisable"
+                                (onChange)="roleChange($event, 'ShortTerm')">
+              </ionic-selectable>
+            </ion-input>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="m-t-20">
+          <ion-col size="3">
+          </ion-col>
+          <ion-col size="3">
+            <strong>
+              Long Term - (> 3 years)
+            </strong>
+          </ion-col>
+          <ion-col size="2">
+            <ion-select class="section1Input" [interfaceOptions]='{ showBackdrop: false }' interface="popover" id="iLongTerm" name="iLongTerm"
+                        ngModel #iLongTerm="ngModel" placeholder="*Please select" label="*Please select"
+                        (ngModelChange)="setOptionState(iLongTerm.value, 'bLongDisable', '')">
+              <ion-select-option *ngFor="let option of _sOption" [value]="option">
+                {{ option }}
+              </ion-select-option>
+            </ion-select>
+          </ion-col>
+          <ion-col size="4">
+            <ion-input class="section1Input" [(ngModel)]="_searchLongTermRole" id="_searchLongTermRole" name="_searchLongTermRole"
+                       placeholder="Search Long Term Role" type="text">
+              <ionic-selectable
+                                [(ngModel)]="_searchLongTermRole"
+                                [items]="_roleProfiles"
+                                itemValueField="JobTitleRoleUID"
+                                itemTextField="sJobTitleRoleName"
+                                [canSearch]="true"
+                                [disabled]="bLongDisable"
+                                (onChange)="roleChange($event, 'LongTerm')">
+              </ionic-selectable>
+            </ion-input>
+          </ion-col>
+        </ion-row>
+
+        <ng-container *ngFor="let mobility of _mobilities; let i = index">
+          <ion-row class="m-t-20" *ngIf="mobility['bDisplay'] === 1 && mobility['sMobilityName'] !== 'Department'">
+            <ion-col size="3">
+              <strong class="text-charcoal">
+                On Site Preferences
+              </strong>
+            </ion-col>
+            <ion-col size="3">
+              <strong>
+                Preferred {{ mobility['sMobilityName'] }}
+              </strong>
+            </ion-col>
+            <ion-col size="4">
+              <ion-select class="section1Input" [interfaceOptions]='{ showBackdrop: false }' interface="popover" name="sCategoryName" id="sCategoryName" ngModel #sCategoryName="ngModel"
+                          (ionChange)="setMobility(sCategoryName.value)" placeholder="*Please select" label="*Please select"
+                          [ngClass]="{'disabled': _userQuestionnaire['sLengthOfService'] === '' }">
+                <ion-select-option *ngFor="let name of mobility['mobilityCategories']" [value]="name">
+                  {{ name['sCategoryName'] }}
+                </ion-select-option>
+              </ion-select>
+            </ion-col>
+            <ion-col size="2">
+              <ion-select class="section1Input" [interfaceOptions]='{ showBackdrop: false }' interface="popover" id="sMobilityRelocate" name="sMobilityRelocate" ngModel #sMobilityRelocate="ngModel"
+                          (ionChange)="setRelocate(mobility, sMobilityRelocate.value)" placeholder="*Willing to relocate" label="*Willing to relocate">
+                <ion-select-option *ngFor="let option of _sOption" [value]="option">
+                  {{ option }}
+                </ion-select-option>
+              </ion-select>
+            </ion-col>
+          </ion-row>
+        </ng-container>
+
+        <ion-row class="m-t-20">
+          <ion-col size="3">
+          </ion-col>
+          <ion-col size="3">
+            <strong>
+              Preferred Department
+            </strong>
+          </ion-col>
+          <ion-col size="4">
+            <ion-select class="section1Input" [interfaceOptions]='{ showBackdrop: false }' interface="popover" id="sDepartmentName" name="sDepartmentName"
+                        ngModel="item" ngModel #sDepartmentName="ngModel" [(ngModel)]="_userQuestionnaire['sPreferredDepartment']" placeholder="*Please select" label="*Please select"
+                        [ngClass]="{'disabled': _userQuestionnaire['sPreferredDepartment'] === '' }">
+              <ion-select-option *ngFor="let departments of _departments" [value]="departments">
+                {{ departments['sDepartmentName'] }}
+              </ion-select-option>
+            </ion-select>
+          </ion-col>
+          <ion-col size="2">
+            <ion-select class="section1Input" [interfaceOptions]='{ showBackdrop: false }' interface="popover" id="sDepartmentRelocate" name="sDepartmentRelocate"
+                        ngModel="item" ngModel #sWillingToRelocate="ngModel" [(ngModel)]="_userQuestionnaire['sWillingToRelocate']" placeholder="*Willing to relocate" label="*Willing to relocate">
+              <ion-select-option *ngFor="let option of _sOption" [value]="option">
+                {{ option }}
+              </ion-select-option>
+            </ion-select>
+          </ion-col>
+        </ion-row>
+
+      </ion-card-content>
+    </ion-card>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-button class="btnRound" shape="round" (click)="goBack()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-button>
+  <ion-button shape="round" class="f-right" (click)="submitQuestionnaire()">Complete</ion-button>
+</ion-footer>

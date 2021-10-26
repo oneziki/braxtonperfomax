@@ -1,0 +1,160 @@
+<!-- Apex -->
+<ng-container *ngIf="_isApex">
+  <div id="chart-{{ data['id'] }}" [ngClass]="{'align-content': data['chartType'] && data['chartType'] === 'pieList'}" (window:resize)="onResize($event)"></div>
+</ng-container>
+
+<ng-container *ngIf="!_isApex">
+  <!-- ARROW COL COMBO -->
+  <ng-container *ngIf="type === 'ArrowColumnCombo'">
+    <!-- <app-arrow-column-combo [data]="data" [options]="options"></app-arrow-column-combo> -->
+  </ng-container>
+
+  <!-- ARROW LIST -->
+  <ng-container *ngIf="type === 'ArrowList'">
+    <!-- <app-arrow-list [data]="data" [options]="options"></app-arrow-list> -->
+  </ng-container>
+
+  <!-- Bar Benchmark -->
+  <ng-container *ngIf="type === 'BarBenchmark'">
+    <app-bar-benchmark [data]="data" [filter]="filter" (graphClickHandler)="graphHolderHandler($event)">
+    </app-bar-benchmark>
+  </ng-container>
+
+  <!-- Bar List -->
+  <ng-container *ngIf="type === 'BarList'">
+    <!-- <app-bar-list [data]="data" [options]="options"></app-bar-list> -->
+  </ng-container>
+
+  <!-- CARD LIST -->
+  <ng-container *ngIf="type === 'CardList'">
+    <app-card-list [data]="data" [options]="options" [filter]="filter" (graphClickHandler)="graphHolderHandler($event)">
+    </app-card-list>
+  </ng-container>
+
+  <!-- CARD STAIWAY LIST -->
+  <ng-container *ngIf="type === 'CardStairway'">
+    <app-card-stairway [data]="data" [options]="options" [filter]="filter" (graphClickHandler)="graphHolderHandler($event)"></app-card-stairway>
+  </ng-container>
+
+  <!-- COLUMN GRID & ColumnGridIcon -->
+  <ng-container *ngIf="type === 'ColumnGrid' || type === 'ColumnGridIcon'">
+    <app-column-grid [data]="data" [filter]="filter" (graphClickHandler)="graphHolderHandler($event)"></app-column-grid>
+  </ng-container>
+
+  <!-- Column Grid -->
+  <ng-container *ngIf="type === 'columnGrid'">
+    <app-simple-column-grid [data]="data" [options]="options"></app-simple-column-grid>
+  </ng-container>
+
+  <!-- HEATMAP CHART -->
+  <ng-container *ngIf="type === 'Heatmap'">
+    <app-heatmap-chart [data]="data" [filter]="filter" (graphClickHandler)="graphHolderHandler($event)"></app-heatmap-chart>
+  </ng-container>
+
+  <!-- HTML Table -->
+  <ng-container *ngIf="type === 'HTMLTable'">
+    <app-html-table [data]="data" [options]="options"></app-html-table>
+  </ng-container>
+
+  <!-- Icon Group List -->
+  <ng-container *ngIf="type === 'IconGroupList'">
+    <app-icon-group-list [data]="data" [filter]="filter"></app-icon-group-list>
+  </ng-container>
+
+  <!-- Icon Legend List -->
+  <ng-container *ngIf="type === 'IconLegendList'">
+    <app-icon-legend-list [data]="data" [filter]="filter" (graphClickHandler)="graphHolderHandler($event)">
+    </app-icon-legend-list>
+  </ng-container>
+
+  <!-- Image Displayer -->
+  <ng-container *ngIf="type === 'ImageDisplayer'">
+    <app-image-displayer [data]="data" [options]="options"></app-image-displayer>
+  </ng-container>
+
+  <!-- MEASURE LIST -->
+  <ng-container *ngIf="type === 'MeasureList'">
+    <!-- <app-measure-list [data]="data" [options]="options"></app-measure-list> -->
+  </ng-container>
+
+  <!-- Pie List -->
+  <ng-container *ngIf="type === 'PieList'">
+    <!-- <app-pie-list [data]="data" [options]="options"></app-pie-list> -->
+  </ng-container>
+
+  <!-- Status Displayer -->
+  <ng-container *ngIf="type === 'StatusDisplayer'">
+    <app-status-displayer [data]="data" [filter]="filter" (graphClickHandler)="graphHolderHandler($event)">
+    </app-status-displayer>
+  </ng-container>
+
+  <!-- Status Displayer -->
+  <ng-container *ngIf="type === 'statusDisplay'">
+    <app-status-display [data]="data" [options]="options" (graphClickHandler)="graphHolderHandler($event)">
+    </app-status-display>
+  </ng-container>
+
+  <!-- DATATABLE -->
+  <ng-container *ngIf="type.indexOf('Datagrid') > -1">
+    <app-data-table [data]="data" [filter]="filter" (graphClickHandler)="graphHolderHandler($event)">
+    </app-data-table>
+  </ng-container>
+
+  <!--  -->
+
+  <!-- List Table -->
+  <ng-container *ngIf="type === 'listTable'">
+    <app-list-table [data]="data"></app-list-table>
+  </ng-container>
+  <!-- ---- -->
+</ng-container>
+
+<ng-container *ngIf="options && options['footerLegend']">
+
+  <ion-grid class="footerLegend">
+    <ion-row>
+      <ion-col *ngFor="let d of data['series']; let i = index">
+        <strong class="d-block" [ngStyle]="{'color': data['colors'][i]}">
+          {{ d }}
+          <small>
+            <br>
+            {{ data['labels'][i] }}
+          </small>
+        </strong>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+</ng-container>
+
+
+<ng-container *ngIf="_graphMessage.length">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <p class="text-muted graphMessage m-10">
+          {{ _graphMessage }}
+        </p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ng-container>
+
+<ng-container *ngIf="options && options['footerList']">
+
+  <ion-grid class="footerList">
+    <ng-container *ngIf="data2">
+      <ion-row *ngFor="let d of data2['series']; let i = index">
+        <ion-col size="8">
+          <p>{{ data2['labels'][i] }}</p>
+        </ion-col>
+        <ion-col size="4">
+          <h1 [ngStyle]="{'color': data2['colors'][i]}">{{ d }}</h1>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+  </ion-grid>
+
+</ng-container>

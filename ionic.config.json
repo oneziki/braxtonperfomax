@@ -1,0 +1,7 @@
+{
+  "name": "atomDemoApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

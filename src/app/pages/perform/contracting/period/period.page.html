@@ -1,0 +1,124 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper contractPeriodGrid">
+    <ion-row>
+      <ion-col>
+        <ion-text>
+          <h2 class="contentHeader">Performance Contracting</h2>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+    <!--  -->
+    <ion-row>
+
+      <ion-col size="12">
+        <ion-grid>
+          <ion-row class="userHeader">
+            <ion-col sizeXs="12" sizeXl="6" class="p-0-impo">
+              <ion-item lines="none" class="aviUserDetails">
+                <ion-avatar slot="start">
+                  <img [src]="_userProfileData['sEmployeeProfileImageUrl']"
+                       (error)="_userProfileData['empSrcFail'] = true" *ngIf="_userProfileData['empSrcFail'] !== true">
+                  <ion-icon class="default-img" name="person-circle-outline"
+                            *ngIf="_userProfileData['empSrcFail'] === true"></ion-icon>
+                </ion-avatar>
+                <ion-label>
+                  <h3>{{ _userProfileData['sEmployeeName'] }}</h3>
+                  <p>{{_userProfileData['sJobTitleName']}}</p>
+                </ion-label>
+              </ion-item>
+              <div class="col-header">
+                <h1>Employee</h1>
+              </div>
+            </ion-col>
+            <ion-col sizeXs="12" sizeXl="6" class="p-0-impo">
+              <ion-item lines="none" class="aviUserDetails">
+                <ion-avatar slot="start">
+                  <img [src]="_userProfileData['sAdminProfileImageUrl']"
+                       (error)="_userProfileData['managerSrcFail'] = true" *ngIf="_userProfileData['managerSrcFail'] !== true">
+                  <ion-icon class="default-img" name="person-circle-outline"
+                            *ngIf="_userProfileData['managerSrcFail'] === true"></ion-icon>
+                </ion-avatar>
+                <ion-label>
+                  <h3>{{ _userProfileData['sAdminFullName'] }}</h3>
+                  <p>{{_userProfileData['sAdminJobTitle']}}</p>
+                </ion-label>
+              </ion-item>
+              <div class="col-header">
+                <h1>
+                  Manager
+                </h1>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+
+      <ng-container *ngIf="_KRAStatus !== 'bView' && _sRoleToEmployee === 'Employee'">
+        <ion-col size="12">
+          <h2 class="sectionHeader">Contract Period</h2>
+        </ion-col>
+        <ion-col sizeXs="12" sizeMd="6">
+          <input type="date" id="from-date" name="from-date" class="periodDate" displayFormat="MM DD YY" placeholder="Select from date" value="" [(ngModel)]="dateFrom"
+            (ngModelChange)="validateContractPeriod()">
+        </ion-col>
+
+        <ion-col sizeXs="12" sizeMd="6">
+          <input type="date" id="to-date" name="to-date" displayFormat="MM DD YY" class="periodDate" placeholder="Select to date" value="" [(ngModel)]="dateTo"
+            (ngModelChange)="validateContractPeriod()">
+        </ion-col>
+      </ng-container>
+
+      <ng-container *ngIf="_KRAStatus === 'bView' || _sRoleToEmployee === 'Manager'">
+        <ion-col sizeXs="12" sizeMd="6">
+          <ion-row>
+            <ion-col size="12">
+              <h2 class="sectionHeader no-m">Contract Period</h2>
+            </ion-col>
+            <ion-col size="6">
+              <span class="sectionHeader text-lite-charcoal-impo fw-400">
+                <small>{{ _userProfileData['sContractPeriodStart'] | date:'fullDate'}}</small>
+              </span>
+            </ion-col>
+            <ion-col size="6">
+              <span class="sectionHeader text-lite-charcoal-impo fw-400">
+                <small>{{ _userProfileData['sContractPeriodEnd'] | date:'fullDate'}}</small>
+              </span>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+
+      </ng-container>
+
+      <ion-col sizeXs="12" sizeMd="6">
+        <h2 class="sectionHeader">My Team’s Business Objectives</h2>
+
+        <ion-item lines="none" *ngFor="let busObj of _bObjectives">
+          <ion-checkbox slot="start" (ngModelChange)="busObjCheckboxChange($event,busObj)" [(ngModel)]="busObj['checked']" value="{{ busObj }}" [disabled]="!_bShowObjectives">
+          </ion-checkbox>
+          <ion-label>{{busObj['sObjectivesName']}}</ion-label>
+        </ion-item>
+      </ion-col>
+
+      <ion-col sizeXs="12" sizeMd="6">
+        <h2 class="text-primary">{{ _kraCompanySettings['sEmployeeMissionStatement'] }} </h2>
+        <ion-item lines="none">
+          <ion-textarea placeholder="Add your individual aim, what you’d like to achieve for this contracting period" autoGrow="true"
+            [(ngModel)]="_userProfileData['sNormalUserMissionStatement']" [readonly]="_KRAStatus === 'bView' || _sRoleToEmployee === 'Manager'">
+          </ion-textarea>
+        </ion-item>
+      </ion-col>
+
+    </ion-row>
+    <!--  -->
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-button class="btnRound" shape="round" (click)="goActivitySummary()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-button>
+  <ion-button class="btnRound" shape="round" (click)="printKraContratingPDF()">
+    <ion-icon name="print"></ion-icon>
+  </ion-button>
+  <ion-button shape="round" class="f-right" (click)="goContractDesign()">Next</ion-button>
+</ion-footer>

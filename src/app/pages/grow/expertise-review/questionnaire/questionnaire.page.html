@@ -1,0 +1,49 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper">
+
+    <ion-row>
+      <ion-col>
+        <ion-text>
+          <h2 class="contentHeader">Expertise Review</h2>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+
+    <ion-card>
+      <ion-card-content class="survey-wrapper">
+
+        <ion-row class="survey-container">
+          <ion-col size="12">
+            <h4 class="sub-title" *ngIf="_questionnaireTitle">
+              {{ _questionnaireTitle }}
+            </h4>
+          </ion-col>
+          <ion-col size="12" class="text-center">
+            <img class="hw-100 img-fluid img-radius" alt="{{ _selectedAssessee['sAssesseeFullName'] }}" [src]="_selectedAssessee['profilePhoto']" (error)="assesseeDefaultImg()"
+              *ngIf="_showImage">
+            <h6>
+              <ion-icon class="default-img  img-radius" name="person-circle-outline" *ngIf="!_showImage"></ion-icon>
+            </h6>
+            <h6 class="color-avi-name">
+              {{ _sAssesseeFullName }}
+            </h6>
+          </ion-col>
+          <ion-col size="12">
+            <div id="surveyContainer" class="contentcontainer codecontainer">
+              <div id="surveyElement"></div>
+            </div>
+          </ion-col>
+        </ion-row>
+
+      </ion-card-content>
+    </ion-card>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-fab>
+    <ion-fab-button class="m-b-5 m-l-5" (click)="goBackToAssessees()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-footer>

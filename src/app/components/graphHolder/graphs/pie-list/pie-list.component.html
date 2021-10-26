@@ -1,0 +1,40 @@
+<div id="pieListWrapper" class="podTable-wrapper html-table-wrapper">
+  <table cllass="podTable">
+    <ng-container *ngFor="let listItem of data['data']; let iListItem = index">
+      <tr>
+        <td class="text-left" colspan="99">
+          <strong class="fw-600 p-l-10 text-slate">
+            {{ listItem['name'] }}
+          </strong>
+        </td>
+      </tr>
+      <tr>
+        <th width="32%">Conversing</th>
+        <th width="32%">Reading</th>
+        <th width="32%">Writing</th>
+      </tr>
+      <tr *ngIf="!_piesLoaded">
+        <td class="text-centered">
+          <i class="icofont icofont-chart-pie animated pulse infinite"></i>
+        </td>
+        <td class="text-centered">
+          <i class="icofont icofont-chart-pie animated pulse infinite"></i>
+        </td>
+        <td class="text-centered">
+          <i class="icofont icofont-chart-pie animated pulse infinite"></i>
+        </td>
+      </tr>
+      <tr *ngIf="_piesLoaded">
+        <td>
+          <google-chart #graph [data]="listItem['Conversing']['dataTable']['dataTable']['dataTable']"></google-chart>
+        </td>
+        <td>
+          <google-chart #graph [data]="listItem['Reading']['dataTable']['dataTable']['dataTable']"></google-chart>
+        </td>
+        <td>
+          <google-chart #graph [data]="listItem['Writing']['dataTable']['dataTable']['dataTable']"></google-chart>
+        </td>
+      </tr>
+    </ng-container>
+  </table>
+</div>

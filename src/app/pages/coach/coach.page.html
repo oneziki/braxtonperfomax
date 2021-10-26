@@ -1,0 +1,277 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper moduleLanding coachGrid">
+    <!-- Filter -->
+    <ion-toolbar class="toolbar contentToolbar">
+      <ion-title class="ion-padding-start colHeader text-primary f-left p-0-impo">
+        <h2 class="contentHeader d-inline">
+          Coach
+        </h2>
+        <ion-text>
+          <small class="d-block m-l-10" *ngIf="_selectedUser && _selectedUser['sFirstName']">
+            ~ {{ _selectedUser['sFirstName'] }} {{ _selectedUser['sLastName'] }}
+          </small>
+          <small class="d-block m-l-10" *ngIf="!_selectedUser || !_selectedUser['sFirstName']">
+            Start a conversation
+          </small>
+        </ion-text>
+      </ion-title>
+      <ion-searchbar slot="primary" placeholder="Search..." class="supSearch" [(ngModel)]="_searchTextUsers">
+      </ion-searchbar>
+    </ion-toolbar>
+
+    <!-- Single Row View -->
+    <section id="listTeamUsersConversationSmall" class="team-wrapper m-t-10" *ngIf="_preCheckImages">
+      <div id="team-wrapper" class="team-wrapper animated fadeIn">
+        <div class="connection-list">
+          <!-- Managers -->
+          <ng-container
+            *ngFor="let employee of _userData['userManagers']| searchPipe: _searchTextUsers : 'sFirstName' : 'sLastName' : 'sEmail1'; let iEmployee = index; let lEmployee = last">
+            <ion-card button="true" class="transparentCard user-card card-team-member animated fadeIn b-r-lite-grey"
+              [ngClass]="{'active': employee['userUUID'] === _selectedUser['userUUID']}" (click)="selectedUser(employee,true,_peformCategory)">
+              <div class="p-relative">
+                <!-- Online Status -->
+                <ion-badge class="actionBadge animated pulse status-online" color="success" *ngIf="employee.bIsOnline">
+                  &nbsp;
+                </ion-badge>
+                <!-- NumNotification -->
+                <ion-badge class="animated pulse status-active" color="danger" [class]="employee.iNumNotification > 9? 'actionBadgeGt9':'actionBadge'"
+                  *ngIf="employee.iNumNotification > 0">
+                  <strong>{{employee.iNumNotification}}</strong>
+                </ion-badge>
+                <!-- PROFILE-PIC -->
+                <img class="img-fluid img-radius z-depth-bottom-5" [src]="employee['sProfilePic']" [ngClass]="{'userOnline': employee.bIsOnline}"
+                  (error)="employee['srcFail'] = true" *ngIf="!employee['srcFail']" loading="lazy" />
+                <!-- PROFILE-AVI -->
+                <ion-icon class="default-img color-avi iconAvatar text-center" name="person-circle-outline" *ngIf="employee['srcFail']">
+                </ion-icon>
+              </div>
+              <ion-card-content [ngClass]="{'active': employee['userUUID'] === _selectedUser['userUUID']}">
+                <p>
+                  <b>{{ employee['sFirstName'] }} </b><br />
+                  {{ employee['sLastName'] }}
+                </p>
+              </ion-card-content>
+            </ion-card>
+          </ng-container>
+          <!-- Employees-->
+          <ng-container
+            *ngFor="let employee of _userData['userReportToEmployees']| searchPipe: _searchTextUsers : 'sFirstName' : 'sLastName' : 'sEmail1'; let iEmployee = index; let lEmployee = last">
+            <ion-card button="true" class="transparentCard user-card card-team-member animated fadeIn" [ngClass]="{'active': employee['userUUID'] === _selectedUser['userUUID']}"
+              (click)="selectedUser(employee,true,_peformCategory)">
+              <div class="p-relative">
+                <!-- Online Status -->
+                <ion-badge class="actionBadge animated pulse status-online" color="success" *ngIf="employee.bIsOnline">
+                  &nbsp;
+                </ion-badge>
+                <!-- NumNotification -->
+                <ion-badge class="animated pulse status-active" color="danger" [class]="employee.iNumNotification > 9? 'actionBadgeGt9':'actionBadge'"
+                  *ngIf="employee.iNumNotification > 0">
+                  <strong>{{employee.iNumNotification}}</strong>
+                </ion-badge>
+                <!-- PROFILE-PIC -->
+                <img class="img-fluid img-radius z-depth-bottom-5" [src]="employee['sProfilePic']" [ngClass]="{'userOnline': employee.bIsOnline}"
+                  (error)="employee['srcFail'] = true" *ngIf="!employee['srcFail']" loading="lazy" />
+                <!-- PROFILE-AVI -->
+                <ion-icon class="default-img color-avi iconAvatar text-center" name="person-circle-outline" *ngIf="employee['srcFail']">
+                </ion-icon>
+              </div>
+              <ion-card-content [ngClass]="{'active': employee['userUUID'] === _selectedUser['userUUID']}">
+                <p>
+                  <b>{{ employee['sFirstName'] }} </b><br />
+                  {{ employee['sLastName'] }}
+                </p>
+              </ion-card-content>
+            </ion-card>
+          </ng-container>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dual Cards -->
+    <section id="dualCard" *ngIf="_userSelected">
+      <ion-row>
+        <!-- Dual Left Card -->
+        <ion-col sizeXs="12" sizeSm="12" sizeMd="5">
+          <ion-card class="card m-t-20 animated fadeIn ">
+            <ion-row class="m-t-10">
+              <ion-col size="12" class="m-l-10 heading">
+                <strong class="text-lite-charcoal"> History </strong>
+              </ion-col>
+            </ion-row>
+            <ion-row class="m-l-10 m-r-10">
+              <ion-col size="" *ngFor="let category of _conversationCategories">
+                <ion-button expand="block" size="small" class="category-font btnRound" [fill]="_conversation['sCategoryName'] === category.sCategoryName? 'outline' : 'solid'"
+                  type="button" (click)="setSubjects(category,true)">
+                  {{ category.sCategoryName }}
+                </ion-button>
+                <ion-badge class="animated pulse status-active btn-abs" color="danger" [class]="category.iNumNotification > 9? 'actionBadgeGt9':'actionBadge'"
+                  *ngIf="category.iNumNotification > 0">
+                  <strong>{{category.iNumNotification}}</strong>
+                </ion-badge>
+              </ion-col>
+            </ion-row>
+            <ion-row class="m-l-10 a-center" class="convo-search">
+              <ion-col sizeXs="5" sizeMd="6" class="heading">
+                <strong class="text-lite-charcoal"> Conversations </strong>
+              </ion-col>
+              <ion-col sizeXs="7" sizeMd="6">
+                <ion-row>
+                  <i class="icofont icofont-search-1"></i>                  
+                  <ion-input name="sSearch" type="text" class="b-none searchbox" placeholder="Search..." [(ngModel)]="_searchTextSubject"></ion-input>
+                  <a class="n-underline" href="javascript:;" (click)="open('email','noData')">
+                    <ion-icon name="add-outline" size="small"></ion-icon>
+                  </a>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+            <ion-card-content class="p-r-0">
+              <ng-container *ngIf="_subjects?.length > 0 else _noData">
+                <ion-row class="b-t p-t-10 p-b-10 a-center text-grey" *ngFor="let subject of _subjects|searchPipe: _searchTextSubject : 'sSubject' : 'dDateCreated';">
+                  <ion-col sizeXs="12" sizeMd="7" class="hover" (click)="getConversation(subject)">
+                    {{subject.sSubject}}
+                    <ion-badge class="animated pulse status-active no-abs" [class]="subject.iNumNotification > 9? 'actionBadgeGt9':'actionBadge'" color="danger"
+                      *ngIf="subject.iNumNotification > 0">
+                      <strong>{{subject.iNumNotification}}</strong>
+                    </ion-badge>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="2" class="hover" (click)="getConversation(subject)">
+                    {{subject.dDateCreated}}
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="3" class="text-right">
+                    <a class="n-underline" href="javascript:;" (click)="downloadConversation(subject)">
+                      <ion-icon size="small" name="print"></ion-icon>
+                    </a>
+                    <a class="n-underline" href="javascript:;" (click)="open('editSubject',subject)" *ngIf="subject.sSender_fkUserUUID === this._sessionUser.P5Corp_userUID">
+                      <ion-icon size="small" name="create-outline"></ion-icon>
+                    </a>
+                  </ion-col>
+                </ion-row>
+              </ng-container>
+              <ng-template #_noData>
+                <small class="d-block text-center text-grey">
+                  <br>
+                  There is currently no data. Please click on the
+                  <ion-icon class="ico-color m-l-5 m-r-5 fs-10" name="add-outline" size="small"></ion-icon>
+                  icon to start a conversation
+                </small>
+              </ng-template>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <!-- Dual Right Card -->
+        <ion-col sizeXs="12" sizeSm="12" sizeMd="7">
+          <ion-card class="card portal-card m-t-20 animated fadeIn">
+            <ng-container *ngIf="_conversationFeed?.length > 0 else _noDataFeed">
+              <ion-row class="m-l-10 a-center">
+                <ion-col sizeXs="12" sizeMd="6">
+                  <ion-card-title class="heading">
+                    <span class="text-slate">
+                      {{ _conversation['sSubject'] }}
+                    </span>
+                  </ion-card-title>
+                  <ion-card-subtitle class="card-title text-slate p-10 m-0">
+                    <p class="text-muted m-0-impo">
+                      {{_conversation['sCategoryName']}} Conversation Feed
+                      - {{ _selectedUser['sFirstName'] }}
+                    </p>
+                  </ion-card-subtitle>
+                </ion-col>
+                <ion-col sizeXs="12" sizeMd="6" class="text-right">
+                  <ion-button size="small" color="primary" (click)="downloadFilteredConversation()">
+                    <ion-icon slot="start" name="print"></ion-icon> Print
+                  </ion-button>
+                  <ion-button size="small" color="primary" (click)="open('filter','noData')">
+                    <ion-icon slot="start" name="calendar"></ion-icon> Filter
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+              <ion-card-content>
+                <ion-list lines="none" class="chatWindow" *ngIf="_conversationFeed?.length > 0 else _noData">
+                  <ion-item *ngFor="let conversation of _conversationFeed">
+                    <ion-avatar slot="start">
+                      <img class="img-radius" [src]="conversation['sProfilePic']" (error)="conversation['srcFail'] = true" *ngIf="!conversation['srcFail']" loading="lazy" />
+                      <ion-icon class="default-img color-avi iconAvatar text-center" name="person-circle-outline" *ngIf="conversation['srcFail']">
+                      </ion-icon>
+                      <div class="line"></div>
+                    </ion-avatar>
+                    <ion-label>
+                      <h6>{{ conversation['sFirstName'] }} commented: <small class="text-muted">{{ conversation['sPosted'] }}</small></h6>
+                      <p class="m-b-15 m-t-15 w-space">{{ conversation.sConversation }}</p>
+                      <p>
+                        <span class="text-center" *ngFor="let doc of conversation['uploadedFiles']">
+                          <a [href]="doc.sDocumentPath" download target="_blank" class="m-r-5 fs-13">
+                            {{ doc.sDocumentUploadName }}
+                          </a>
+                          <ion-button size="small" fill="clear" type="button" class="fs-13" (click)="deleteUploadedFile(conversation,doc)"
+                            *ngIf="doc.Users_fkiuserUUID === this._sessionUser.P5Corp_userUID">
+                            <ion-icon name="close-circle"></ion-icon>
+                          </ion-button>
+                        </span>
+                      </p>
+                    </ion-label>
+                  </ion-item>
+                </ion-list>
+              </ion-card-content>
+
+              <ion-row class="cardfooter">
+                <ion-col size="12" class=" m-b-5 isTyping" *ngIf="_isUserTyping">
+                  <div class="spinner">
+
+                    <small class="text-muted">
+                      {{ _selectedUser['sFirstName'] }} is typing
+                    </small>
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                  </div>
+                </ion-col>
+                <ion-col size="12" *ngIf="_sMessage['uploadedFiles'].length">
+                  <ion-label class="m-r-10">Uploaded Files</ion-label>
+                  <ng-container *ngFor="let file of _sMessage['uploadedFiles']">
+                    <ng-container *ngIf="file.bShowDocument">
+
+                      <span class="text-muted mh-25">{{ file.sFileName }}</span>
+
+                      <ion-button size="small" fill="clear" type="button" class="fs-13" (click)="removeFile(file)">
+                        <ion-icon name="close-circle"></ion-icon>
+                      </ion-button>
+                    </ng-container>
+                  </ng-container>
+                </ion-col>
+                <ion-col size="12">
+                  <ion-row>
+                    <ion-col sizeXs="8" sizeSm="8" sizeMd="10">
+                      <ion-textarea autoGrow="true" name="sConversation" (keydown)="onKeydown($event,true)" class="form-control" placeholder="Type your message..."
+                        [(ngModel)]="_sMessage['sConversation']">
+                      </ion-textarea>
+                    </ion-col>
+                    <ion-col sizeXs="4" sizeSm="4" sizeMd="2" class="a-bottom">
+                      <ion-button onclick="document.querySelector('#sNewMessage').click()" color="primary">
+                        <ion-icon slot="icon-only" name="attach"></ion-icon>
+                      </ion-button>
+                      <ion-button color="primary" [disabled]="_sMessage['sConversation'].length < 2" (click)="sendMessage()">
+                        <ion-icon slot="icon-only" name="paper-plane"></ion-icon>
+                      </ion-button>
+                      <input class="d-none" type="file" id="sNewMessage" name="sNewMessage" ng2FileSelect [uploader]="file_Uploader_newMessage">
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
+              </ion-row>
+            </ng-container>
+
+            <ng-template #_noDataFeed>
+              <small class="noDataDisplay">
+                <br>
+                There is currently no data. Please click on the
+                <ion-icon class="ico-color m-l-5 m-r-5 fs-10" name="add-outline" size="small"></ion-icon>
+                icon to start a conversation
+              </small>
+            </ng-template>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </section>
+
+  </ion-grid>
+</ion-content>

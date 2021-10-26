@@ -1,0 +1,25 @@
+.contractPeriodGrid {
+
+  h2 {
+    margin-top: 10px !important;
+    font-weight: 600;
+  }
+
+  .performPeriod {
+      ion-card-content,
+      ion-grid,
+      ion-col {
+        padding: 0;
+      }
+
+  }
+
+  .default-img {
+    height: 100px;
+    width: 100px;
+    margin: 10px auto;
+    border-radius: 100%;
+    color: var(--lite-charcoal);
+  }
+
+}

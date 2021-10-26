@@ -1,0 +1,534 @@
+.theme-loader {
+  height: 100%;
+  width: 100%;
+  background: #fff;
+  position: fixed;
+  z-index: 999999;
+  top: 0;
+  left: 0;
+
+  .loader-track {
+    left: 50%;
+    top: 50%;
+    position: absolute;
+    display: block;
+    width: 150px;
+    height: 150px;
+    margin: -75px 0 0 -75px;
+
+    &:after,
+    &:before {
+      content: '';
+      border-radius: 50%;
+      position: absolute;
+      z-index: 1;
+      border: 4px solid var(--primary);
+      border-top-color: transparent;
+      border-bottom-color: transparent;
+    }
+
+    &:after {
+      width: 100%;
+      height: 100%;
+      animation: move 1.4s linear infinite;
+    }
+
+    &:before {
+      width: 80%;
+      height: 80%;
+      top: 10%;
+      left: 10%;
+      animation: move 1.2s linear infinite;
+    }
+
+    .loader-bar {
+      left: 50%;
+      top: 50%;
+      position: absolute;
+      display: block;
+      width: 90px;
+      height: 90px;
+      top: 30px;
+      left: 30px;
+
+      &:after,
+      &:before {
+        content: '';
+        border-radius: 50%;
+        position: absolute;
+        z-index: 1;
+        border: 4px solid var(--primary);
+        border-top-color: transparent;
+        border-bottom-color: transparent;
+      }
+
+      &:after {
+        width: 100%;
+        height: 100%;
+        animation: move 1s linear infinite;
+      }
+
+      &:before {
+        width: 60%;
+        height: 60%;
+        top: 20%;
+        left: 20%;
+        animation: move 0.8s linear infinite;
+      }
+    }
+  }
+}
+@keyframes move {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.contentPageWrapper {
+  margin-top: 150px;
+  background: var(--bg-white);
+
+  .contentHeader {
+    color: var(--primary);
+    font-size: clamp(23px, 4vw, 30px);
+    // font-size: var(--fs-max);
+    font-weight: 600;
+    margin-top: 0;
+    margin-left: 15px;
+    margin-bottom: 0;
+    span {
+      font-size: clamp(22px, 4vw, 24px);
+      font-weight: 600 !important;
+    }
+    small {
+      display: block;
+      font-size: 60%;
+      font-weight: 400;
+      color: var(--lite-charcoal) !important;
+    }
+    ion-button {
+      float: right;
+    }
+  }
+  .contentToolbar {
+    --background: none !important;
+    --min-height: 10px;
+    text-align: right;
+    margin-top: 5px;
+
+    ion-select {
+      background: white;
+      width: 30%;
+      min-width: 200px;
+      border: 0;
+      border-radius: 30px;
+      height: 30px;
+      float: right;
+      box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 20%),
+        0 1px 5px 0 rgb(0 0 0 / 12%);
+      color: var(--lite-grey);
+      text-align: center;
+      margin: 0 5px;
+    }
+    .select-text,
+    .select-icon {
+      color: var(--lite-grey);
+      text-align: center;
+    }
+    ion-searchbar {
+      width: 30px;
+      min-width: 200px;
+      .searchbar-search-icon.sc-ion-searchbar-md {
+        top: 5px !important;
+      }
+      .searchbar-input {
+        color: var(--lite-grey);
+        border-radius: 30px;
+        height: 30px;
+        text-align: left;
+      }
+    }
+  }
+  .sectionHeader {
+    color: var(--primary);
+    font-size: 24px;
+    font-weight: 600;
+
+    &.no-m {
+      margin: 0 !important;
+    }
+  }
+  .cardHeader {
+    ion-label {
+      color: var(--lite-charcoal);
+      font-size: 22px;
+      font-weight: 600;
+    }
+  }
+
+  .transparentCard {
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  .stripedGrid {
+    .stripedHeader {
+      strong {
+        font-size: 20px;
+      }
+    }
+    .stripedContent {
+      font-size: 18px;
+      small {
+        display: block;
+      }
+    }
+    ion-row:nth-child(odd) {
+      // background: var(--bg-grey);
+    }
+    ion-row:nth-child(even) {
+      background: var(--bg-white);
+    }
+  }
+}
+
+// Module Landing //
+.moduleLanding {
+  .tileHeaderImage {
+    width: 60%;
+    margin: 5px auto;
+    border-radius: 10px;
+    object-fit: fill !important;
+    img {
+      border-radius: 10px;
+      object-fit: fill !important;
+      
+    }
+  }
+  .tileActions {
+    ion-img {
+      max-width: 35px;
+      margin-right: 10px;
+      object-fit: fill !important;
+    }
+    ion-label {
+      // color: var(--lite-charcoal);
+      font-size: 16px !important;
+      // font-weight: 600;
+    }
+  }
+
+  .homeCard {
+    box-shadow: none;
+
+    ion-card-title {
+      color: var(--primary);
+      font-size: 20px;
+      font-weight: 600;
+    }
+    ion-card-header,
+    ion-card-content {
+      padding: 10px 15px;
+    }
+
+    .sourceLogo {
+      float: right;
+      max-height: 30px;
+    }
+    .footerNote {
+      display: block;
+      text-align: right;
+      font-size: 12px;
+      color: var(--lite-grey);
+      font-weight: 400;
+    }
+  }
+  .personalLeave {
+    .sourceLogoInner {
+      max-height: 30px;
+
+      &.slotStart {
+        max-width: 40px;
+        margin-right: 10px;
+      }
+    }
+    .sourceLogo {
+      position: absolute;
+      top: 20px;
+      right: 10px;
+    }
+    ion-button {
+      margin: 0 2px;
+    }
+    ion-list {
+      background: transparent !important;
+
+      ion-label {
+        font-size: 16px;
+        color: var(--lite-charcoal);
+      }
+    }
+    .leaveHeader {
+      font-size: 20px !important;
+      font-weight: 600;
+    }
+    .loadMore {
+      text-align: right;
+      font-size: 20px;
+      color: var(--lite-charcoal);
+      font-size: 80% !important;
+    }
+    ion-card-content {
+      padding: 0px !important;
+    }
+  }
+  .landingList {
+    ion-card-title {
+      strong {
+        color: var(--lite-charcoal);
+        font-size: 22px;
+      }
+    }
+    .landingListHeader {
+      strong {
+        color: var(--grey);
+        font-size: 15px; 
+      }
+    }
+    .landingListItem {
+      font-size: 14px;
+      ion-badge,
+      ion-text {
+        vertical-align: -webkit-baseline-middle;
+      }
+    }
+    .icon {
+      font-size: 32px;
+      color: var(--primary);
+      vertical-align: middle;
+    }
+  }
+}
+// USER LIST //
+.userList {
+  ion-item {
+    padding: 0 5px;
+  }
+  ion-label {
+    margin: 0px auto;
+  }
+  h3 {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--lite-charcoal);
+  }
+  p {
+    color: var(--lite-charcoal);
+    font-weight: 500;
+  }
+}
+// PERFORM Agreement & Review Header //
+.userHeader {
+  .opacity {
+    opacity: 0.4;
+  }
+  .aviUserDetails {
+    ion-avatar {
+      height: 100px;
+      width: 100px;
+      margin-left: 20%;
+      img {
+        border: 2px solid var(--lite-charcoal);
+        object-fit: fill;
+      }
+    }
+    h3 {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--lite-charcoal);
+    }
+    p {
+      font-size: 18px;
+    }
+
+    @media (max-width: 768px) {
+      font-size: 12px;
+      ion-avatar {
+        margin-left: 0;
+      }
+    }
+  }
+  .col-header {
+    background: var(--bg-grey);
+    text-align: center;
+    h1 {
+      margin: 2px 0;
+      padding: 10px 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--primary);
+      span {
+        color: var(--lite-charcoal);
+        padding-left: 10px;
+      }
+    }
+  }
+}
+// PERFORM Agreement & Review Grid //
+.busObjOuter {
+  .busObjHeader {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--lite-charcoal);
+    border-bottom: 1px solid var(--lite-grey);
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+  }
+
+  .kraHeading,
+  .kpiHeading {
+    display: block;
+    color: var(--charcoal);
+    font-size: 22px;
+    font-weight: 600;
+  }
+  .busObjBadgeList {
+    .floorTabs {
+      position: absolute;
+      bottom: 2px;
+      right: 85px;
+
+      @media (max-width: 768px) {
+        position: relative;
+        margin-top: 10px;
+        display: block;
+        right: 0;
+      }
+    }
+    .badgeTab,
+    ion-badge {
+      transition: all 0.5s ease;
+      border: 2px solid var(--lite-grey);
+      background: transparent;
+      color: var(--lite-grey);
+      margin: 2px;
+      margin-right: 10px;
+      border-radius: 100%;
+      width: 30px;
+      height: 30px;
+      font-size: 20px;
+
+      &.active {
+        color: var(--lite-charcoal);
+      }
+
+      &.floorTab {
+        cursor: pointer;
+        border-radius: 10px 10px 0 0;
+        border-bottom: 0;
+        padding: 3px 6px;
+        margin-right: 0px;
+
+        &.activeTab {
+          color: var(--charcoal);
+          font-weight: 600;
+        }
+      }
+    }
+
+    &.selectable {
+      ion-item {
+        cursor: pointer;
+        &.activeScale {
+          ion-badge {
+            background: var(--primary);
+            color: var(--primary-alt);
+            border: 2px solid var(--primary-alt);
+          }
+        }
+      }
+    }
+  }
+  .busObjKPI {
+    margin-left: 25px;
+  }
+  &.bView,
+  &.bComplete {
+    margin-left: 0;
+    font-size: 16px;
+  }
+  .kpiWeightPicker {
+    ion-input {
+      text-align: center;
+    }
+    ion-button {
+      position: absolute;
+      top: -3px;
+      bottom: -3px;
+      height: 100%;
+      z-index: 99;
+      border-radius: 10px;
+      min-width: 30px;
+    }
+    .btnLeft {
+      left: 5px;
+    }
+    .btnRight {
+      right: 0;
+    }
+  }
+
+  ion-label {
+    display: block;
+    font-size: 16px;
+    color: var(--lite-charcoal);
+    margin: 10px 2px 5px;
+  }
+
+  .b-b-1 {
+    border-bottom: 1px solid var(--lite-grey);
+  }
+}
+
+.swalBtn {
+  --border-radius: 25px;
+  height: 25px;
+  width: 35%;
+  margin: 0px;
+}
+
+.noDataDisplay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--lite-grey);
+  text-align: center;
+  min-width: 65%;
+}
+
+.container-document {
+  position: relative;
+  text-align: center;
+  img {
+    opacity: 0.6;
+  }
+}
+
+.centered-document {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--primary);
+  text-align: left;
+}
+
+.icofont-appPage {
+  font-size: 2rem;
+  margin-right: 15px;
+  color: var(--lite-charcoal);
+}

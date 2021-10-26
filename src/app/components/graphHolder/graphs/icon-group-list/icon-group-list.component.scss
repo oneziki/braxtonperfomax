@@ -1,0 +1,21 @@
+.icon-group-list-wrapper {
+  font-family: "Poppins", sans-serif;
+  table th,
+  table td,
+  table.no-borders table {
+    border-top: 0 !important;
+    border-bottom: 1px solid var(--lite-grey);
+
+    strong {
+      font-weight: 900;
+    }
+  }
+  
+  table.no-borders
+  table.no-borders tr,
+  table.no-borders th,
+  table.no-borders td {
+    border: 0;
+  }
+
+}

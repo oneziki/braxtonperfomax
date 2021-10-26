@@ -1,0 +1,74 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper questionnaireGrid">
+    <ion-card>
+      <ion-card-content class="survey-wrapper">
+        <ion-row class="row">
+          <ion-col size="12" class="centered">
+
+
+            <!-- Steps Wizard -->
+            <!-- <section class="wizard bg-white max-w-55p">
+              <ion-row class="row">
+                <ng-container *ngIf="_threeSixtyService._threeSixty_assessees_pending.length > 1">
+                  <ion-col class="first">
+                    <strong>1. Select Individual</strong>
+                  </ion-col>
+                  <ion-col class="current">
+                    <strong class="number">2. Complete Review</strong>
+                  </ion-col>
+                </ng-container>
+                <ng-container *ngIf="_threeSixtyService._threeSixty_assessees_pending.length === 1">
+                  <ion-col class="current">
+                    <strong class="number">1. Complete Review</strong>
+                  </ion-col>
+                </ng-container>
+              </ion-row>
+            </section> -->
+
+            <ion-row class="row survey-container">
+              <ion-col size="12">
+                <h4 class="sub-title" *ngIf="_questionnaireTitle">
+                  {{ _questionnaireTitle }}:
+                </h4>
+              </ion-col>
+              <ion-col size="12" class="text-center">
+                <img class="hw-100 img-fluid img-radius" alt="{{ _selectedAssessee['sAssesseeFullName'] }}" [src]="_selectedAssessee['profilePhoto']" (error)="assesseeDefaultImg()"
+                  *ngIf="_showImage">
+                <h6>
+                  <ion-icon class="default-img" name="person-circle-outline" *ngIf="!_showImage"></ion-icon>
+                </h6>
+                <h6 class="m-b-20">
+                  {{ _sAssesseeFullName }}
+                </h6>
+              </ion-col>
+              <ion-col size="12">
+                <div id="surveyContainer" class="contentcontainer codecontainer">
+                  <div id="surveyElement"></div>
+                </div>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="6">
+                <a (click)="goBackToAssessees()" *ngIf="_threeSixtyService._threeSixty_assessees_pending.length > 1">
+                  <ion-icon name="chevron-back-circle-outline"></ion-icon> Back to list of individuals
+                </a>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="6" class="text-right">
+                <a class="text-primary" (click)="saveSurveyDraft()" *ngIf="_threeSixty_questionnaire['bShowSaveAsDraft']">
+                  Save as <b>Draft </b> <i class="fa fa-save color--primary"></i>
+                </a>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+
+      </ion-card-content>
+    </ion-card>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-fab>
+    <ion-fab-button class="m-b-5 m-l-5" (click)="goBackToAssessees()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-footer>

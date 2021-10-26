@@ -1,0 +1,46 @@
+<ion-content class="modal">
+  <ion-grid>
+    <ion-card class="card">
+      <ion-card-header>
+        <ion-card-title> <strong class="text-lite-charcoal">
+            Details
+          </strong>
+          <ion-button size="small" shape="round " type="button" class="text-right f-right" (click)="dismiss()">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-card-title>
+        <ion-segment [(ngModel)]="_view">
+          <ion-segment-button value="Members">
+            <ion-label> <strong>Members</strong></ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="Job Titles">
+            <ion-label> <strong>Job Titles</strong></ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-card-header>
+
+      <ion-card-content class="content">
+        <ion-row *ngIf="_view === 'Members'">
+          <ion-col sizeXs="12" sizeMd="6" class="text-center" *ngFor="let user of listUserModal">
+            <ion-card button="true" class="transparentCard">
+              <div>
+                <img [src]="user['imageUrl']" (error)="user['srcFail'] = true" *ngIf="!user['srcFail']" loading="lazy" />
+                <ion-icon class="default-img iconAvatar text-center" name="person-circle-outline" *ngIf="user['srcFail']">
+                </ion-icon>
+              </div>
+              <ion-card-content>
+                <p><strong class="text-lite-charcoal">{{user['name']}} <small><br>{{ user['designation'] }}</small></strong></p>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="_view !== 'Members'">
+          <ion-col sizeXs="12" sizeMd="6" class="text-left" *ngFor="let jobTitles of listJobTitleModal; let i = index;">
+            <p class="p-5">{{ jobTitles['sJobTitleName'] }}</p>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+
+  </ion-grid>
+</ion-content>

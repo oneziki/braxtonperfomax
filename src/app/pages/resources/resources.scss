@@ -1,0 +1,45 @@
+.resourcesGrid{
+    .resourceSearch {
+    .searchbar-search-icon.sc-ion-searchbar-md {
+      top: 5px !important;
+    }
+    .searchbar-input {
+      border-radius: 25px;
+      height: 28px;
+      text-align: left;
+    }
+    width: 15rem;
+  }
+  .colHeader {
+    font-size: 20px !important;
+    font-weight: 600 !important;
+  }
+
+  .toolbar {
+    --background: none !important;
+  }
+#resources-wrapper {
+
+  .categoryName {
+    .container-fluid {
+      margin-top: 5px;
+      margin-bottom: 5px;
+
+      a {
+        margin: 15px 15px 15px 20px;
+      }
+    }
+  }
+
+  .activeSub {
+    transition: all 0.5s;
+    display: inline-block;
+    transform: rotate(0deg);
+    &.rotateDown {
+      transform: rotate(90deg);
+    }
+  }
+
+}
+
+}

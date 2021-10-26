@@ -1,0 +1,96 @@
+<ion-card class="person-modal popover">
+  <ion-card-content class="card portal-card project-task podholder forDash {{ filter.currentViewSection }} {{ data['visualSettings']['ss_sCardTypes'] }}">
+    <ion-list>
+      <!-- Download Image -->
+      <ion-item lines="none" class="dropdown-item" href="javascript:" title="Download Image" (click)="triggelMyMaxPodImage(data)">
+        <i class="icofont icofont-save"></i> <strong>Download</strong>
+      </ion-item>
+      <!-- GO STEP-BACK -->
+      <!-- <ion-item lines="none" class="dropdown-item" href="javascript:" title="Reverse Step" (click)="reverseStepThrough()" *ngIf="filter['viewPrefix'][2] === 's'">
+        <i class="icofont icofont-swoosh-left"></i> <strong>Reverse</strong> Step
+      </ion-item> -->
+      <!-- LEGEND -->
+      <ion-item lines="none" class="dropdown-item" href="javascript:" title="Toggle Legend" (click)="showLegend()" (mousedown)="$event.stopPropagation()"
+        (touchstart)="$event.stopPropagation()" *ngIf="data['legends'] && popoverInfo['_bShowLegend']">
+        <i class="icofont icofont-traffic-light"></i>
+        <strong *ngIf="!popoverInfo['_showLegend']">Show </strong>
+        <strong *ngIf="popoverInfo['_showLegend']">Hide </strong>
+        Legend
+      </ion-item>
+      <!-- SHOW INFO -->
+      <!-- <ion-item lines="none" class="dropdown-item" href="javascript:" title="Toggle Info"
+        (click)="popoverInfo['_showInfo'] = !popoverInfo['_showInfo']; popoverInfo['_hoverInfo'] = true" (mousedown)="$event.stopPropagation()"
+        (touchstart)="$event.stopPropagation()" *ngIf="popoverInfo['_bShowInfoButton']">
+        <i class="icofont icofont-info-circle"></i>
+        <strong *ngIf="!popoverInfo['_showInfo']">Show</strong>
+        <strong *ngIf="popoverInfo['_showInfo']">Hide</strong>
+        Info
+      </ion-item> -->
+      <!-- GO DETAILED -->
+      <ion-item lines="none" class="dropdown-item show-details" href="javascript:" title="Detailed View" (click)="showDetailed()"
+        *ngIf="data['visualSettings']['bShowSingleDetailedView'] && filter.currentViewSection === 'summary'">
+        <i class="icofont icofont-ui-zoom-in"></i> <strong>Show</strong> Detailed Data
+      </ion-item>
+    </ion-list>
+
+  </ion-card-content>
+</ion-card>
+
+
+
+<!--  -->
+<!--  -->
+<!-- <ng-container *ngIf="12 == 1">
+
+  <div ngbDropdown display="dynamic" placement="bottom-right" class="myMax-btnGroup opd-btn-group btn-group" *ngIf="filter['viewPrefix'][2] === 's' ||
+            data['legends'] && _bShowLegend ||
+            _bShowInfoButton ||
+            (data['visualSettings']['bShowSingleDetailedView'] && filter.currentViewSection === 'summary') ||
+            filter.currentViewSection === 'detailed' ||
+            data['cols'] > 2">
+    <button ngbDropdownToggle type="button" class="btn btn-light btn-mini">
+      <span class="sr-only">Toggle Pod Menu</span>
+      <span>
+        <i class="icofont icofont-navigation-menu"></i>
+      </span>
+    </button>
+    <div ngbDropdownMenu>
+      <a class="dropdown-item" href="javascript:" title="Download Image" (click)="triggelMyMaxPodImage(data)">
+        <i class="icofont icofont-save"></i> <strong>Download</strong>
+      </a>
+      <a class="dropdown-item" href="javascript:" title="Reverse Step" (click)="reverseStepThrough()"
+        *ngIf="filter['viewPrefix'][2] === 's'">
+        <i class="icofont icofont-swoosh-left"></i> <strong>Reverse</strong> Step
+      </a>
+      <a class="dropdown-item" href="javascript:" title="Toggle Legend"
+        (click)="_showLegend = !_showLegend; _hoverLegend = true" (mousedown)="$event.stopPropagation()"
+        (touchstart)="$event.stopPropagation()" *ngIf="data['legends'] && _bShowLegend">
+        <i class="icofont icofont-traffic-light"></i>
+        <strong *ngIf="!_showLegend">Show</strong>
+        <strong *ngIf="_showLegend">Hide</strong>
+        Legend
+      </a>
+      <a class="dropdown-item" href="javascript:" title="Toggle Info"
+        (click)="_showInfo = !_showInfo; _hoverInfo = true" (mousedown)="$event.stopPropagation()"
+        (touchstart)="$event.stopPropagation()" *ngIf="_bShowInfoButton">
+        <i class="icofont icofont-info-circle"></i>
+        <strong *ngIf="!_showInfo">Show</strong>
+        <strong *ngIf="_showInfo">Hide</strong>
+        Info
+      </a>
+      <a class="dropdown-item" href="javascript:" title="Detailed View" (click)="showDetailed()"
+        *ngIf="data['visualSettings']['bShowSingleDetailedView'] && filter.currentViewSection === 'summary'">
+        <i class="icofont icofont-ui-zoom-in"></i> <strong>Show</strong> Detailed Data
+      </a>
+      <a class="dropdown-item" href="javascript:" title="Summary View" (click)="showSummary()"
+        *ngIf="filter.currentViewSection === 'detailed'">
+        <i class="icofont icofont-ui-zoom-out"></i> <strong>Show</strong> Summary Data
+      </a>
+      <a class="dropdown-item" href="javascript:" title="Modal View" (click)="showModal($event)"
+        *ngIf="data['cols'] > 2">
+        <i class="icofont icofont-resize"></i> <strong>Show</strong> Enlarged
+      </a>
+    </div>
+  </div>
+
+</ng-container> -->

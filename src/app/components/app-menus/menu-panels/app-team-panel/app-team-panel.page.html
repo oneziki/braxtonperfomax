@@ -1,0 +1,117 @@
+<div class="rPanelWrapper">
+  <ng-container *ngIf="!companyTemplate['bP7TeamDataIntegrated']">
+    <strong class="rPanelHeading withSource"> My Team <img src="../../assets/imgs/demo/personal4.png" class="sourceLogo"></strong>
+    <ion-list class="rPanelConversations">
+      <ion-item lines="none" class="transparent" *ngFor="let employee of directReports">
+        <ion-avatar slot="start">
+          <img [src]="employee['sProfilePic']" (error)="employee['srcFail'] = true"
+            *ngIf="employee['srcFail'] !== true">
+          <ion-icon class="iconAvatar" name="person-circle-outline" *ngIf="employee['srcFail'] === true"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h3>{{employee['sFirstName']}} {{employee['sLastName']}}</h3>
+          <p>{{employee['sJobTitleName']}}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <strong class="rPanelHeading b-t-2 withSource ion-hide-md-down">Manager <img src="../../assets/imgs/demo/personal4.png" class="sourceLogo"></strong>
+    <ion-list class="rPanelConversations ion-hide-md-down">
+      <ion-item lines="none" class="transparent" *ngFor="let manager of managers">
+        <ion-avatar slot="start">
+          <img [src]="manager['sProfilePic']" (error)="manager['srcFail'] = true"
+            *ngIf="manager['srcFail'] !== true">
+          <ion-icon class="iconAvatar" name="person-circle-outline" *ngIf="manager['srcFail'] === true"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h3>{{manager['sFirstName']}} {{manager['sLastName']}}</h3>
+          <p>{{manager['sJobTitleName']}}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none" *ngIf="managers.length === 0">
+        <ion-label class="text-muted">
+          *No Manager Appointed
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+
+  <ng-container *ngIf="companyTemplate['bP7TeamDataIntegrated']">
+    <strong class="rPanelHeading withSource">
+      My Team
+      <img src="../../assets/imgs/demo/personal10a.png" class="sourceLogo">
+    </strong>
+    <ion-list class="rPanelConversations">
+      <ion-item lines="none" class="transparent">
+        <ion-avatar slot="start">
+          <ion-img src="../../assets/imgs/demo/team1.jpg"></ion-img>
+        </ion-avatar>
+        <ion-label>
+          <h3>Keitumetse Setlang</h3>
+          <p>Exectutive Manager - Marketing</p>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none" class="transparent">
+        <ion-avatar slot="start">
+          <ion-img src="../../assets/imgs/demo/team2.jpg"></ion-img>
+        </ion-avatar>
+        <ion-label>
+          <h3>Lethogongolo Kelesitse</h3>
+          <p>Executive Manager - HR & Admin</p>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none" class="transparent">
+        <ion-avatar slot="start">
+          <ion-img src="../../assets/imgs/demo/team3.jpg"></ion-img>
+        </ion-avatar>
+        <ion-label>
+          <h3>Irene Bose</h3>
+          <p>PA to Chief Executive Officer</p>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none" class="transparent">
+        <ion-avatar slot="start">
+          <ion-img src="../../assets/imgs/demo/team4.jpg"></ion-img>
+        </ion-avatar>
+        <ion-label>
+          <h3>Morongwa Koonste</h3>
+          <p>IT Manager</p>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none" class="transparent">
+        <ion-avatar slot="start">
+          <ion-img src="../../assets/imgs/demo/team6.jpg"></ion-img>
+        </ion-avatar>
+        <ion-label>
+          <h3>Itirelenf Hounda</h3>
+          <p>Internal Audit Manager</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <strong class="rPanelHeading withSource b-t-2">
+      Manager
+      <img src="../../assets/imgs/demo/personal8.png" class="sourceLogo">
+    </strong>
+    <ion-list class="rPanelConversations">
+      <ion-item lines="none" class="transparent">
+        <ion-avatar slot="start">
+          <ion-img src="https://randomuser.me/api/portraits/women/36.jpg"></ion-img>
+        </ion-avatar>
+        <ion-label>
+          <h3>Zeida Modise</h3>
+          <p>Chairperson of the Board</p>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none" class="transparent">
+        <ion-avatar slot="start">
+          <ion-img src="https://randomuser.me/api/portraits/women/6.jpg"></ion-img>
+        </ion-avatar>
+        <ion-label>
+          <h3>Lesedi Ncube</h3>
+          <p>Vice Chairperson of the Board</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+</div>

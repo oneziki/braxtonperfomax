@@ -1,0 +1,128 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper" *ngIf="!_isLoading">
+    <ion-row>
+      <ion-col sizeXs="12" sizeMd="6">
+        <ion-text>
+          <h2 class="contentHeader">
+            Trainers tool
+          </h2>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row class="p-l-5 p-r-5" id="banner" *ngIf="_isExternalTrainer">
+      <ion-col size="12" id="wrapper">
+        <div id="portal-banner-content" class="d-block p-relative text-right ng-star-inserted">
+          <img id="portal-banner" alt="Banner Image" class="bannerimg animated fadeIn img-responsive" [src]="_trainersFilterData['banner']">
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-card class="animated slideInRight fs-12" id="training-table">
+      <ion-card-content class="card-text-colour" *ngIf="!_bNoData">
+        <ion-row class="m-tb-10-20">
+          <ion-col size="12">
+            <table [ngClass]="{'tableFixHeadInternal': !_isExternalTrainer, 'tableFixHeadExternal': _isExternalTrainer}">
+              <thead>
+                <tr>
+                  <th class="filterallowed" scope="col" (click)="sortBy('Candidate')">
+                    <strong>
+                      Candidate
+                      <ion-icon name="filter-circle" *ngIf="_trainersFilterData['candidateFilter']  === 'none'"></ion-icon>
+                      <ion-icon name="caret-up-outline" *ngIf="_trainersFilterData['candidateFilter'] === 'asc'"></ion-icon>
+                      <ion-icon name="caret-down-outline" *ngIf="_trainersFilterData['candidateFilter'] === 'desc'"></ion-icon>
+                    </strong>
+                  </th>
+                  <th class="filterallowed" scope="col" (click)="sortBy('Department')">
+                    <strong>
+                      Department
+                      <ion-icon name="filter-circle" *ngIf="_trainersFilterData['departmentFilter']  === 'none'"></ion-icon>
+                      <ion-icon name="caret-up-outline" *ngIf="_trainersFilterData['departmentFilter'] === 'asc'"></ion-icon>
+                      <ion-icon name="caret-down-outline" *ngIf="_trainersFilterData['departmentFilter'] === 'desc'"></ion-icon>
+                    </strong>
+                  </th>
+                  <th scope="col"><strong>Training Criteria</strong></th>
+                  <th scope="col"><strong>Date of Training</strong></th>
+                  <th scope="col"><strong>Results</strong></th>
+                  <th class="filterallowed" scope="col" (click)="sortBy('Module')">
+                    <strong>
+                      Training Module
+                      <ion-icon name="filter-circle" *ngIf="_trainersFilterData['trainingModuleFilter']  === 'none'"></ion-icon>
+                      <ion-icon name="caret-up-outline" *ngIf="_trainersFilterData['trainingModuleFilter'] === 'asc'"></ion-icon>
+                      <ion-icon name="caret-down-outline" *ngIf="_trainersFilterData['trainingModuleFilter'] === 'desc'"></ion-icon>
+                    </strong>
+                  </th>
+                  <th class="filterallowed" scope="col" (click)="sortBy('Provider')">
+                    <strong>
+                      Service Provider Name
+                      <ion-icon name="filter-circle" *ngIf="_trainersFilterData['serviceProvider']  === 'none'"></ion-icon>
+                      <ion-icon name="caret-up-outline" *ngIf="_trainersFilterData['serviceProvider'] === 'asc'"></ion-icon>
+                      <ion-icon name="caret-down-outline" *ngIf="_trainersFilterData['serviceProvider'] === 'desc'"></ion-icon>
+                    </strong>
+                  </th>
+                  <th scope="col"><strong>Valid</strong></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let training of _userTrainingList; let iTraining = index">
+                  <td>{{training.sFullName}}</td>
+                  <td>{{training.Department}}</td>
+                  <td>
+                    <ion-select class="trainingNeedInput" [interfaceOptions]='{ showBackdrop: false }' interface="popover" name="method-{{ iTraining }}"
+                      [(ngModel)]="training['TrainingMethod']" (ngModelChange)="validateData(training)" placeholder="*Please select a method" label="*Please select a method">
+                      <ion-select-option *ngFor="let method of _trainingMethod;" id="method-{{ iTraining }}" [value]="method" required>
+                        {{ method }}
+                      </ion-select-option>
+                    </ion-select>
+
+                  </td>
+                  <td>
+                    <div class="form-group row m-b-10-impo">
+                      <div class="col-sm-10">
+                        <ion-col size="6">
+                          <input type="date" onkeydown="return false" id="from-date" name="from-date" displayFormat="MM DD YY" placeholder="Select from date" value=""
+                            [(ngModel)]="training['dDateCompletedTemp']" (ngModelChange)="reCalculateDate(training)">
+                        </ion-col>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" name="result-{{ iTraining }}" list="ScoreResult" [(ngModel)]="training.ScoreResult"
+                      (ngModelChange)="validateData(training)">
+                    <datalist id="ScoreResult">
+                      <option value="To be completed" disabled>* Please select/type a result</option>
+                      <option *ngFor="let score of _scoreOrResult;" id="score-{{ iTraining }}" [value]="score" [label]="score" required>
+                        {{ score }}
+                      </option>
+                    </datalist>
+                  </td>
+                  <td>{{training.sModule}}</td>
+                  <td>{{training.sProvider}}</td>
+                  <td>
+                    <ion-icon name="checkmark-sharp" *ngIf="training.bValid" style="color: green;"></ion-icon>
+                    <ion-icon name="close-sharp" *ngIf="!training.bValid" style="color: red;"></ion-icon>
+                  </td>
+                </tr>
+                <tr *ngIf="_userTrainingList.length === 0">
+                  <td class="text-center" colspan="8">
+                    * There Is Currently No Training Data Available
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+      <ion-card-content class="mHeight-100" *ngIf="_bNoData">
+        <strong class="noDataDisplay">
+          *There is Currently No Candidate Training Data Available
+        </strong>
+      </ion-card-content>
+    </ion-card>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-button class="btnRound" shape="round" (click)="goBack()" *ngIf="!_isExternalTrainer">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-button>
+  <ion-button *ngIf="!_bNoData" shape="round" class="f-right" (click)="validateUsers()">Submit Data</ion-button>
+</ion-footer>

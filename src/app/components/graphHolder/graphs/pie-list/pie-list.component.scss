@@ -1,0 +1,27 @@
+.html-table-wrapper {
+  
+  overflow-x: hidden !important;
+
+  table {
+    width: 100%;
+  }
+
+  th, td {
+    font-size: 12px;
+    text-align: center;
+    border: 0;
+  }
+}
+
+
+#pieListWrapper {
+  i.icofont.icofont-chart-pie {
+    display: block;
+    font-size: 50px;
+    margin: 10px auto;
+  }
+
+  td {
+    padding: 0 !important;
+  }
+}

@@ -1,0 +1,82 @@
+<!-- QUALIFICATIONS -->
+<ng-container class="stairway-modal">
+  <ion-row class="sub-header m-t-20">
+    <ion-col size="12">
+      <ion-col sizeSm="6" sizeXs="8" sizeMd="10">
+        <strong>Qualifications</strong>
+        <ion-button size="small" shape="round " type="button" class="text-right f-right" (click)="dismiss()">
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-col>
+  </ion-row>
+  <ion-row class="m-tb-10-20">
+    <ion-col sizeXs="6" sizeMd="6">
+      <ion-row>
+        <strong class="d-block">Essential :</strong>
+      </ion-row>
+      <ion-row>
+        <p *ngFor="let q of modalData['qualifications']">
+          <ng-container *ngIf="q['bEssential']">{{ q['sQualificationName'] }}</ng-container>
+        </p>
+        <p *ngIf="!modalData['qualifications'].length">
+          <i>*To be confirmed</i>
+        </p>
+      </ion-row>
+      <p *ngIf="modalData['qualifications'].length === 0" class="text-muted">To be confirmed</p>
+    </ion-col>
+    <ion-col sizeXs="6" sizeMd="6" class="text-center">
+      <ion-row>
+        <strong class="d-block">Optional :</strong>
+      </ion-row>
+      <ion-row>
+        <p *ngFor="let q of modalData['qualifications']">
+          <ng-container *ngIf="!q['bEssential']">{{ q['sQualificationName'] }}</ng-container>
+        </p>
+        <p *ngIf="!modalData['qualifications'].length">
+          <i>*To be confirmed</i>
+        </p>
+      </ion-row>
+      <p *ngIf="modalData['qualifications'].length === 0" class="text-muted">To be confirmed</p>
+    </ion-col>
+  </ion-row>
+
+  <!-- KNOWLEDGE AND SKILLS -->
+  <ng-container *ngIf="modalData['skillsAndKnowledgeDimensions'].length > 0">
+    <ion-row class="sub-header m-t-20">
+      <ion-col size="12">
+        <strong>Skills & Knowledge</strong>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-row>
+          <ng-container *ngFor="let dimensions of modalData['skillsAndKnowledgeDimensions']">
+              <p>{{ dimensions.sSkillsKnowledgeDimensionName }}</p>
+            <p *ngFor="let Indicatior of dimensions['skillsAndKnowledgeIndicator']" class="paragraph">
+              {{ Indicatior.sSkillsKnowledgeIndicatorName }}
+            </p>
+          </ng-container>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ng-container>
+
+  <!-- ESSENTIAL EXPERIENCE -->
+  <ng-container *ngIf="modalData['experience'].length > 0">
+    <ion-row class="sub-header m-t-20">
+      <ion-col size="12">
+        <strong>Experience</strong>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-row>
+          <ng-container *ngFor="let experience of modalData['experience']">
+            <p class="paragraph">{{ experience.sExperienceName }}</p>
+          </ng-container>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ng-container>
+</ng-container>

@@ -1,0 +1,44 @@
+.arrow-column-combo-wrapper {
+  .arrowBarWrapper {
+    display: inline-block;
+    margin: 5px;
+  }
+  .arrowBar {
+    background: var(--primary);
+    display: block;
+    margin: 5px auto;
+    max-width: 40px;
+  }
+  span.arrowCol {
+    background: #FFF;
+    display: block;
+    height: 100%;
+  }
+  strong.accHeading {
+    display: block;
+    margin: 5px 0 0px;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 3px 0;
+  }
+  strong.accItem {
+    display: block;
+    font-size: 20px;
+    font-weight: 900;
+    white-space: nowrap;
+
+    &.ls--1 {
+      letter-spacing: -1px;
+    }
+  }
+  p {
+    font-size: 14px;
+  }
+
+  table {
+    td {
+      padding: 2px !important;
+    }
+  }
+
+}

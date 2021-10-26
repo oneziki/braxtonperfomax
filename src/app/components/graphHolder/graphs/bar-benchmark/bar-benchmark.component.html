@@ -1,0 +1,34 @@
+<div id="bar-benchmark-wrapper">
+  <table class="podTable table  table-hover">
+    <tbody>
+      <tr>
+        <td [ngStyle]="getColStyle()"></td>
+        <td>
+          <br>
+          <small class="text-muted benchmark-score-40">40%</small>
+          <small class="text-muted benchmark-score-60">60%</small>
+          <small class="text-muted benchmark-score-80">80%</small>
+          <span class="vertBenchmark isFirst"  [ngStyle]="{left: getBenchmark()}"></span>
+        </td>
+      </tr>
+      <ng-container *ngFor="let listItem of data['data']; let iListItem = index">
+        <tr *ngIf="iListItem > 0">
+          <td>
+            {{ listItem[0] }}
+          </td>
+          <td>
+            <span class="vertBenchmark" [ngStyle]="{left: getBenchmark()}"></span>
+            <span class="horzScore" [ngStyle]="getItemStyle('horzScore', listItem)"></span>
+            <span class="horzAverage" [ngStyle]="getItemStyle('horzAverage', listItem)"></span>
+          </td>
+        </tr>
+      </ng-container>
+      <tr>
+        <td></td>
+        <td>
+          <span class="vertBenchmark isLast"  [ngStyle]="{left: getBenchmark()}"></span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

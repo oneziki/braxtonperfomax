@@ -1,0 +1,250 @@
+<ion-content [fullscreen]="true">
+  <ion-grid id="three-sixty" class="reportGrid contentPageWrapper">
+    <ion-card>
+      <ion-card-header>
+        <!-- Header -->
+        <ion-row>
+          <ion-col sizeXs="6" sizeMd="8">
+            <h4 class="sub-title">
+              {{ _details['sAssessmentName'] }}
+            </h4>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="4" class="text-right">
+            <ion-button type="button" class="btn btn-primary" (click)="printThreeSixtyReport()">
+              <ion-icon name="print-outline"></ion-icon>
+              Print Report
+            </ion-button>
+            <div style="padding-top: 10px;">
+              <a (click)="goBackToAssessees()">
+                <ion-icon name="chevron-back-circle-outline"></ion-icon> Back to list of individuals
+              </a>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-card-header>
+      <ion-card-content>
+        <!-- DETAILS -->
+        <ion-row>
+          <ion-col sizeXs="12" sizeMd="6">
+            <h4 class="sub-title">
+              Details
+            </h4>
+            <ion-row>
+              <ion-col size="6">
+                <strong>{{ _details['sAssesseeLabel'] }}</strong>
+              </ion-col>
+              <ion-col size="6">
+                <p>{{ _details['sAssesseeName'] }}</p>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">
+                <strong>{{_details['sAssessorLabel']}}</strong>
+              </ion-col>
+              <ion-col size="6">
+                <p>{{ _details['sAssessorName'] }}</p>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">
+                <strong>{{ _details['sAssessorTypeLabel'] }}</strong>
+              </ion-col>
+              <ion-col size="6">
+                <p>{{ _details['sAssessorTypeDescription'] }}</p>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">
+                <strong>Email</strong>
+              </ion-col>
+              <ion-col size="6">
+                <p>{{ _details['sEmail'] }}</p>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">
+                <strong>Completed</strong>
+              </ion-col>
+              <ion-col size="6">
+                <p>{{ _details['dDateCompleted'] }}</p>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">
+                <strong>{{ _details['sOverallScoreLabel'] }}</strong>
+              </ion-col>
+              <ion-col size="6">
+                <p>
+                  <span class="color-dot" [ngStyle]="{ 'background': _details['overall_sColor']  }"></span>
+                  {{ _details['overallScore'] }}
+                </p>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="6">
+            <h4 class="sub-title">
+              {{ _details['sLegendHeading'] }}
+            </h4>
+            <ion-row *ngFor="let legendItem of _legend">
+              <ion-col size="12">
+                <p>
+                  <span class="color-dot" [ngStyle]="{ 'background': legendItem.sColor  }"></span>
+                  {{ legendItem.sOptionName }}: {{ legendItem.iStart}} - {{ legendItem.iEnd }}
+                </p>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+
+        </ion-row>
+
+        <!-- QUESTIONS -->
+        <ion-row class="row">
+          <ion-col size="12">
+
+            <div class="m-t-10">
+              <table>
+                <thead>
+                  <tr class="bg-primary">
+                    <th>Questions Responded To</th>
+                    <th class="text-center">Your Results</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let sCompetencyType of _questionData['sCompetencyType']">
+                    <ng-container *ngFor="let Competencies of sCompetencyType['Competencies']">
+                      <ng-container *ngFor="let Outcomes of Competencies['Outcomes']">
+                        <!-- OUTCOMES  -->
+                        <tr>
+                          <th scope="row" colspan="2">
+                            {{ Outcomes.sOutcomeName }}
+                          </th>
+                        </tr>
+                        <ng-container *ngFor="let Indicators of Outcomes['Indicators']">
+                          <!-- INDICATORS -->
+                          <tr>
+                            <td>
+                              <p>{{ Indicators.sIndicatorName }}</p>
+                            </td>
+                            <td class="text-center">
+                              <p>
+                                <span class="color-dot" [ngStyle]="{ 'background': Indicators.sColor  }"
+                                  *ngIf="Indicators.bShowColorDot == 1 && Indicators.sScore != 'N/A'"></span>
+                                {{ Indicators.sScore }}
+                                <span *ngIf="Indicators.bShowPercentage == 1 && Indicators.sScore != 'N/A'">%</span>
+                              </p>
+                            </td>
+                          </tr>
+                          <ng-container *ngFor="let sOEQuestion of Indicators['sOEQuestion']">
+                            <!-- QUESTIONS -->
+                            <tr>
+                              <td>
+                                <p>{{ sOEQuestion.sQuestion }}</p>
+                              </td>
+                              <td class="text-left">
+                                <p>{{ sOEQuestion.sAnswer }}</p>
+                              </td>
+                            </tr>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <!-- COMMENTS -->
+        <ion-row class="row">
+          <ion-col size="12">
+
+            <table>
+              <thead>
+                <tr class="bg-primary">
+                  <th>Questions</th>
+                  <th>Answers</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let item of _commentsData">
+                  <tr>
+                    <th scope="row" colspan="2">
+                      {{ item.sQuestion }}
+                    </th>
+                  </tr>
+                  <ng-container *ngFor="let answers of item['sAnswers']; let answerIndex = index">
+                    <tr>
+                      <td>
+                        <p>{{answers['sAssessorTypeDescription']}} Comment:</p>
+                      </td>
+                      <td>
+                        <p>{{answers['sScore']}}</p>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </ng-container>
+              </tbody>
+            </table>
+
+          </ion-col>
+        </ion-row>
+
+
+        <!-- PERFORMANCE DISCUSSION -->
+        <ion-row *ngIf="_pDiscussionData && _pDiscussionData[0]">
+          <ion-col size="12">
+
+            <table>
+              <thead>
+                <tr class="bg-primary">
+                  <th>Performance Discussion</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Date of Performance Discussion:</td>
+                  <td>{{_pDiscussionData['dDateDiscussion']}}</td>
+                </tr>
+                <tr>
+                  <td>Performance Discussion Evidence:</td>
+                  <td>
+                    <ng-container *ngIf="_pDiscussionData['sUploadPath'] !== ''">
+                      <a class="m-b-5 d-block" [href]="_pDiscussionData['sUploadPath']" download target="_blank">
+                        {{_pDiscussionData['sAttachmentName']}}
+                      </a>
+                    </ng-container>
+                    <ng-container *ngIf="_pDiscussionData['sUploadPath'] === ''">
+                      {{_pDiscussionData['sAttachmentName']}}
+                    </ng-container>
+
+                  </td>
+                </tr>
+                <tr>
+                  <td>Key Elements of Performance Discussion:</td>
+                  <td>{{_pDiscussionData['sDiscussionComment']}}</td>
+                </tr>
+                <tr>
+                  <td>{{_pDiscussionData['sPerformanceReviewMotivationNameChange']}} :</td>
+                  <td>{{_pDiscussionData['sEployeeMotivation']}}</td>
+                </tr>
+                <tr>
+                  <td>{{_pDiscussionData['sPerformanceReviewDiscussionRatingNameChange']}} :</td>
+                  <td>{{_pDiscussionData['sName']}}</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-button class="btnRound" shape="round" (click)="goBackToAssessees()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-button>
+</ion-footer>

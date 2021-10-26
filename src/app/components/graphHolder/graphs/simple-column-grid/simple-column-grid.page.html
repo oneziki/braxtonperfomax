@@ -1,0 +1,14 @@
+<ion-grid class="simple-column-grid">
+  <ion-row *ngFor="let d of data['series']; let i = index">
+    <ion-col size="4">
+      <ion-icon name="happy-outline" [ngStyle]="{'color': data['colors'][i]}"></ion-icon>
+    </ion-col>
+    <ion-col size="8">
+      <ion-text>
+        <h2 [ngStyle]="{'color': data['colors'][i]}">
+          {{ data['series'][i] }}
+        </h2>
+      </ion-text>
+    </ion-col>
+  </ion-row>
+</ion-grid>

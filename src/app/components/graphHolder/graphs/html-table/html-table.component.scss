@@ -1,0 +1,25 @@
+.html-table-wrapper {
+  th, td {
+    color: var(--table-text);
+    font-size: var(--fs-mid);
+    border: 0;
+  }
+  th {
+    padding: 5px 10px !important;
+  }
+  td {
+    padding: 2px 10px !important;
+  }
+  td:nth-child(2) {
+    border-left: 1px solid var(--primary-dark);
+    padding-left: 10px !important;
+    p {
+      margin: 2px 0;
+      font-size: 12px;
+    }
+  }
+  .spacer {
+    display: block;
+    min-height: 5px;
+  }
+}

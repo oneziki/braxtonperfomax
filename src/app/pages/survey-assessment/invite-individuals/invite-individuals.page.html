@@ -1,0 +1,194 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper inviteIndividualsGrid">
+    <!-- <ion-toolbar class="toolbar">
+      <ion-title class="ion-padding-start colHeader text-primary">Invite Individuals</ion-title>
+    </ion-toolbar> -->
+
+    <ion-card>
+      <ion-card-content>
+        <ion-row>
+          <ion-col class="col first current text-center">
+            <h1>1.</h1>
+            <strong class="number">
+              Invite Manager/Expert
+            </strong>
+          </ion-col>
+          <ion-col class="text-center">
+            <h1>2.</h1>
+            <strong class="number">
+              Complete Review
+            </strong>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12">
+            Invite at least <b>{{ _surveyEmployeeInviteData['surveyDetails']['iTotalInvitations'] }}</b> individual<span
+              *ngIf="_surveyEmployeeInviteData['surveyDetails']['iTotalInvitations'] > 1">s</span> to provide feedback on your Self Assessment:
+          </ion-col>
+        </ion-row>
+        <ion-row id="disableDiv">
+          <ion-col size="5">
+            <input placeholder="Start typing to search for users" type="text" name="result" list="EmployeeList" [(ngModel)]="_searchEmployee" (ngModelChange)="searchEmployee()">
+
+            <datalist id="EmployeeList">
+              <option value="" disabled>* Please enter a name</option>
+              <option *ngFor="let employee of _surveyEmployeeInviteData['EmployeeList']" id="employee" [ngValue]="employee" required>
+                {{employee.sFullName}}
+              </option>
+            </datalist>
+          </ion-col>
+          <ion-col size="3" *ngIf="_employee && _employee['email']">
+            <ion-input *ngIf="_employee['email']" type="email" name="sEmail" placeholder="Please Enter Email" [(ngModel)]="_employee['email']" readonly></ion-input>
+            <ion-input *ngIf="!_employee['email']" type="email" name="sEmail" placeholder="Please Enter Email" [(ngModel)]="_employee['email']"></ion-input>
+          </ion-col>
+          <ion-col size="3" *ngIf="_employee && !_employee['email']"
+            [ngClass]="{'validate-invalid': sEmail.invalid && sEmail.touched, 'validate-valid': !sEmail.invalid && sEmail.touched}">
+
+            <ion-input type="email" name="sEmail" placeholder="Please Enter Email" required [(ngModel)]="_externalEmail" [email]="true"
+              pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" ngModel #sEmail="ngModel"> </ion-input>
+            <span class="help-block" *ngIf="sEmail.touched && sEmail.invalid && !sEmail.errors.required">Please enter a valid email</span>
+            <span class="help-block" *ngIf="sEmail.touched && sEmail.invalid && sEmail.errors.required">This field is required</span>
+
+          </ion-col>
+          <ion-col size="2" *ngIf="_employee">
+            <ion-select [interfaceOptions]='{ showBackdrop: false }' interface="popover" name="assessorType" id="assessorType" [(ngModel)]="_surveyAssessorType"
+              placeholder="Please Select An Assessor Type">
+              <ion-select-option *ngFor="let assessorTypes of _surveyEmployeeInviteData['AssessorTypes']" [value]="assessorTypes">
+                {{ assessorTypes.sAssessorTypeDescription }}
+              </ion-select-option>
+            </ion-select>
+          </ion-col>
+          <ion-col size="2" *ngIf="_employee">
+            <ion-button type="button" shape="round" (click)="inviteUser()">
+              <span *ngIf="!_employee">
+                <!-- <i aria-hidden="true" class="fa fa-long-arrow-left"></i> -->
+                Search Person(s)
+              </span>
+              <span *ngIf="_employee">
+                Add Person
+                <!-- <i aria-hidden="true" class="fa fa-level-down"></i> -->
+              </span>
+            </ion-button>
+
+          </ion-col>
+          <ion-col size="12">
+            <table class="table">
+              <tbody>
+                <tr>
+                  <th class="text-left" width="20%">Invited Person(s) </th>
+                  <th class="text-center">Email</th>
+                  <th class="text-center">Status</th>
+                  <th class="text-center">AssessorType</th>
+                  <th class="text-center">Action</th>
+                </tr>
+                <tr class="invitedUsers" *ngFor="let invitee of _invitedUsers;let invinteeIndex = index">
+                  <td class="text-left">
+                    <a class="clicker" (click)="_searchEmployee = invitee">
+                      {{ invitee.sFullName }}
+                    </a>
+                  </td>
+                  <td class="text-center">
+                    <a (click)="_searchEmployee = invitee">
+                      {{ invitee.email }}
+                    </a>
+                  </td>
+                  <td class="text-center">
+                    <span class="color-dot bg-warning"></span> Invited
+                  </td>
+                  <td class="text-center">
+                    <a (click)="_searchEmployee = invitee">
+                      {{ invitee.sAssessorTypeDescription }}
+                    </a>
+                  </td>
+                  <td class="text-center">
+                    <a class="text-danger" (click)="univiteUser(invitee,invinteeIndex)">
+                      Remove
+                    </a>
+                  </td>
+                </tr>
+
+                <ng-container *ngFor="let assessor of _surveyEmployeeInviteData['surveyDetails']['UserInvitedList'];let assessorIndex = index">
+                  <tr class="invitedUsers">
+                    <td>
+                      <a>
+                        {{ assessor.sAssessorFullName }}
+                      </a>
+                    </td>
+                    <td class="text-center">
+                      <a>
+                        {{ assessor.sAssessorEmail }}
+                      </a>
+                    </td>
+                    <td class="text-center" *ngIf="assessor.sCompletionStatus === 'Completed'">
+                      <span class="color-dot bg-success"></span>{{ assessor.sCompletionStatus }}
+                    </td>
+                    <td class="text-center" *ngIf="assessor.sCompletionStatus === 'Declined'">
+                      <span class="color-dot bg-danger"></span>{{ assessor.sCompletionStatus }}
+                    </td>
+                    <td class="text-center" *ngIf="assessor.sCompletionStatus === 'Invited'">
+                      <span class="color-dot bg-warning"></span>{{ assessor.sCompletionStatus }}
+                    </td>
+                    <td class="text-center">
+                      {{ assessor.sAssessorTypeDescription }}
+                    </td>
+                    <td class="text-center">
+                      <a class="text-danger" *ngIf="assessor.sCompletionStatus === 'Invited'" (click)="univiteAssessmentAssessors(assessor,assessorIndex)">
+                        Remove
+                      </a>
+                      <span class="invitedUsers" *ngIf="assessor.sCompletionStatus !== 'Invited'">
+                        None
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text-center b-t-0" colspan="4" *ngIf="assessor.sApprovalStatus === 'Declined'">
+                      <div class="panel panel-default">
+                        <div class="panel-body text-left">
+                          <p>{{ assessor.sDeclinedReason }}</p>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12" *ngIf="!_bAllowAssessors">
+            Please note Inviting Assessors has been disabled for this assessment.
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12">
+            <div class="alert alert-primary icons-alert" role="alert" *ngIf="_showWarningAlert">
+              <strong>{{ _sErrorMessage }}</strong>
+              <ion-button class="close" type="button" shape="round" (click)="_showWarningAlert=false">
+                <ion-icon name="close-circle-outline"></ion-icon>
+              </ion-button>
+            </div>
+
+            <div class="alert alert-primary icons-alert" role="alert" *ngIf="_showSubmitAlert">
+              <strong>
+                {{ sSubmitMessage }}
+              </strong>
+              <div class="text-center m-t-10 m-b-10">
+                <ion-button type="button" shape="round" class="btn btn-danger" (click)="cancelSubmit()">Cancel</ion-button>
+                <ion-button type="button" shape="round" class="btn btn-primary" (click)="_showSubmitAlert=false;allocateSurvey();">Confirm</ion-button>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </ion-grid>
+</ion-content>
+
+<ion-footer *ngIf="!_showSubmitAlert && !_showWarningAlert">
+  <ion-button class="btnRound" shape="round" (click)="routeBack()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-button>
+  <ion-button class="f-right" shape="round" (click)="validateInvitees()" [disabled]="_nextButton['disabled']">
+    {{ _nextButton['text'] }}
+  </ion-button>
+</ion-footer>

@@ -1,0 +1,43 @@
+<div class="arrow-column-combo-wrapper">
+  <div class="row">
+    <div class="col-12 col-md-5">
+      <table class="text-slate-impo no-borders">
+        <ng-container *ngFor="let listItem of data['data']; let iListItem = index;">
+          <ng-container *ngIf="iListItem > 0">
+            <tr>
+              <td colspan="99">
+                <strong class="accHeading" (click)="chartClick(listItem)">{{ listItem[0] }}</strong>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong class="accItem m-l-5" (click)="chartClick(listItem)">{{ listItem[2] }}</strong>
+              </td>
+              <td>
+                <strong class="accItem" *ngIf="listItem[6] !== ''" [ngStyle]="{'color': listItem[3]}" (click)="chartClick(listItem)">
+                  <i class="icofont" [ngClass]="{'icofont-arrow-up': listItem[6] > 0, 'icofont-arrow-down': listItem[6] < 0}"></i>
+                  {{ listItem[7] }}
+                </strong>
+                <strong class="accItem text-muted ls--1" *ngIf="listItem[6] === ''" (click)="chartClick(listItem)">
+                  <i class="icofont icofont-arrow-left"></i>0%
+                </strong>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </table>
+    </div>
+    <div class="col text-center">
+      <ng-container *ngFor="let listItem of data['data']; let iListItem = index;">
+        <ng-container *ngIf="iListItem > 0">
+          <div class="arrowBarWrapper pointer" (click)="chartClick(listItem)">
+            <div class="arrowBar" [ngStyle]="{'height': colMax, 'background': listItem[3]}">
+              <span class="arrowCol" [ngStyle]="{'height': listItem['height']}"></span>
+            </div>
+            <p><small>{{ listItem[0] }}</small></p>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+</div>

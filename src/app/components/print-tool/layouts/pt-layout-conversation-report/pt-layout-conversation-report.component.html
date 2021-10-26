@@ -1,0 +1,60 @@
+<section id="customLayout" class="ptPDFMain ptPDF customlayout nav-{{ _navStatus }}">
+  <section id="prePrintContent">
+
+    <section class="prePrintContent">
+      <!-- Header -->
+      <ion-row>
+        <ion-col sizeXs="6" sizeMd="8" class="ptPageHeader">
+          <strong class="headerText fs-18">
+            {{ _coverData['coverTitle'] }}
+            <small class="d-block">
+              {{ _coverData['coverSub'] }}
+            </small>
+          </strong>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="4" class="text-right">
+          <ion-button type="button" class="btn btn-primary" (click)="printPDFReport()">
+            <ion-icon name="print-outline"></ion-icon>
+            Print Report
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <!-- Header -->
+
+      <!-- Category-->
+      <ion-row>
+        <ion-col size="12" class="section-header">
+          <strong>{{_contentData['sCategoryName']}}</strong>
+        </ion-col>
+      </ion-row>
+
+      <!-- Subject -->
+      <ion-row>
+        <ion-col size="12" class="p-b-5">
+          <strong class="subheader"> Subject: {{_contentData['sSubject']}}</strong>
+        </ion-col>
+      </ion-row>
+
+      <!-- Date -->
+      <ng-container *ngFor="let dates of _contentData['conversationDetails']">
+        <ion-row>
+          <ion-col size="12">
+            <p> <b>{{dates['dConversationDate']}}</b></p>
+          </ion-col>
+        </ion-row>
+
+        <!-- Conversation -->
+        <ng-container *ngFor="let conversation of dates['conversation']">
+          <ion-row>
+            <ion-col sizeXs="12" sizeMd="2">
+              <p class="p-t-5 m-0"> {{conversation['sFullName']}}: </p>
+            </ion-col>
+            <ion-col sizeXs="12" sizeMd="10">
+              <p class="w-space p-t-5 m-0"> {{conversation['sConversation']}}</p>
+            </ion-col>
+          </ion-row>
+        </ng-container>
+      </ng-container>
+    </section>
+  </section>
+</section>

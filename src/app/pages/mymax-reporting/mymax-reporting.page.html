@@ -1,0 +1,121 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper reportingGrid" *ngIf="!_isLoading">
+    <ion-row>
+      <ion-col size="12">
+        <ion-text>
+          <h2 class="contentHeader">
+            MyMAX Dashboard Reporting
+          </h2>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <!-- PERSONAL -->
+      <ion-col sizeXl="6" sizeLg="6" sizeMd="6" sizeSm="12" sizeXs="12">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title class="cardHeader">
+              <ion-item lines="none">
+                <ion-label class="text-primary">
+                  {{_performUser['sFullName']}}
+                </ion-label>
+              </ion-item>
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content *ngFor="let tile of _personal">
+            <ion-text *ngIf="tile['sTile'] !== ''; else other">
+              <h2 class="m-l-15">
+                <strong>{{tile['sTile']}}</strong>
+              </h2>
+            </ion-text>
+            <ng-template #other>
+              <ion-text>
+                <h2 class="m-l-15">
+                  <strong>Other</strong>
+                </h2>
+              </ion-text>
+            </ng-template>
+            <ion-list>
+              <ion-item lines="none" *ngFor="let myMaxChild of tile['myMaxChildren']">
+                <ion-icon name="bar-chart" class="m-r-20"></ion-icon>
+                <ion-label>
+                  <h3>
+                    {{myMaxChild['name']}}
+                    <ion-badge class="animated pulse" style="margin-top: -4px;" color="danger" [class]="myMaxChild.iNotifications > 9? 'actionBadgeGt9':'actionBadge'"
+                      *ngIf="myMaxChild.iNotifications > 0">{{myMaxChild['iNotifications']}}</ion-badge>
+                  </h3>
+                </ion-label>
+                <ion-button slot="end" color="primary" class="m-0-impo" (click)="updateFilter('Personal',myMaxChild)">
+                  <ion-icon name="search"></ion-icon>
+                </ion-button>
+              </ion-item>
+            </ion-list>
+            <hr class="m-l-20 m-r-20 m-t-20">
+          </ion-card-content>
+          <ng-container *ngIf="_personal.length === 0">
+            <ion-card-content>
+              <ion-text>
+                <h2 class="m-l-15">
+                  <strong>*No dashboards to display</strong>
+                </h2>
+              </ion-text>
+            </ion-card-content>
+          </ng-container>
+        </ion-card>
+      </ion-col>
+
+      <!-- MY TEAM -->
+      <ion-col sizeXl="6" sizeLg="6" sizeMd="6" sizeSm="12" sizeXs="12">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title class="cardHeader">
+              <ion-item lines="none">
+                <ion-label class="text-primary">
+                  My Team
+                </ion-label>
+              </ion-item>
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content *ngFor="let tile of _myTeam">
+            <ion-text *ngIf="tile['sTile'] !== ''; else other">
+              <h2 class="m-l-15">
+                <strong>{{tile['sTile']}}</strong>
+              </h2>
+            </ion-text>
+            <ng-template #other>
+              <ion-text>
+                <h2 class="m-l-15">
+                  <strong>Other</strong>
+                </h2>
+              </ion-text>
+            </ng-template>
+            <ion-list>
+              <ion-item lines="none" *ngFor="let myMaxChild of tile['myMaxChildren']">
+                <ion-icon name="bar-chart" class="m-r-20"></ion-icon>
+                <ion-label>
+                  <h3>{{myMaxChild['name']}}
+                    <ion-badge class="animated pulse" [class]="myMaxChild.iNotifications > 9? 'actionBadgeGt9':'actionBadge'" style="margin-top: -4px;" color="danger"
+                      *ngIf="myMaxChild.iNotifications > 0">{{myMaxChild['iNotifications']}}</ion-badge>
+                  </h3>
+                </ion-label>
+                <ion-button slot="end" color="primary" class="m-0-impo" (click)="updateFilter('Department',myMaxChild)">
+                  <ion-icon name="search"></ion-icon>
+                </ion-button>
+              </ion-item>
+            </ion-list>
+            <hr class="m-l-20 m-r-20 m-t-20">
+          </ion-card-content>
+          <ng-container *ngIf="_myTeam.length === 0">
+            <ion-card-content>
+              <ion-text>
+                <h2 class="m-l-15">
+                  <strong>*No dashboards to display</strong>
+                </h2>
+              </ion-text>
+            </ion-card-content>
+          </ng-container>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

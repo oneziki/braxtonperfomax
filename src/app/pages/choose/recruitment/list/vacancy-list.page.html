@@ -1,0 +1,83 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper vacancyProfileListGrid">
+
+    <ion-row>
+      <ion-col size="4">
+        <h2 class="contentHeader">Vacancy Library</h2>
+      </ion-col>
+      <ion-col>
+        <ion-toolbar class="toolbar contentToolbar">
+          <ion-select interface="popover" placeholder="Filter..." label="Filter"
+            (ionChange)="departmentFilterChange($event)">
+            <ion-select-option *ngFor="let department of _departments" [value]="department">
+              {{ department.sOrganisationTierName }}
+            </ion-select-option>
+          </ion-select>
+          <ion-searchbar slot="primary" placeholder="Search..." class="supSearch" [(ngModel)]="_searchText">
+          </ion-searchbar>
+        </ion-toolbar>
+      </ion-col>
+    </ion-row>
+
+    <ion-card class="homeCard homeResources">
+      <ion-card-content>
+
+        <ion-grid class="stripedGrid">
+          <ion-row class="stripedHeader">
+            <ion-col sizeXs="8" sizeSm="4" sizeMd="4" sizeLg="4" sizeXl="4" (click)="sortBy('RoleTitle')">
+              <strong>Role Title</strong>
+              <ion-icon name="caret-down-sharp" *ngIf="_sortType['RoleTitle'] === 'asc'"></ion-icon>
+              <ion-icon name="caret-up-sharp" *ngIf="_sortType['RoleTitle'] === 'desc'"></ion-icon>
+            </ion-col>
+            <ion-col sizeSm="3" sizeMd="3" sizeLg="3" sizeXl="3" class="ion-hide-sm-down"
+              (click)="sortBy('Department')">
+              <strong>Department</strong>
+              <ion-icon name="caret-down-sharp" *ngIf="_sortType['Department'] === 'asc'"></ion-icon>
+              <ion-icon name="caret-up-sharp" *ngIf="_sortType['Department'] === 'desc'"></ion-icon>
+            </ion-col>
+            <ion-col sizeSm="3" sizeMd="3" sizeLg="3" sizeXl="3" class="ion-hide-sm-down">
+              <strong> Location</strong>
+            </ion-col>
+            <ion-col></ion-col>
+          </ion-row>
+
+          <ng-container *ngFor="let vacancy of _vacancyList| searchPipe: _searchText : 'sJobTitleRoleName'">
+            <ion-row class="stripedContent">
+              <ion-col sizeXs="8" sizeSm="4" sizeMd="4" sizeLg="4" sizeXl="4">
+                {{vacancy.sJobTitleRoleName}}
+                <small class="text-danger" *ngIf="vacancy.bIsCompleted === 1">
+                  <i>*Applied</i>
+                </small>
+              </ion-col>
+              <ion-col sizeSm="3" sizeMd="3" sizeLg="3" sizeXl="3" class="ion-hide-sm-down">
+                {{vacancy.sOrganisationTierName}}
+              </ion-col>
+              <ion-col sizeSm="3" sizeMd="3" sizeLg="3" sizeXl="3" class="ion-hide-sm-down">
+                {{vacancy.sLocation}}
+              </ion-col>
+              <ion-col class="text-right">
+                <ion-button color="primary" size="small" (click)="printPDFReport(vacancy.JobTitleUUID)">
+                  <ion-icon name="print"></ion-icon>
+                </ion-button>
+                <ion-button color="primary" size="small" (click)="viewVacancyProfile(vacancy.JobTitleRoleUID)">
+                  <ion-icon name="search"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ng-container>
+        </ion-grid>
+
+      </ion-card-content>
+    </ion-card>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-row>
+    <ion-col size="12">
+      <ion-button class="btnRound" shape="round" (click)="goChoosePage()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

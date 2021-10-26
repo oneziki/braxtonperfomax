@@ -1,0 +1,103 @@
+<ion-grid class="grid-col-wrapper" *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'sGraphTypes'] === 'ColumnGrid'">
+  <!---->
+  <table class="no-borders mobile-view">
+    <ng-container *ngFor="let col of data['data']; let iCol = index;">
+      <tr *ngIf="iCol > 0" [ngClass]="{'initRow': iCol === 1, 'lineRow': iCol > 1}" (click)="chartClick(col)">
+        <td class="text-center">
+          <strong class="animated grid-face" [ngStyle]="{'background': col[3], 'color': col[3]}"
+            (mouseover)="_mouseOvered=iCol" (mouseout)="_mouseOvered=0" [ngClass]="{'jello': iCol === _mouseOvered}">
+            <i class="icofont icofont-simple-smile" *ngIf="data['bSmileyFace']"></i>
+            <i class="icofont icofont-sad" *ngIf="!data['bSmileyFace']"></i>
+          </strong>
+        </td>
+        <td>
+          <h6 class="grid-score" [ngStyle]="{'color': col[3]}">
+            {{ col[2] }}          
+          </h6>
+        </td>
+        <td class="text-right">
+          <span class="grid-role text-muted">{{ col[0] }}</span>
+        </td>
+      </tr>
+    </ng-container>
+  </table>
+  <!--  -->
+</ion-grid>
+
+<ion-grid class="grid-col-icon-wrapper" *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'sGraphTypes'] === 'ColumnGridIcon'">
+  <ion-row [ngStyle]="{'margin-top': calcMarginToip()}">
+    <ng-container *ngFor="let col of data['data']; let iCol = index;">
+      <ion-col size="4" class="text-center mobile-view">
+        <h4 class="click-{{ data['visualSettings'][ filter['viewPrefix'] + 'bGraphClickThrough'] }}" (click)="chartClick(col)">
+          <i class="text-muted icofont {{ col['sLabel1']['sIconLabel']['icon'] }} animated" [ngClass]="{'jello': iCol === _mouseOvered}"
+              (mouseover)="_mouseOvered=iCol" (mouseout)="_mouseOvered = -1"></i>
+          {{ col['sLabel1']['label'] }}
+        </h4>
+        <strong class="text-primary">
+          {{ col['fScore1'] }}
+        </strong>
+        <p class="text-muted m-b-5" *ngIf="col['fScore2'] && col['fScore2'].length">
+          <i class="icofont icofont-arrow-up d-inline-block text-danger" *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'bDisplayColumnGridPercArrows'] && col['fScore2'] < 0"></i>
+          <i class="icofont icofont-arrow-down d-inline-block text-success" *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'bDisplayColumnGridPercArrows'] && col['fScore2'] > 0"></i>
+          <i class="icofont icofont-exchange d-inline-block text-muted rotate-90" *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'bDisplayColumnGridPercArrows'] && col['fScore2'] === 0"></i>
+          <i class="icofont icofont-exchange d-inline-block text-muted rotate-90" *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'bDisplayColumnGridPercArrows'] && col['fScore2'] === '0 '"></i>
+          <span class="d-inline-block" *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'sDataValue'] !== 'Percentage'">{{ col['fScore2'] }}</span>
+          <span class="d-inline-block" *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'sDataValue'] === 'Percentage'">{{ col['fScore2'] }}%</span>
+        </p>
+      </ion-col>
+    </ng-container>
+  </ion-row>
+</ion-grid>
+
+<div class="grid-col-icon-wrapper" *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'sGraphTypes'] === 'ColumnGridIcon-Carousel'">
+  <ngb-carousel [interval]="1000" [pauseOnHover]="true">
+    <ng-template ngbSlide *ngFor="let col of data['data']; let iCol = index;">
+      <div class="coller text-center">
+        <h4>
+          <i class="text-muted icofont {{ col['sLabel1']['sIconLabel']['icon'] }} animated" (mouseout)="_mouseOvered = -1" [ngClass]="{'jello': iCol === _mouseOvered}"></i>
+          <br>
+          {{ col['sLabel1']['label'] }}
+        </h4>
+        <strong class="text-primary">{{ col['fScore1'] }}</strong>
+        <p class="text-muted">
+          <i class="icofont icofont-arrow-up d-inline-block text-danger" *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'bDisplayColumnGridPercArrows'] && col['fScore2'] < 0"></i>
+          <i class="icofont icofont-arrow-down d-inline-block text-success" *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'bDisplayColumnGridPercArrows'] && col['fScore2'] > 0"></i>
+          <i class="icofont icofont-exchange d-inline-block text-muted rotate-90" *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'bDisplayColumnGridPercArrows'] && col['fScore2'] === 0"></i>
+          <i class="icofont icofont-exchange d-inline-block text-muted rotate-90" *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'bDisplayColumnGridPercArrows'] && col['fScore2'] === '0 '"></i>
+          <span class="d-inline-block">{{ col['fScore2'] }}%</span>
+        </p>
+      </div>
+    </ng-template>
+  </ngb-carousel>
+</div>
+
+<div class="grid-col-icon-wrapper" *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'sGraphTypes'] === 'ColumnGridIcon-Marq'">
+  <!-- <div class="row"> -->
+    <marquee>
+      <ng-container *ngFor="let col of data['data']; let iCol = index;">
+        <div class="coller text-center">
+          <h4>
+            <i class="text-muted icofont {{ col['sLabel1']['sIconLabel']['icon'] }} animated" (mouseout)="_mouseOvered = -1" [ngClass]="{'jello': iCol === _mouseOvered}"></i>
+            <br>
+            {{ col['sLabel1']['label'] }}
+          </h4>
+          <strong class="text-primary">{{ col['fScore1'] }}</strong>
+          <p class="text-muted">
+            <i class="icofont icofont-arrow-up d-inline-block text-danger" *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'bDisplayColumnGridPercArrows'] && col['fScore2'] < 0"></i>
+            <i class="icofont icofont-arrow-down d-inline-block text-success" *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'bDisplayColumnGridPercArrows'] && col['fScore2'] > 0"></i>
+            <i class="icofont icofont-exchange d-inline-block text-muted rotate-90" *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'bDisplayColumnGridPercArrows'] && col['fScore2'] === 0"></i>
+            <i class="icofont icofont-exchange d-inline-block text-muted rotate-90" *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'bDisplayColumnGridPercArrows'] && col['fScore2'] === '0 '"></i>
+            <span class="d-inline-block">{{ col['fScore2'] }}%</span>
+          </p>
+        </div>
+      </ng-container>
+    </marquee>
+  <!-- </div> -->
+</div>
+
+
+<!-- 
+    <ion-grid class="contentPageWrapper moduleLanding growGrid">
+    <ion-row *ngIf="!_isLoading"> 
+      <ion-col sizeXs="12" sizeMd="6">
+ -->

@@ -1,0 +1,17 @@
+.bar-list-wrapper {
+  td {
+    padding:0 10px !important;
+    border-top: 0;
+  }
+  .bar {
+    display: inline-block;
+    vertical-align: middle;
+    height: 16px;
+    width: 0%;
+    max-width: 85% !important;
+    margin: 5px 5px 5px 0;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+}

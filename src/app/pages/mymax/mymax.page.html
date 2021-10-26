@@ -1,0 +1,198 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper mymaxGrid">
+    <ion-row id="breadcrumb-wrapper">
+      <ion-col sizeMd="6" sizeLg="6" sizeSm="6" sizeXs="12" style="align-self: center;">
+        <ion-text>
+          <h2 id="breadcrumb-wrapper-title" class="contentHeader">
+            {{_myMaxFilter.sHeading}} - {{_myMaxFilter.sSubHeading}}
+          </h2>
+        </ion-text>
+      </ion-col>
+      <ion-col sizeMd="6" sizeLg="6" sizeSm="12" sizeXs="12" class="filter-right">
+        <ion-row class="inline-ul">
+          <!--  -->
+          <ion-col size="12" class="m-r-10">
+            <p class="m-r-10" *ngIf="_myMaxFilter && _myMaxFilter['businessId'] != '' && _myMaxFilter['businessLabel']">
+              <span class="filterHighlight" *ngIf="!_bShowFilter">
+                {{ _myMaxFilter["businessLabel"] | titlecase }}
+                <i class="icofont icofont-filter"></i>
+              </span>
+              <a href="javascript:;" class="filterHighlight" (click)="open()" *ngIf="_bShowFilter">
+                {{ _myMaxFilter["businessLabel"] | titlecase }}
+                <i class="icofont icofont-filter"></i>
+              </a>
+            </p>
+            <!--  -->
+            <ng-container *ngIf="_bShowFilter && _myMaxFilter && _myMaxFilter['sFilterType'] !== 'Filter Parent'">
+              <p class="m-r-10" *ngIf="_myMaxFilter['currentView']">
+                View:
+                <strong class="text-lite-grey"> {{ _myMaxFilter["currentView"] | titlecase }}</strong>
+                <strong class="text-prime-impo">
+                  <i class="icofont icofont-page"></i>
+                </strong>
+              </p>
+              <ng-container *ngIf="_myMaxFilter && _myMaxFilter['node_bShowBusinessFilters']">
+                <p class="m-r-10" *ngIf="_myMaxFilter && _myMaxFilter['businessId'] === ''">
+                  Filter: <strong> All</strong>
+                  <strong class="text-prime-impo fs-12">
+                    <i class="icofont icofont-filter"></i>
+                  </strong>
+                </p>
+                <p class="m-r-10" *ngIf="_myMaxFilter && _myMaxFilter['filter1Id'] !== ''">
+                  {{ _myMaxFilter['filter1Name'] }}: <strong> {{ _myMaxFilter['filter1Id'] }}</strong>
+                  <strong class="text-prime-impo fs-12">
+                    <i class="icofont icofont-filter"></i>
+                  </strong>
+                </p>
+                <p class="m-r-10" *ngIf="_myMaxFilter && _myMaxFilter['filter2Id'] !== ''">
+                  {{ _myMaxFilter['filter2Name'] }}: <strong> {{ _myMaxFilter['filter2Id'] }}</strong>
+                  <strong class="text-prime-impo fs-12">
+                    <i class="icofont icofont-filter"></i>
+                  </strong>
+                </p>
+                <p class="m-r-10" *ngIf="_myMaxFilter && _myMaxFilter['filter3Id'] !== ''">
+                  {{ _myMaxFilter['filter3Name'] }}: <strong> {{ _myMaxFilter['filter3Id'] }}</strong>
+                  <strong class="text-prime-impo fs-12">
+                    <i class="icofont icofont-filter"></i>
+                  </strong>
+                </p>
+                <p class="m-r-10" *ngIf="_myMaxFilter && _myMaxFilter['filter4Id'] !== ''">
+                  {{ _myMaxFilter['filter4Name'] }}: <strong> {{ _myMaxFilter['filter4Id'] }}</strong>
+                  <strong class="text-prime-impo fs-12">
+                    <i class="icofont icofont-filter"></i>
+                  </strong>
+                </p>
+                <p class="m-r-10" *ngIf="_myMaxFilter && _myMaxFilter['filter5Id'] !== ''">
+                  {{ _myMaxFilter['filter5Name'] }}: <strong> {{ _myMaxFilter['filter5Id'] }}</strong>
+                  <strong class="text-prime-impo fs-12">
+                    <i class="icofont icofont-filter"></i>
+                  </strong>
+                </p>
+              </ng-container>
+              <ng-container *ngIf="_myMaxFilter && _myMaxFilter['node_bShowDateFilters']">
+                <p class="m-r-10 d-block" *ngIf="_myMaxFilter['iFromMonth'] && _myMaxFilter['iFromYear']">
+                  From:
+                  <strong> {{ _myMaxFilter["sFromMonth"] }} {{ _myMaxFilter["iFromYear"] }}</strong>
+                  <strong class="text-prime-impo fs-12">
+                    <i class="icofont icofont-calendar"></i>
+                  </strong>
+                </p>
+                <p class="m-r-10" *ngIf="_myMaxFilter['iToMonth'] && _myMaxFilter['iToYear'] && _myMaxFilter['currentView'] === 'Comparative View'">
+                  To: <strong> {{ _myMaxFilter["sToMonth"] }} {{ _myMaxFilter["iToYear"] }}</strong>
+                  <strong class="text-prime-impo fs-12">
+                    <i class="icofont icofont-calendar"></i>
+                  </strong>
+                </p>
+              </ng-container>
+            </ng-container>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+
+    <!-- Summary | Gridster -->
+    <ng-container *ngIf="_myMaxFilter && _myMaxFilter.currentViewSection === 'summary'">
+      <ng-container *ngIf="!_myMaxFilter['bSectionHeading'] && _componentData && _componentData.length">
+        <div id="gridsterOuter" class="row gridster printCover" (window:resize)="onResize()">
+          <!-- SINGLE SECTION -->
+          <div class="singleSectionCard">
+            <gridster [options]="optionsFixed">
+              <ng-container *ngFor="let item of _componentData; let i = index;">
+                <ion-col size="6">
+
+                <gridster-item class="{{ item['visualSettings'][ _myMaxFilter['viewPrefix'] + 'sGraphTypes'] }} {{ item['visualSettings']['ss_sCardTypes'] }}" [item]="item">
+                  <app-mymax-card [data]="item" [filter]="_myMaxFilter" (componentViewHandler)="componentViewHandler(i, $event)">
+                  </app-mymax-card>
+                </gridster-item>
+              </ion-col>
+              </ng-container>
+            </gridster>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- MULTI SECTION -->
+      <ng-container *ngIf="_myMaxFilter['bSectionHeading'] && _componentData && _componentData.length">
+        <div id="gridsterOuter" class="row gridster printCover multi-section" (window:resize)="onResize()">
+          <ng-container *ngFor="let _component of _componentData; let iComp = index;">
+            <div class="multiSection">
+              <h4 class="gridster-header">{{ _component['sSectionHeading'] }}</h4>
+            </div>
+            <div class="multiSectionCard">
+              <gridster [options]="optionsFixed">
+                <ng-container *ngFor="let item of _component['components']; let i = index;">
+                  <gridster-item class="{{ item['visualSettings'][ _myMaxFilter['viewPrefix'] + 'sGraphTypes'] }} {{ item['visualSettings']['ss_sCardTypes'] }}" [item]="item">
+                    <app-mymax-card [data]="item" [filter]="_myMaxFilter" (componentViewHandler)="componentViewHandler(i, $event)">
+                    </app-mymax-card>
+                  </gridster-item>
+
+                </ng-container>
+              </gridster>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <!-- Detailed -->
+    <ng-container *ngIf="_myMaxFilter && _myMaxFilter.currentViewSection === 'detailed'">
+      <div class="row detailed">
+        <ng-container *ngIf="_componentData && _componentData.length">
+          <ng-container *ngFor="let item of _componentData; let i = index;">
+            <div class="col-12">
+              <app-mymax-card [data]="item" [filter]="_myMaxFilter" (componentViewHandler)="componentViewHandler(i, $event)">
+              </app-mymax-card>
+            </div>
+          </ng-container>
+        </ng-container>
+
+      </div>
+    </ng-container>
+
+    <!-- NO DATA ERROR -->
+    <!-- <ng-container *ngIf="_noDash">
+      <i class="fixed-center text-slate animated fadeIn">
+        *No data to display...
+      </i>
+    </ng-container> -->
+    <!-- PDF Print -->
+    <ng-container *ngIf="_downloadingImage">
+      <div id="mymax-print-wrapper" width="5" height="5" class="row" [ngClass]="{'multi-section': _selectedNode['bSectionHeading']}">
+        <!-- HEADER -->
+        <div class="col-12">
+          <section id="breadcrumb-print-wrapper" class="dash-default-section"></section>
+        </div>
+        <!-- SINGLE SECTION -->
+        <ng-container *ngIf="!_selectedNode['bSectionHeading'] && _componentData && _componentData.length">
+          <ng-container *ngFor="let item of _componentData; let i = index;">
+            <div class="singleSectionCard" *ngIf="!_downloadingImageItem.length || (_downloadingImageItem.length && _downloadingImageItem === item['MymaxTemplateMenuComponentUID'])">
+              <app-mymax-card [data]="item" [filter]="_myMaxFilter" [forPrint]="true">
+              </app-mymax-card>
+            </div>
+          </ng-container>
+        </ng-container>
+        <!-- MULTI SECTION -->
+        <ng-container *ngIf="_selectedNode['bSectionHeading'] && _componentData && _componentData.length">
+          <ng-container *ngFor="let _component of _componentData; let iComp = index;">
+            <div class="multiSection" *ngIf="!_downloadingImageItem.length">
+              <h4 class="gridster-header">{{ _component['sSectionHeading'] }}</h4>
+            </div>
+            <ng-container *ngFor="let item of _component['components']; let i = index;">
+              <div class="multiSectionCard" *ngIf="!_downloadingImageItem.length || (_downloadingImageItem.length && _downloadingImageItem === item['MymaxTemplateMenuComponentUID'])">
+                <app-mymax-card [data]="item" [filter]="_myMaxFilter" [forPrint]="true">
+                </app-mymax-card>
+              </div>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </div>
+    </ng-container>
+  </ion-grid>
+</ion-content>
+
+
+<ion-footer class="mymax-footer">
+  <ion-button class="btnRound" shape="round" (click)="goBack()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-button>
+</ion-footer>

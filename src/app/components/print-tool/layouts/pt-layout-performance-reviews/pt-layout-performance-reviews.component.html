@@ -1,0 +1,836 @@
+<section id="customLayout" class="ptPDFMain ptPDF customlayout nav-{{ _navStatus }}">
+  <section id="prePrintContent">
+    <section class="prePrintContent" *ngIf="_contentData">
+
+      <!-- Header -->
+      <ion-row>
+        <ion-col sizeXs="6" sizeMd="8" class="ptPageHeader">
+          <strong class="headerText fs-18">
+            {{ _coverData['coverTitle'] }}
+            <small class="d-block">
+              {{ _contentData["pdfData"]["userPersonalDetails"]["sEmployeeFullName"] }}
+            </small>
+          </strong>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="4" class="text-right">
+          <ion-button type="button" class="btn btn-primary" (click)="printPDFReport()">
+            <ion-icon name="print-outline"></ion-icon>
+            Print Report
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <!--  -->
+      <!-- PERSONAL DETAILS-->
+      <!--  -->
+      <ion-row class="spacing-header">
+        <ion-col sizeXs="12" sizeMd="12">
+          <strong>Personal Details</strong>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="m-tb-10-20 a-center">
+        <!-- row 1 -->
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block"> Employee Name </strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["pdfData"]["userPersonalDetails"]["sEmployeeFullName"] }}</p>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block"> Employee Reviewed </strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["pdfData"]["userPersonalDetails"]["dDateScored_Self"] }}</p>
+        </ion-col>
+        <!-- row 2 -->
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block"> Manager </strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["pdfData"]["userPersonalDetails"]["sAdminFullName"] }}</p>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block"> Manager Reviewed </strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p> {{ _contentData["pdfData"]["userPersonalDetails"]["dDateScored_Admin"] }}</p>
+        </ion-col>
+        <!-- row 3 -->
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Role </strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["pdfData"]["userPersonalDetails"]["sKraRoleName"] }}</p>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block"> Months Reviewed </strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>
+            {{ _contentData["pdfData"]["userPersonalDetails"]["sMonthScored"]}}
+          </p>
+        </ion-col>
+        <!-- row 4 -->
+        <ng-container *ngIf="_contentData['pdfData']['userPersonalDetails']['sAdmin2UUID'] !== ''">
+          <ion-col sizeXs="6" sizeMd="3"><strong class="d-block"> Second Manager Signed</strong>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="3">
+            <p>{{ _contentData["pdfData"]["userPersonalDetails"]["sAdmin2FullName"] }}</p>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="3"><strong class="d-block"> Second Manager </strong></ion-col>
+          <ion-col sizeXs="6" sizeMd="3">
+            <p>{{ _contentData["pdfData"]["userPersonalDetails"]["dDateScored_Admin2"] }}</p>
+          </ion-col>
+        </ng-container>
+        <!-- row 5 -->
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block"> Department </strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p [innerHTML]="_contentData['pdfData']['userPersonalDetails']['sUserStructure']"></p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="spacing-header">
+        <ion-col size="12">
+          <strong>Summary of Result</strong>
+        </ion-col>
+      </ion-row>
+      <ion-row class="m-tb-10-20">
+        <ion-col sizeXs="12" sizeMd="1">&nbsp;</ion-col>
+        <ion-col sizeXs="12" sizeMd="4">
+          <h4 class="text-center">Legend</h4><br>
+          <table>
+            <tr *ngFor="let legend of _contentData['pdfData']['kraLegend']; let iLegend = index">
+              <td width="5%" class="b-t-lightgray" style="padding: 0.55rem">
+                <span class="color-dot" [ngStyle]="{ background:  '#' + legend['sColor'] }"></span>
+              </td>
+              <td width="30%" class="text-left nowrap b-t-lightgray" style="padding: 0.55rem">
+                <strong class="p-l-10">{{ legend["fLegendFrom"] }} - {{ legend["fLegendTo"] }}</strong>
+              </td>
+              <td class="b-t-lightgray" style="padding: 0.55rem">{{ legend["sOrgScaleLegend"] }}</td>
+            </tr>
+          </table>
+        </ion-col>
+        <ion-col sizeXs="12" sizeMd="1" class="b-r-lightgray">&nbsp;</ion-col>
+        <ion-col sizeXs="12" sizeMd="6" class="text-center">
+          <h4>Overall Result</h4>
+          <ng-container *ngIf="_contentData['pdfData']['settings']['bShowLegendDescriptionAsScore']">
+            <h1 class="fs-75 m-0" [ngStyle]="{ color: '#' + _contentData['pdfData']['overallData'][0]['overallResult_color'] }">
+              <ng-container *ngIf="_contentData['pdfData']['userPersonalDetails']['dDateScored_Admin'] === 'Not Scored'">
+                N/A
+              </ng-container>
+              <ng-container *ngIf="_contentData['pdfData']['userPersonalDetails']['dDateScored_Admin'] !== 'Not Scored'">
+                {{ _contentData['pdfData']['overallData'][0]['combinedOverallResult_scoreDescription'] }}
+              </ng-container>
+            </h1>
+          </ng-container>
+          <ng-container *ngIf="!_contentData['pdfData']['settings']['bShowLegendDescriptionAsScore']">
+            <h1 class="fs-100 m-0" [ngStyle]="{ color: '#' + _contentData['pdfData']['overallData'][0]['overallResult_color'] }">
+              <ng-container *ngIf="_contentData['pdfData']['userPersonalDetails']['dDateScored_Admin'] === 'Not Scored'">
+                N/A
+              </ng-container>
+              <ng-container *ngIf="_contentData['pdfData']['userPersonalDetails']['dDateScored_Admin'] !== 'Not Scored'">
+                {{ _contentData['pdfData']['overallData'][0]['combined_overallScore'] }}
+                <ng-container
+                  *ngIf="_contentData['pdfData']['overallData'][0]['combined_overallScore']  !== 'N/A' && _contentData['pdfData']['settings']['sShowOverallScoreAsPercentage'] === 'Percentage'">
+                  {{ _contentData['pdfData']['overallData'][0]['percSign'] }}
+                </ng-container>
+              </ng-container>
+            </h1>
+          </ng-container>
+          <ng-container *ngIf="_contentData['pdfData']['settings']['bShowCombinedPortalLayout']">
+            <strong class="d-block">
+              <span class="v-align-text-middle">Competency & Behavioural Results</span>
+              <ng-container *ngIf=" _contentData['pdfData']['userPersonalDetails']['dDateScored_Admin'] === 'Not Scored' 
+                                  || _contentData['pdfData']['overallData'][0]['competency_overAllScore'] === 'N/A'">
+                <p class="d-inline-block fs-24 fw-400 p-0 m-l-10"> N/A</p>
+              </ng-container>
+              <ng-container *ngIf="_contentData['pdfData']['settings']['bShowLegendDescriptionAsScore']
+                        && _contentData['pdfData']['overallData'][0]['competency_overAllScore'] !== 'N/A' 
+                        && _contentData['pdfData']['userPersonalDetails']['dDateScored_Admin'] !== 'Not Scored'">
+                <p class="fs-20 fw-400 p-0 m-l-10 m-r-10" [ngStyle]="{ color: '#' +  _contentData['pdfData']['overallData'][0]['overallCompetencyResult_color'] }">
+                  {{ _contentData['pdfData']['overallData'][0]['overallCompetencyResult_scoreDescription'] }}</p>
+              </ng-container>
+              <ng-container *ngIf="!_contentData['pdfData']['settings']['bShowLegendDescriptionAsScore'] 
+                                    && _contentData['pdfData']['overallData'][0]['competency_overAllScore'] !== 'N/A' 
+                                    && _contentData['pdfData']['userPersonalDetails']['dDateScored_Admin'] !== 'Not Scored'">
+                <p class="d-inline-block fs-24 fw-400 p-0 m-l-10">
+                  {{ _contentData['pdfData']['overallData'][0]['competency_overAllScore'] }}
+                  <ng-container *ngIf="_contentData['pdfData']['overallData'][0]['competency_overAllScore'] !== 'N/A'">
+                    {{ _contentData['pdfData']['overallData'][0]['percSign'] }}
+                  </ng-container>
+                </p>
+              </ng-container>
+            </strong>
+            <strong class="d-block">
+              <span class="v-align-text-middle">Key Result Area Overall Result</span>
+              <ng-container *ngIf="_contentData['pdfData']['userPersonalDetails']['dDateScored_Admin'] === 'Not Scored' 
+                || _contentData['pdfData']['overallData'][0]['kra_overAllScore'] === 'N/A'">
+                <p class="d-inline-block fs-24 fw-400 p-0 m-l-10 m-r-10"> N/A</p>
+              </ng-container>
+              <ng-container *ngIf="_contentData['pdfData']['settings']['bShowLegendDescriptionAsScore'] 
+                                  && _contentData['pdfData']['userPersonalDetails']['dDateScored_Admin'] !== 'Not Scored' 
+                                  && _contentData['pdfData']['overallData'][0]['kra_overAllScore'] !== 'N/A'">
+                <p class="fs-20 fw-400 p-0 m-l-10 m-r-10" [ngStyle]="{ color: '#' +  _contentData['pdfData']['overallData'][0]['overallResult_color'] }">
+                  {{ _contentData['pdfData']['overallData'][0]['overallResult_scoreDescription'] }}</p>
+              </ng-container>
+              <ng-container *ngIf="!_contentData['pdfData']['settings']['bShowLegendDescriptionAsScore'] 
+                                  && _contentData['pdfData']['userPersonalDetails']['dDateScored_Admin'] !== 'Not Scored' 
+                                  && _contentData['pdfData']['overallData'][0]['kra_overAllScore'] !== 'N/A'">
+                <p class="d-inline-block fs-24 fw-400 p-0 m-l-10 m-r-10">
+                  {{ _contentData['pdfData']['overallData'][0]['kra_overAllScore'] }}
+                  <ng-container *ngIf="_contentData['pdfData']['overallData'][0]['kra_overAllScore'] !== 'N/A'">
+                    {{ _contentData['pdfData']['overallData'][0]['percSign'] }}
+                  </ng-container>
+                </p>
+              </ng-container>
+            </strong>
+          </ng-container>
+        </ion-col>
+      </ion-row>
+
+
+      <!-- Key Result Area Summary -->
+      <ng-container *ngIf="_contentData['pdfData']['kraOverall'].length > 0">
+        <ion-row>
+          <ion-col size="12" class="section-header">
+            <strong>Section {{sectionB}}</strong>
+            <small class="m-l-10">{{ _contentData['pdfData']['settings']['sKraNameChange'] }} Summary</small>
+          </ion-col>
+        </ion-row>
+        <ion-row class="sub-header">
+          <ion-col sizeSm="6" sizeXs="8" sizeMd="10">
+            <strong>{{ _contentData['pdfData']['settings']['sKraNameChange'] }}</strong>
+          </ion-col>
+          <ion-col sizeSm="6" sizeXs="4" sizeMd="2" class="text-center">
+            <strong>Overall</strong>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="b-b-lightgray" *ngFor="let kra of _contentData['pdfData']['kraOverall']; let iKRA = index">
+          <ion-col sizeSm="6" sizeXs="8" sizeMd="10">
+            <p>{{ iKRA + 1 }}. {{ kra["sKraName"] }}</p>
+          </ion-col>
+          <ion-col sizeSm="6" sizeXs="4" sizeMd="2" class="text-center">
+            <p>
+              <ng-container *ngIf="!kra['fKraScore'].toString().length">
+                N/A
+              </ng-container>
+              <ng-container *ngIf="_contentData['pdfData']['settings']['bShowLegendDescriptionAsScore'] && kra['fKraScore'].toString().length">
+                {{ kra["fKraScore_legendDescription"] }}
+              </ng-container>
+              <ng-container *ngIf="!_contentData['pdfData']['settings']['bShowLegendDescriptionAsScore'] && kra['fKraScore'].toString().length">
+                <span class="color-dot" [ngStyle]="{ background: '#' + kra['sColor'] }"></span>
+                {{ kra["fKraScore"] }}
+                <ng-container *ngIf="_contentData['pdfData']['settings']['sShowOverallScoreAsPercentage'] === 'Percentage' && kra['fKraScore'] !== 'N/A'">
+                  %
+                </ng-container>
+              </ng-container>
+            </p>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+
+      <ion-row>
+        <ion-col size="12" class="section-header">
+          <strong>Section {{sectionC}}</strong>
+          <small class="m-l-10">Performance Review Details</small>
+        </ion-col>
+      </ion-row>
+      <!-- ROLES -->
+      <ng-container *ngFor="let role of _contentData['pdfData']['kraProfile'][0]['Role']; let iRole = index">
+        <ng-container *ngFor="let kra of role['kras']; let iKRA = index">
+
+          <!-- KRA NAME -->
+          <ion-row>
+            <ion-col size="12" class="sub-header kraHeader">
+              <strong>{{ _contentData['pdfData']['settings']['sKraNameChange'] }}
+                <span class="p-l-5"> {{ kra["kraIndex"]}} </span>
+                <span *ngIf="_contentData['pdfData']['settings']['sKraNameChangeEndText'] !== ''">
+                  {{ _contentData['pdfData']['settings']['sKraNameChangeEndText'] }}
+                </span>
+              </strong>
+              <span class="fw-thin p-l-10"> {{ kra["sKraDisplayName"] }}</span>
+            </ion-col>
+          </ion-row>
+          <!-- KPI NAME -->
+          <ng-container *ngFor="let kpi of kra['kpis']; let iKPI = index">
+            <ion-row class="m-t-10 m-b-10">
+              <ion-col size="12" class="section-sub-header header-light kpiHeader">
+                <strong>
+                  {{ _contentData['pdfData']['settings']['sKpiNameChange'] }}
+                  <span>{{ iKPI + 1 }}</span>
+                  <span *ngIf="_contentData['pdfData']['settings']['sKpiNameChangeEndText'] !== ''">
+                    {{ _contentData['pdfData']['settings']['sKpiNameChangeEndText'] }}
+                  </span>
+                </strong>
+                <span class="fw-thin p-l-10"> {{ kpi["sKpiDisplayName"] }} </span>
+              </ion-col>
+            </ion-row>
+            <ion-row class="no-gutters" id="agreement-section" class="kpiBorderBottom">
+              <ion-col sizeXs="12" sizeMd="6" class="b-r-lightgray b-b-lightgray">
+                <ion-row class="no-gutters b-b-lightgray" *ngIf="kpi['sKpiTargetDisplayName'] !== ''">
+                  <ion-col sizeXs="12" sizeMd="3">
+                    <p>
+                      <strong>{{ _contentData['pdfData']['settings']['sKpiTargetsNameChange'] }}</strong>
+                    </p>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="9">
+                    <p>
+                      {{ kpi["sKpiTargetDisplayName"] }}
+                    </p>
+                  </ion-col>
+                </ion-row>
+                <ng-container *ngIf="_contentData['pdfData']['settings']['bShowWeightingsOnReview']">
+                  <ion-row class="no-gutters b-b-lightgray" *ngIf="kpi['fWeight'] !== ''">
+                    <ion-col sizeXs="12" sizeMd="3">
+                      <p>
+                        <strong>Weight</strong>
+                      </p>
+                    </ion-col>
+                    <ion-col sizeXs="12" sizeMd="9">
+                      <p>
+                        {{ kpi["fWeight"] }} %
+                      </p>
+                    </ion-col>
+                  </ion-row>
+                </ng-container>
+                <ion-row class="no-gutters b-b-lightgray" *ngIf="kpi['sScoringMonths'] !== ''">
+                  <ion-col sizeXs="12" sizeMd="3">
+                    <p>
+                      <strong>Month</strong>
+                    </p>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="9">
+                    <p>
+                      {{ kpi["sScoringMonths"] }}
+                    </p>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="no-gutters b-b-lightgray" *ngIf="_contentData['pdfData']['settings']['bShowKraDescription'] && kpi['sKpiDescriptionNameChange'] !== ''">
+                  <ion-col sizeXs="12" sizeMd="3">
+                    <p>
+                      <strong>{{ _contentData['pdfData']['settings']['sKpiDescriptionNameChange'] }} </strong>
+                    </p>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="9">
+                    <p>
+                      {{ kpi["sKpidescriptionDisplayName"] }}
+                    </p>
+                  </ion-col>
+                </ion-row>
+
+                <!-- Perspective -->
+                <ng-container *ngIf="_contentData['pdfData']['settings']['bShowPerspective'] && kpi['sBppName'] !== ''">
+                  <ion-row class="no-gutters b-b-lightgray">
+                    <ion-col sizeXs="12" sizeMd="3">
+                      <p>
+                        <strong>{{ _contentData['pdfData']['settings']['sPerspectiveNameChange'] }}</strong>
+                      </p>
+                    </ion-col>
+                    <ion-col sizeXs="12" sizeMd="9">
+                      <p>{{ kpi["sBppName"] }}</p>
+                    </ion-col>
+                  </ion-row>
+                </ng-container>
+
+                <!-- business objective -->
+                <ng-container *ngIf=" !_contentData['pdfData']['settings']['bHideBusinessUnitObjective'] && kpi['sObjectivesName'] !== ''">
+                  <ion-row class="no-gutters b-b-lightgray">
+                    <ion-col sizeXs="12" sizeMd="3">
+                      <p>
+                        <strong>{{ _contentData['pdfData']['settings']['sBusinessUnitObjective'] }}</strong>
+                      </p>
+                    </ion-col>
+                    <ion-col sizeXs="12" sizeMd="9">
+                      <p>{{ kpi["sObjectivesName"] }}</p>
+                    </ion-col>
+                  </ion-row>
+                </ng-container>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="6" class="b-b-lightgray">
+                <ion-row class="no-gutters" *ngIf="_contentData['pdfData']['settings']['bShowGlobalScales']">
+                  <ion-col sizeXs="12" sizeMd="4" class="m-l-30">
+                    <strong class="p-t-10" style="font-size: 19px;">{{
+                      _contentData['pdfData']['settings']['sScaleNameChange'] }}</strong>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="8" class="p-t-10">
+                    <ul>
+                      <ng-container *ngFor="let scale of kpi['scales'];">
+                        <li>
+                          <ng-container *ngIf="scale['fScaleScoreValue'] > -1">
+                            <strong>{{ scale['fScaleScoreValue'] }}: </strong>
+                            {{ scale['sScaleDescription'] }}
+                          </ng-container>
+                        </li>
+                      </ng-container>
+                    </ul>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+
+            <!-- comments -->
+            <ion-row id="agreement-section" class="no-gutters b-b-lightgray" *ngIf="kpi['agreementComments_self'].length > 0 || kpi['agreementComments_admin'].length > 0">
+              <ion-col sizeSm="6" size="6" sizeXs="12" sizeMd="6">
+                <ion-row>
+                  <ion-col sizeXs="12" sizeMd="3">
+                    <p>
+                      <strong>{{_contentData['pdfData']['settings']['sKpiCommentsNameChange']}}</strong>
+                    </p>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="9">
+                    <p class="m-b-10" *ngFor="let comment of kpi['agreementComments_self'];">
+                      <b> {{_contentData['pdfData']['userPersonalDetails']['sEmployeeFullName']}} <small>(
+                          {{ comment["dDateCreated"] }} )</small> </b>
+                      {{ comment["sURPKpiComment"]}}
+                      <i class="text-muted" *ngIf="comment['sURPKpiComment'] === ''">
+                        No comment provided
+                      </i>
+                    </p>
+                    <p class="m-b-10" *ngFor="let comment of kpi['agreementComments_admin'];">
+                      <b> {{_contentData['pdfData']['userPersonalDetails']['sAdminFullName']}} </b> <small>(
+                        {{ comment["dDateCreated"] }} )</small>
+                      {{ comment["sURPKpiComment"]}}
+                      <i class="text-muted" *ngIf="comment['sURPKpiComment'] === ''">
+                        No comment provided
+                      </i>
+                    </p>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+
+            <!--  -->
+            <!-- Employee Assessment -->
+            <!--  -->
+            <ion-row class="no-gutters">
+              <ion-col sizeXs="12" sizeMd="6">
+                <ion-col size="12" class="section-sub-header p-l-0">
+                  <strong *ngIf="_contentData['pdfData']['settings']['bDisplayIndvidualNamePDF']">
+                    {{_contentData['pdfData']['userPersonalDetails']['sEmployeeFullName']}}
+                  </strong>
+                  <strong *ngIf="!_contentData['pdfData']['settings']['bDisplayIndvidualNamePDF']">
+                    Employee
+                  </strong>
+                  <span class="fw-thin p-l-10">Self-Review</span>
+                </ion-col>
+                <!-- self score -->
+                <ion-row class="no-gutters b-b-lightgray">
+                  <ion-col sizeXs="12" sizeMd="3" class="v-align-text-middle">
+                    <p>
+                      <strong>Review</strong>
+                    </p>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="9" class="b-r-lightgray">
+                    <p>
+                      <ng-container *ngIf="!kpi['fScore_Self'].toString().length">
+                        N/A
+                      </ng-container>
+                      <ng-container *ngIf="kpi['fScore_Self'].toString().length">
+                        <ion-col size="6" class="p-0">
+                          <ion-row class="m-r-40">
+                            <ion-col class="fw-thin text-right" *ngFor="let col of progressCols; let i = index">
+                              <small>{{col}}
+                                <ng-container *ngIf="_contentData['pdfData']['settings']['sShowOverallScoreAsPercentage'] === 'Percentage'">
+                                  %
+                                </ng-container>
+                              </small>
+                            </ion-col>
+                          </ion-row>
+                          <ion-row class="m-r-40">
+                            <ion-col size="12" class="p-b-10">
+                              <div class="progressBar">
+                                <span [ngStyle]="{'background': '#' + kpi['fScore_selfColor'],'width': getWidth(kpi['fScore_Self'])}"></span>
+                              </div>
+                            </ion-col>
+                          </ion-row>
+                        </ion-col>
+                      </ng-container>
+                    </p>
+                  </ion-col>
+                </ion-row>
+                <!-- kpi target -->
+                <ion-row class="no-gutters b-b-lightgray" *ngIf="kpi['sKpiTargetDisplayName'] !== ''">
+                  <ion-col sizeXs="12" sizeMd="3">
+                    <p>
+                      <strong class="p-0">{{ _contentData['pdfData']['settings']['sKpiTargetsNameChange'] }}</strong>
+                    </p>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="9" class="b-r-lightgray">
+                    <p>
+                      {{ kpi["sKpiTargetDisplayName"] }}
+                    </p>
+                  </ion-col>
+                </ion-row>
+                <!-- Actual Self -->
+                <ion-row class="no-gutters" *ngIf="kpi['sActual_Self'] !== ''">
+                  <ion-col sizeXs="12" sizeMd="3">
+                    <p>
+                      <strong>{{ _contentData['pdfData']['settings']['sKpiActualNameChange'] }}</strong>
+                    </p>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="9" class="b-r-lightgray">
+                    <p>
+                      {{ kpi["sActual_Self"] }}
+                    </p>
+                  </ion-col>
+                </ion-row>
+                <!-- employee score comments -->
+                <ion-row class="no-gutters" *ngIf="kpi['scoreComments_self'].length > 0">
+                  <ion-col sizeXs="12" sizeMd="3">
+                    <p>
+                      <strong>Comment</strong>
+                    </p>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="9" class="b-r-lightgray">
+                    <p class="m-b-10" *ngFor="let sComment of kpi['scoreComments_self']; let iCom = index">
+                      <b> {{_contentData['pdfData']['userPersonalDetails']['sEmployeeFullName']}} <small>(
+                          {{ sComment["dDateCreated"] }} )</small> </b>
+                      {{ sComment["sDisplayComment"] }}
+                      <i class="text-muted" *ngIf="sComment['sURPKpiComment'] === ''">
+                        No comment provided
+                      </i>
+                    </p>
+                  </ion-col>
+                </ion-row>
+
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="6">
+                <!--  -->
+                <!-- Manager Assessment -->
+                <!--  -->
+                <ion-col size="12" class="section-sub-header p-l-5">
+                  <ng-container *ngIf="_contentData['pdfData']['settings']['bDisplayIndvidualNamePDF']">
+                    <strong>
+                      {{_contentData['pdfData']['userPersonalDetails']['sAdminFullName']}}
+                    </strong>
+                    <span class="fw-thin p-l-10"> Manager Review</span>
+                  </ng-container>
+                  <ng-container *ngIf="!_contentData['pdfData']['settings']['bDisplayIndvidualNamePDF']">
+                    <strong>
+                      Manager
+                    </strong>
+                    <span class="fw-thin p-l-10"> Review</span>
+                  </ng-container>
+                </ion-col>
+                <!-- manager score -->
+                <ion-row class="no-gutters p-l-5 b-b-lightgray">
+                  <ion-col sizeXs="12" sizeMd="3">
+                    <p>
+                      <strong>Review</strong>
+                    </p>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="9">
+                    <p>
+                      <ng-container *ngIf="!kpi['fScore_Admin'].toString().length">
+                        N/A
+                      </ng-container>
+                      <ng-container *ngIf="kpi['fScore_Admin'].toString().length">
+                        <ion-col size="6" class="p-0">
+                          <ion-row class="m-r-40">
+                            <ion-col class="fw-thin text-right" *ngFor="let col of progressCols; let i = index">
+                              <small>{{col}}
+                                <ng-container *ngIf="_contentData['pdfData']['settings']['sShowOverallScoreAsPercentage'] === 'Percentage'">
+                                  %
+                                </ng-container>
+                              </small>
+                            </ion-col>
+                          </ion-row>
+                          <ion-row class="m-r-40">
+                            <ion-col size="12" class="p-b-10">
+                              <div class="progressBar">
+                                <span [ngStyle]="{'background': '#' + kpi['fScore_AdminColor'],'width': getWidth(kpi['fScore_Admin'])}"></span>
+                              </div>
+                            </ion-col>
+                          </ion-row>
+                        </ion-col>
+                      </ng-container>
+                    </p>
+                  </ion-col>
+                </ion-row>
+                <!-- kpi target -->
+                <ion-row class="no-gutters p-l-5 b-b-lightgray" *ngIf="kpi['sKpiTargetDisplayName'] !== ''">
+                  <ion-col sizeXs="12" sizeMd="3">
+                    <p>
+                      <strong class="p-0">{{ _contentData['pdfData']['settings']['sKpiTargetsNameChange'] }}</strong>
+                    </p>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="9">
+                    <p>
+                      {{ kpi["sKpiTargetDisplayName"] }}
+                    </p>
+                  </ion-col>
+                </ion-row>
+                <!-- manager score comments -->
+                <ion-row class="no-gutters p-l-5" *ngIf="kpi['scoreComments_admin'].length > 0">
+                  <ion-col sizeXs="12" sizeMd="3">
+                    <p>
+                      <strong>Comment</strong>
+                    </p>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeMd="9">
+                    <p class="m-b-10" *ngFor="let sComment of kpi['scoreComments_admin']; let iCom = index">
+                      <b> {{_contentData['pdfData']['userPersonalDetails']['sAdminFullName']}} <small>(
+                          {{ sComment["dDateCreated"] }} )</small> </b>
+                      {{ sComment["sDisplayComment"] }}
+                      <i class="text-muted" *ngIf="sComment['sDisplayComment'] === ''">
+                        No comment provided
+                      </i>
+                    </p>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+
+
+      <!-- BEHAVIOURAL COMPETENCIES - questionnaire -->
+      <ng-container
+        *ngIf="_contentData['pdfData']['compProfile'] && _contentData['pdfData']['compProfile']['questionnaire'] && _contentData['pdfData']['compProfile']['questionnaire'].length">
+
+        <ion-row>
+          <ion-col size="12" class="section-header">
+            <strong>Section {{sectionD}}</strong>
+            <small class="m-l-10">Behavioural Competencies Results</small>
+          </ion-col>
+        </ion-row>
+
+
+        <ion-row *ngFor="let q of _contentData['pdfData']['compProfile']['questionnaire']; let iQ = index">
+          <ion-col size="12">
+            <!--  -->
+            <ion-row class="sub-header">
+              <ion-col sizeXs="12" sizeMd="5">
+                <span class="d-block">
+                  {{ q['sCompetencyName'] }}
+                </span>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="" class="text-center">
+                <span class="d-block">
+                  Employee
+                </span>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="" class="text-center">
+                <span class="d-block">
+                  360 Average
+                </span>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="" class="text-center">
+                <span class="d-block">
+                  Manager
+                </span>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="" class="text-center">
+                <span class="d-block">
+                  Overall
+                </span>
+              </ion-col>
+            </ion-row>
+            <!--  -->
+            <ion-row>
+              <ion-col sizeXs="12" sizeMd="5">
+                <p>
+                  {{ q['outcomes'][0]['indicators'][0]['sIndicatorName'] }}
+                </p>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="" class="text-center">
+                <p>
+                  <span class="color-dot" [ngStyle]="{ background: '#' + q['outcomes'][0]['indicators'][0]['fScore_Self_Color'] }"></span>
+                  {{ q['outcomes'][0]['indicators'][0]['fScore_Self'] }}
+                </p>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="" class="text-center">
+                <p>
+                  <span class="color-dot" [ngStyle]="{ background: '#' + q['outcomes'][0]['indicators'][0]['fScore_Other_Color'] }"></span>
+                  {{ q['outcomes'][0]['indicators'][0]['fScore_Other'] }}
+                </p>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="" class="text-center">
+                <p>
+                  <span class="color-dot" [ngStyle]="{ background: '#' + q['outcomes'][0]['indicators'][0]['fScore_Admin_Color'] }"></span>
+                  {{ q['outcomes'][0]['indicators'][0]['fScore_Admin'] }}
+                </p>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="" class="text-center">
+                <p>
+                  <span class="color-dot" [ngStyle]="{ background: '#' + q['outcomes'][0]['indicators'][0]['fScore_Avg_Color'] }"></span>
+                  {{ q['outcomes'][0]['indicators'][0]['fScore_Avg'] }}
+                </p>
+              </ion-col>
+            </ion-row>
+            <!--  -->
+          </ion-col>
+        </ion-row>
+
+      </ng-container>
+
+      <!-- BEHAVIOURAL COMPETENCIES - openEndedQ -->
+      <ng-container
+        *ngIf="_contentData['pdfData']['compProfile'] && _contentData['pdfData']['compProfile']['openEndedQ'] && _contentData['pdfData']['compProfile']['openEndedQ'].length">
+
+        <ion-row class="m-t-50 sub-header">
+          <ion-col sizeXs="12" sizeMd="4">
+            <span class="d-block">
+              Open-ended Question Summary
+            </span>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="4">
+            <span class="d-block">
+              Employee
+            </span>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="4">
+            <span class="d-block">
+              Manager
+            </span>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="b-b-lightgray" *ngFor="let q of _contentData['pdfData']['compProfile']['openEndedQ']; let iQ = index">
+          <ion-col sizeXs="12" sizeMd="4">
+            <p>{{ q['sQuestion'] }}</p>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="4">
+            <p>{{ q['employeeAnswer'] }}</p>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="4">
+            <ng-container *ngFor="let mc of q['managerAnswer'];">
+              <strong class="d-block p-b-0">{{ mc['sFullName'] }}</strong>
+              <p class="m-b-10">{{ mc['sAnswer'] }}</p>
+            </ng-container>
+          </ion-col>
+        </ion-row>
+
+      </ng-container>
+
+      <!-- Performance Discussion -->
+      <ng-container *ngFor="let sComment of _contentData['pdfData']['discussionNotes']">
+        <ion-row>
+          <ion-col size="12" class="section-header">
+            <strong>Section {{sectionE}}</strong>
+            <small class="m-l-10">Performance & Development Feedback</small>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="p-b-10">
+          <ion-col size="12">
+            <ion-row class="sub-header">
+              <ion-col size="12">
+                <strong>Manager Summary</strong>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="p-t-15">
+          <ion-col sizeXs="12" sizeMd="4">
+            <p class="p-5-10 f-w-600 fs-17">Manager</p>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="8">
+            <p class="p-5-10">{{ sComment["sFullName"] }}</p>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="p-t-15 b-b-lightgray p-b-10">
+          <ion-col sizeXs="12" sizeMd="4">
+            <p class="p-5-10 f-w-600 fs-17">Conversation Date
+            </p>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="8">
+            <p class="p-5-10">{{ sComment["selectedDateCreated"] }}</p>
+          </ion-col>
+        </ion-row>
+        <!-- Comment -->
+        <ion-row class="p-t-15">
+          <ion-col sizeXs="12" sizeMd="4">
+            <p class="p-5-10 f-w-600 fs-17">Key Notes</p>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="8">
+            <p class="p-5-10">{{ sComment["sStrippedComment"] }}</p>
+          </ion-col>
+        </ion-row>
+
+        <ng-container *ngIf="_contentData['pdfData']['settings']['bShowPerformanceDiscussionRating']">
+          <!-- Strengths -->
+          <ion-row class="p-t-5" *ngIf="sComment['sStrengths'] !== ''">
+            <ion-col sizeXs="12" sizeMd="4">
+              <p class="p-5-10 f-w-600 fs-17">Greatest Strengths</p>
+            </ion-col>
+            <ion-col sizeXs="12" sizeMd="8">
+              <p class="p-5-10" [innerHTML]="sComment['sStrengths']"></p>
+            </ion-col>
+          </ion-row>
+
+          <!-- Improvements -->
+          <ion-row class="p-t-5" *ngIf="sComment['sImprovements'] !== ''">
+            <ion-col sizeXs="12" sizeMd="4">
+              <p class="p-5-10 f-w-600 fs-17">Areas requiring improvement</p>
+            </ion-col>
+            <ion-col sizeXs="12" sizeMd="8">
+              <p class="p-5-10" [innerHTML]="sComment['sImprovements']"></p>
+            </ion-col>
+          </ion-row>
+
+          <!-- Goals -->
+          <ion-row class="p-t-5" *ngIf="sComment['sGoals'] !== ''">
+            <ion-col sizeXs="12" sizeMd="4">
+              <p class="p-5-10 f-w-600 fs-17">Goals for next review period</p>
+            </ion-col>
+            <ion-col sizeXs="12" sizeMd="8">
+              <p class="p-5-10" [innerHTML]="sComment['sGoals']"></p>
+            </ion-col>
+          </ion-row>
+
+          <!-- Rating -->
+          <ion-row class="p-b-10 m-t-10">
+            <ion-col size="12">
+              <div class="sub-header">
+                <ion-col size="12">
+                  <strong>Employee Experience</strong>
+                </ion-col>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="p-t-5" *ngIf="sComment['sDiscussionsName'] !== ''">
+            <ion-col sizeXs="12" sizeMd="4">
+              <p class="p-5-10 f-w-600 fs-17">Experience of Process</p>
+
+            </ion-col>
+            <ion-col sizeXs="12" sizeMd="8">
+              <p class="p-5-10">{{sComment['sDiscussionsName']}}</p>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="p-t-5" *ngIf="sComment['sAccuracyName'] !== ''">
+            <ion-col sizeXs="12" sizeMd="4">
+              <p class="p-5-10 f-w-600 fs-17">Accuracy of Review</p>
+            </ion-col>
+            <ion-col sizeXs="12" sizeMd="8">
+              <p class="p-5-10">{{sComment['sAccuracyName']}}</p>
+            </ion-col>
+          </ion-row>
+        </ng-container>
+      </ng-container>
+
+      <!-- Second Manager Comment -->
+      <ng-container *ngIf="_contentData['pdfData']['userPersonalDetails']['sAdmin2UUID'] !== ''">
+        <ion-row>
+          <ion-col size="12" class="section-header">
+            <strong>Section {{sectionF}}</strong>
+            <small class="m-l-10">Second Manager Comment</small>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="sub-header">
+          <ion-col sizeXs="6" sizeMd="4">
+            <span class="d-block small-header">Date</span>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="8">
+            <span class="d-block small-header">Comments from second manager</span>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngFor="let sComment of _contentData['pdfData']['kraProfile']; let iCom = index">
+          <ion-col sizeXs="6" sizeMd="4">
+            <p class="d-block p-5-10">{{ sComment["dDateScored_Admin2"] }}</p>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="8">
+            <p class="d-block p-5-10" [innerHTML]="sComment['sSecondManagerReviewComment']"></p>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+      <!--  -->
+    </section>
+  </section>
+</section>

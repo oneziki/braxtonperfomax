@@ -1,0 +1,28 @@
+.inviteIndividualsGrid {
+
+  .message {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 16px;
+  }
+
+  .disabledbutton {
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  .sa-invite-wrapper {
+    .wizard .number {
+      margin-top: 17px;
+    }
+  }
+
+  input {
+    width: 100%;
+  }
+
+  table {
+    width: 100%;
+  }
+}

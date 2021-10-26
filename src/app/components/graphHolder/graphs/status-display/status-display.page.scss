@@ -1,0 +1,15 @@
+.status-display {
+  margin-top: 25px;
+
+  ion-col {
+    text-align: center;
+  }
+  strong {
+    font-size: 20px;
+    color: var(--charcoal);
+  }
+  h2 {
+    font-size: 33px;
+    font-weight: 600;
+  }
+}

@@ -1,0 +1,73 @@
+<div class="rPanelWrapper">
+  <ng-container *ngIf="!companyTemplate['bP7PerosnalDataIntegrated']">
+
+    <ion-list class="rPanelPersonalDetails">
+      <ion-item lines="none" class="transparent" *ngIf="sessionUser['sWorkPhoneExtension']">
+        <i class="icofont-ui-dial-phone icofont-appPage"></i>
+        <ion-label>{{ sessionUser['sWorkPhoneNumber'] }} {{ sessionUser['sWorkPhoneExtension'] }}</ion-label>
+      </ion-item>
+      <ion-item lines="none" class="transparent" *ngIf="sessionUser['sMobileNumber']">
+        <i class="icofont-iphone icofont-appPage"></i>
+        <ion-label>{{ sessionUser['sMobileNumber'] }}</ion-label>
+      </ion-item>
+      <ion-item lines="none" class="transparent" *ngIf="sessionUser['sEmail']">
+        <i class="icofont-email icofont-appPage"></i>
+        <ion-label>{{ sessionUser['sEmail'] }}</ion-label>
+      </ion-item>
+    </ion-list>
+
+    <strong class="rPanelHeading withSource b-t-2">
+      Employment Status
+      <img src="../../assets/imgs/demo/personal4.png" class="sourceLogo">
+    </strong>
+    <ion-list class="rPanelPersonalStatus">
+      <ion-item lines="none" class="transparent" *ngIf="sessionUser['dDateJoined']">
+        <ion-label>
+          Appointed
+        </ion-label>
+        <ion-label slot="end">
+          <small>
+            {{ sessionUser['dDateJoined'] }}<br>
+            {{ sessionUser['iYearsWorked'] }}y – {{ sessionUser['iMonthsWorked'] }}m – {{ sessionUser['iDaysWorked'] }}d
+          </small>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none" class="transparent">
+        <i class="icofont-wall-clock icofont-appPage"></i>
+        <ion-label>Full Time</ion-label>
+      </ion-item>
+      <ion-item lines="none" class="transparent">
+        <i class="icofont-chart-flow-1 icofont-appPage"></i>
+        <ion-label>Executive</ion-label>
+      </ion-item>
+      <ion-item lines="none" class="transparent">
+        <i class="icofont-world icofont-appPage"></i>
+        <ion-label>Southern Africa</ion-label>
+      </ion-item>
+      <ion-item lines="none" class="transparent">
+        <i class="icofont-location-pin icofont-appPage"></i>
+        <ion-label>{{ sessionUser['sCompanyName'] }}</ion-label>
+      </ion-item>
+    </ion-list>
+
+    <strong class="rPanelHeading b-t-2 withSource">Manager</strong>
+    <ion-list class="rPanelConversations">
+      <ion-item lines="none" class="transparent" *ngFor="let manager of managers">
+        <ion-avatar slot="start">
+          <ion-img [src]="manager['sProfilePic']" (ionError)="manager['srcFail'] = true"
+            *ngIf="manager['srcFail'] !== true"></ion-img>
+          <ion-icon class="iconAvatar" name="person-circle-outline" *ngIf="manager['srcFail'] === true"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h3>{{manager['sFirstName']}} {{manager['sLastName']}}</h3>
+          <p>{{manager['sJobTitleName']}}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none" *ngIf="managers.length === 0">
+        <ion-label class="text-muted">
+          *No Manager Appointed
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+</div>

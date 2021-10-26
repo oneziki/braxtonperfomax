@@ -1,0 +1,74 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper organogramGrid">
+    <ion-row>
+      
+      <ion-title class="colHeader text-primary">Organogram</ion-title>
+      <ion-col sizeXs="12" sizeMd="2" class="no-border">
+        <ion-item lines="none">
+          <ion-icon name="calendar-outline" slot="start"></ion-icon>
+          <ion-label>Filter by Type</ion-label>
+          <ion-select [interfaceOptions]='{ showBackdrop: false }' interface="popover" name="organogramTypes" id="organogramTypes" ngModel #organogramTypes="ngModel"
+            (ionChange)="orgTypeFilterChange(organogramTypes.value)">
+            <ion-select-option *ngFor="let type of _organogramTypes" [value]="type">
+              {{ type['sOrganogramType'] }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col sizeXs="12" sizeMd="2" class="no-border">
+        <ion-item lines="none">
+          <ion-icon name="calendar-outline" slot="start"></ion-icon>
+          <ion-label>Filter by Date</ion-label>
+          <ion-select [interfaceOptions]='{ showBackdrop: false }' interface="popover" name="filterDateList" id="filterDateList" ngModel #filterDateList="ngModel"
+            (ionChange)="rlsFilterChange(filterDateList.value)">
+            <ion-select-option [value]="'Current'">Current</ion-select-option>
+            <ion-select-option *ngFor="let date of _filterDateList" [value]="date">
+              {{ date['filterDate'] }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col sizeXs="12" sizeMd="3" class="a-middle">
+        <ion-button fill="clear" size="small" color="primary" (click)="printOrg()">
+          <ion-icon slot="end" name="save"></ion-icon> Download
+        </ion-button>
+        <ion-button fill="clear" size="small" color="primary" (click)="printOrganogramExcel()">
+          <ion-icon slot="end" name="download"></ion-icon> Vacancy Report
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="no-gutters">
+      <ion-col size="12" class="text-right">
+        <label for="orgSlider" class="m-r-10 d-block">Zoom</label>
+        <form class="animated fadeIn">
+          <div class="form-group org-zoom">
+            <input id="orgSlider" class="orgSlider" type="range" min="50" max="99" name="orgSlider" [(ngModel)]="_orgSlider">
+          </div>
+        </form>
+      <!-- </ion-col>
+      <ion-col size="12"> -->
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ng-container *ngIf="_objempty === false">
+          <section id="organoWrapper" class="container-fluid" [ngClass]="{'structPrint': _structPrinting}" *ngIf="_structLoaded">
+            <div id="temp-scroller" class="temp-scroller">
+              <div id="temp-printer" [ngStyle]="{'zoom': '0.' + _orgSlider }">
+                <mui-org-chart [topEmployee]="topEmployee" direction="vertical" (itemClick)="switchDepartment($event)">
+                </mui-org-chart>
+              </div>
+            </div>
+          </section>
+        </ng-container>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-button class="btnRound" shape="round" (click)="goBack()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-button>
+</ion-footer>

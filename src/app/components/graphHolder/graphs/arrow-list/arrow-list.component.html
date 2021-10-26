@@ -1,0 +1,21 @@
+<div class="arrow-list-wrapper">
+  <ng-container *ngFor="let listItem of data['data']; let iListItem = index;">
+    <ng-container *ngIf="iListItem > 0">
+
+      <div class="card bg-c-blue order-card" [ngStyle]="{'background': listItem[3]}" (click)="chartClick(listItem)">
+        <div class="row">
+          <div class="col-8">
+            <p>{{ listItem[0] }}</p>
+          </div>
+          <div class="col text-right">
+            <strong *ngIf="filter['currentViewSection'] === 'detailed'">
+              <i class="icofont" [ngClass]="{'icofont-arrow-up': listItem['isUp'], 'icofont-arrow-down': !listItem['isUp']}"></i>
+            </strong>
+            <h5>{{ listItem[2] }}</h5>
+          </div>
+        </div>
+      </div>
+
+    </ng-container>
+  </ng-container>
+</div>

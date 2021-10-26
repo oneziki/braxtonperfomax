@@ -1,0 +1,41 @@
+.reportGrid {
+
+  $dot-size: 10px;
+
+  span.color-dot {
+    vertical-align: middle;
+    height: $dot-size;
+    width: $dot-size;
+
+    border-radius: 100%;
+    display: inline-block;
+    margin: 1px 5px;
+
+    background: var(--primary);
+
+    &.dot-accent {
+      background: var(--accent);
+    }
+    &.dot-icons {
+      background: var(--icons);
+    }
+    &.dot-success {
+      background: var(--success);
+    }
+    &.dot-danger {
+      background: var(--danger);
+    }
+    &.dot-transparent {
+      background: transparent;
+    }
+  }
+
+  .bg-primary {
+    background-color: var(--primary) !important;
+    background: var(--primary) !important;
+    border-color: var(--primary);
+  }
+  table {
+    width: 100%;
+  }
+}

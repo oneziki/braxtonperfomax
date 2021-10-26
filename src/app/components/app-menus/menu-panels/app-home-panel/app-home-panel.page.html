@@ -1,0 +1,104 @@
+<ion-grid class="rPanelWrapper">
+  <ion-row>
+
+    <!-- Actions -->
+
+      <ion-col sizeXs="6" sizeSm="6" sizeMd="12" class="bg-grey" *ngIf="companyTemplate['bP7ShowActions']">
+        <strong class="rPanelHeading">
+          {{ companyTemplate['sP7DisplayNameActions'] }}
+        </strong>
+        <ion-list class="rPanelActions">
+          <!-- Overdue Status -->
+          <ion-item lines="none" class="transparent" text-wrap *ngIf="companyTemplate['bShowOverdueStatus']">
+            <ion-badge slot="start" [ngClass]="{'smText': activitySummery['_totalOverdueTasks'] > 99}"
+              [ngStyle]="{ 'color': getCompanyTempStyle('sOverdueStatusColor'), 'border': '2px solid ' + getCompanyTempStyle('sOverdueStatusColor') }">
+              {{ activitySummery['_totalOverdueTasks'] }}
+            </ion-badge>
+            <ion-label>{{ companyTemplate['sOverdueStatusName'] }}</ion-label>
+          </ion-item>
+          <!-- Draft Status -->
+          <ion-item lines="none" class="transparent" *ngIf="companyTemplate['bShowDraftStatus']">
+            <ion-badge slot="start" [ngClass]="{'smText': activitySummery['_totalDraftTasks'] > 99}"
+              [ngStyle]="{ 'color': getCompanyTempStyle('sDraftStatusColor'), 'border': '2px solid ' + getCompanyTempStyle('sDraftStatusColor') }">
+              {{ activitySummery['_totalDraftTasks'] }}
+            </ion-badge>
+            <ion-label>{{ companyTemplate['sDraftStatusName'] }}</ion-label>
+          </ion-item>
+          <!-- Pending Status -->
+          <ion-item lines="none" class="transparent" *ngIf="companyTemplate['bShowToCompleteStatus']">
+            <ion-badge slot="start" [ngClass]="{'smText': activitySummery['_totalPendingTasks'] > 99}"
+              [ngStyle]="{ 'color': getCompanyTempStyle('sToCompleteColor'), 'border': '2px solid ' + getCompanyTempStyle('sToCompleteColor') }">
+              {{ activitySummery['_totalPendingTasks']}}</ion-badge>
+            <ion-label>{{ companyTemplate['sToCompleteName'] }}</ion-label>
+          </ion-item>
+          <!-- Completed tatus -->
+          <ion-item lines="none" class="transparent" *ngIf="companyTemplate['bShowCompletedStatus']">
+            <ion-badge slot="start" [ngClass]="{'smText': activitySummery['_totalCompletedTasks'] > 99}"
+              [ngStyle]="{ 'color': getCompanyTempStyle('sCompletedColor'), 'border': '2px solid ' + getCompanyTempStyle('sCompletedColor') }">
+              {{ activitySummery['_totalCompletedTasks'] }}
+            </ion-badge>
+            <ion-label>{{ companyTemplate['sCompletedName'] }}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+
+    <!-- Notification -->
+
+      <ion-col sizeMd="12" class="bg-grey" *ngIf="companyTemplate['bP7ShowNotifications']">
+        <strong class="rPanelHeading b-t-2 m-t-0-impo ">{{ companyTemplate['sP7DisplayNameNotifications'] }}</strong>
+        <ion-list class="rPanelNotification">
+          <ng-container *ngFor="let notification of notificationsList; let i=index">
+            <ion-item lines="none" class="transparent" *ngIf="i<6" text-wrap>
+              <ion-badge slot="start">
+                {{notification['sDay'] }}<br>{{notification['sMonth'] }}
+              </ion-badge>
+              <ion-label>{{notification['sDescription'] }}</ion-label>
+            </ion-item>
+            <ion-label class="loadMore" *ngIf="i>5">...load more</ion-label>
+          </ng-container>
+          <ion-item lines="none" text-wrap *ngIf="notificationsList.length === 0">
+            <ion-label class="text-muted">
+              *No Notifications Available
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+
+    <!-- Conversations -->
+    <ion-col size="12" *ngIf="companyTemplate['bP7ShowLastConversation']" class="ion-hide-md-down">
+      <strong class="rPanelHeading b-t-2 mobi-text-left text-mobi-primary-alt">{{ companyTemplate['sP7DisplayNameLastConversation'] }}</strong>
+      <ion-grid class="rPanelConversations horzList">
+        <ion-row>
+          <ion-col size="4" class="text-center" *ngFor="let convo of conversationFeed; let i=index">
+            <ion-avatar>
+              <img [src]="convo['sProfilePic']">
+            </ion-avatar>
+            <h3>
+              {{ convo['sFullName'] }}
+            </h3>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-list class="rPanelConversations vertList">
+        <ng-container *ngFor="let convo of conversationFeed; let i=index">
+          <ion-item lines="none" class="transparent" text-wrap>
+            <ion-avatar slot="start">
+              <img [src]="convo['sProfilePic']">
+            </ion-avatar>
+            <ion-label>
+              <h3>{{convo['sFullName'] }}</h3>
+              <p>{{convo['sJobTitleName'] }}</p>
+            </ion-label>
+          </ion-item>
+        </ng-container>
+        <ion-item lines="none" text-wrap *ngIf="conversationFeed.length === 0">
+          <ion-label class="text-muted">
+            *Reserved for your Dialogues
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+
+  </ion-row>
+</ion-grid>

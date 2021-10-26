@@ -1,0 +1,253 @@
+.homeGrid {
+
+  .homeCard {
+    // background: transparent;
+    // border: 0;
+    // margin: 5px 0px;
+    box-shadow: none;
+
+    ion-card-title {
+      color: var(--primary);
+      font-size: 20px;
+      font-weight: 600;
+    }
+    ion-card-header,
+    ion-card-content {
+      padding: 10px 15px;
+    }
+  }
+
+  .homeSlides {
+    ion-slides {
+      img {
+        margin-top: 10px;
+        border-radius: 10px;
+        max-height: 200px;
+        object-fit: fill !important;
+      }
+    }
+  }
+
+  .homeDevNeeds {
+    img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    ion-label {
+      font-size: 12px;
+      line-height: 10px;
+    }
+    a {
+      color: var(--lite-grey);
+      text-decoration: none;
+    }
+  }
+
+  .homeTips {
+    height: 97%;
+    img {
+      margin-top: 10px;
+      border-radius: 10px;
+    }
+  }
+
+  .homeTeamDir {
+    .deskTeamHeader {
+      float: initial;
+    }
+    .mobileTeamHeader {
+      display: none;
+    } 
+    ion-col {
+      text-align: center;
+    }
+    img,
+    .default-img {
+      height: 100px;
+      width: 100px;
+      margin: 10px auto;
+      border-radius: 100%;
+      object-fit: fill !important;
+    }
+    ion-label {
+      font-size: 14px;
+    }
+    @media (max-width: 768px) {
+      .mobileTeamHeader {
+        border-top: 1px solid var(--lite-grey);
+        display: none;
+        color: var(--primary);
+        font-size: 20px;
+        font-weight: 600;
+        text-align: left;
+      }
+      .deskTeamHeader {
+        display: none;
+      }
+      .brg{
+        border: none;
+      }
+    } 
+
+  }
+
+  .homeMyMax {
+    ion-card-content,
+    ion-grid,
+    ion-col {
+      padding: 0;
+    }
+
+    .col-header {
+      background: #d9d9d8;
+      h1 {
+        color: var(--primary);
+        padding: 10px 15px;
+        font-size: 18px;
+        font-weight: 600;
+      }
+    }
+    .sub-Header {
+      margin-left: 15px;
+      font-weight: 600;
+    }
+    .loadMore {
+      color: var(--lite-grey);
+      text-decoration: none;
+      margin-right: 15px;
+    }
+    .no-data{
+      margin-top: 55px;
+      margin-bottom: 55px;
+    }
+
+    
+    @media screen and (max-height: 640px) {
+      .loadMoreWrapper {
+        display: none;
+      }
+    }
+    @media screen and (min-height: 640px) {
+      .myMaxWrapper {
+        .loadMore {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .myMaxWrapper {
+    .mymaxCol {
+      padding: 0 10px;
+    }
+    .bRight:after {
+      content: "";
+      position: absolute;
+      top: 25%;
+      right: 0;
+      bottom: 10%;
+      width: 1px;
+      background: var(--lite-grey);
+    }
+    .colbRight:after {
+      content: "";
+      position: absolute;
+      top: 10%;
+      right: 0;
+      bottom: 11%;
+      width: 1px;
+      background: var(--lite-grey);
+    }
+  }
+
+  .homeResources {
+    img.appResIcon {
+      position: absolute;
+      object-fit: fill !important;
+    }
+    ion-label {
+      margin-left: 10px;
+      a{
+        color: #7f7e7f;
+        text-decoration: none;
+      }
+    }
+
+  }
+  .homeScorecard {
+    .scoreName {
+      color: var(--charcoal);
+    }
+  }
+
+  .activeSub {
+    transition: all 0.5s;
+    display: inline-block;
+    font-size: 20px;
+    transform: rotate(0deg);
+    &.rotateDown {
+      transform: rotate(90deg);
+    }
+  }
+}
+
+.carousel-caption {
+  text-align: left;
+  color: var(--primary);
+  top: 0;
+  bottom: 0;
+
+  a {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgb(255 255 255 / 50%);
+
+    span {
+      transform: translate(0, -50%);
+      position: absolute;
+      top: 50%;
+      left: 20px;
+      right: 20px;
+    }
+  }
+
+  h3 {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--primary);
+  }
+  p {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--lite-charcoal);
+  }
+}
+
+.brg {
+  border-right: 1px solid var(--lite-grey);
+}
+
+#myManagerCard {
+  border-right: solid 0.1px #bfbfbf !important;
+}
+
+@media only screen and (min-width: 768px) {
+  .deskTeamHeader {
+    float: inherit;
+    padding-left: 8%;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .deskTeamHeader {
+    display: none !important;
+  }
+}
+
+.target-div  {
+  border-right: solid 1px #bfbfbf !important;
+  // border-left: solid 1px #bfbfbf !important;
+}

@@ -1,0 +1,22 @@
+<ng-container *ngIf="_tableBuilt">
+  <div id="iTable-{{ data['MymaxTemplateMenuComponentUID'] }}" #tableWrapper class="dataTable podTable-wrapper" (window:resize)="onResize()" 
+    [ngClass]="{'daulTable': _daulTable, 'table-responsive': _tableWidth > _wrapperWidth, 'table-slate-border': _dtOptionsA['rowsGroup'].length}">
+    <table #tableUno class="dataTableUno podTable table table-uno {{ data['MymaxTemplateMenuComponentUID'] }}-A"
+      datatable [dtOptions]="_dtOptionsA" 
+      [ngClass]="{
+         'thNoWrap': data['visualSettings'][ filter['viewPrefix'] + 'bAllowHeadingWrap'], 
+         'tdNoWrap': data['visualSettings'][ filter['viewPrefix'] + 'bAllowContentWrap'],
+         'bBottomRow': data['visualSettings'][ filter['viewPrefix'] + 'bDisplayLastRowBold'] }">
+      <thead *ngIf="data['htmlHeading'].length" [innerHTML]="data['htmlHeading']">
+      </thead>
+    </table>
+    <table #tableDos class="dataTableDos podTable table table-dos {{ data['MymaxTemplateMenuComponentUID'] }}-B"
+      datatable [dtOptions]="_dtOptionsB" *ngIf="_daulTable" 
+      [ngClass]="{'thNoWrap': data['visualSettings'][ filter['viewPrefix'] + 'bAllowHeadingWrap'], 
+        'tdNoWrap': data['visualSettings'][ filter['viewPrefix'] + 'bAllowContentWrap'],
+        'bBottomRow': data['visualSettings'][ filter['viewPrefix'] + 'bDisplayLastRowBold'] }">
+      <thead *ngIf="data['htmlHeading'].length" [innerHTML]="data['htmlHeading']">
+      </thead>
+    </table>
+  </div>
+</ng-container>

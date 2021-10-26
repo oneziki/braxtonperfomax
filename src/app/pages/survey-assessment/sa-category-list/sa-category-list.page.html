@@ -1,0 +1,71 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper appstoreGrid">
+    <ion-toolbar class="toolbar">
+      <ion-title class="ion-padding-start colHeader text-primary">App Store</ion-title>
+      <ion-searchbar slot="primary" placeholder="Search Here..." class="supSearch" [(ngModel)]="_searchText"></ion-searchbar>
+    </ion-toolbar>
+
+    <ion-card>
+      <ion-card-content>
+        <ion-row>
+          <!--  | searchPipe: _searchText :'sCategoryName'-->
+          <ng-container *ngFor="let category of _survey_categories| searchPipe: _searchText :'sCategoryName';let iCategory = index;let last = last">
+            <ion-col size="6" sizeMd="6" sizeXs="12" *ngIf="!_bDisplayReviews" class="b-b-lightgrey b-r-lightgrey">
+              <ion-row *ngIf="iCategory < 6 || _loadAllCategories">
+                <ion-col sizeMd="6" sizeSm="12" sizeXs="12" class="p-10">
+                  <img [src]="category['imgPath']" class="sourceLogo">
+                </ion-col>
+                <ion-col sizeMd="6" sizeSm="12" sizeXs="12" class="p-10">
+                  <ion-label class="category-label">
+                    <h3><strong>{{ category.sCategoryName }} <button type="button" class="btn btn-danger appstore-active animated pulse infinite"
+                          *ngIf="category['bCompulsory'] === 1">
+                          <strong>1</strong>
+                        </button></strong></h3>
+                    <p class="m-b-10" [innerHTML]="category['sDescription']">{{ category.sDescription }}</p>
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="loadMore" *ngIf="category['SurveyRoles'].length">
+                <ion-col size="12" class="text-right">
+                  <a href="javascript:;" class="loadMore hover" (click)="setCategory(iCategory)"> ... load more</a>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+
+            <ion-col *ngIf="_bDisplayReviews && iCategory === _currentCategory">
+              <ion-row>
+                <ion-col size="5" sizeMd="5" sizeXs="12" class="p-10">
+                  <img [src]="category['imgPath']" class="sourceLogoBig">
+                </ion-col>
+                <ion-col size="7" sizeMd="7" sizeXs="12" class="p-10">
+                  <ion-row class="b-b-lightgrey">
+                    <ion-col size="12">
+                      <span (click)="setCategory(-1)" class="onHover">
+                        <ion-icon name="arrow-back-circle-sharp" class="text-primary"></ion-icon>
+                        <strong>{{ category['sCategoryName'] }}</strong>
+                      </span>
+                    </ion-col>
+                  </ion-row>
+                  <ng-container *ngFor="let surveyRoles of category['SurveyRoles']">
+                    <ion-row class="m-l-20 pointer" (click)="getSurveyAssessmentData(surveyRoles)">
+                      <ion-col size="6">
+                        <p>
+                          {{ surveyRoles['sSurveyRoleName'] }}
+                        </p>
+                      </ion-col>
+                      <ion-col size="6">
+                        <p>
+                          <small [innerHTML]="surveyRoles['sSurveyRoleDescription']">{{ surveyRoles['sSurveyRoleDescription'] }}</small>
+                        </p>
+                      </ion-col>
+                    </ion-row>
+                  </ng-container>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+          </ng-container>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </ion-grid>
+</ion-content>

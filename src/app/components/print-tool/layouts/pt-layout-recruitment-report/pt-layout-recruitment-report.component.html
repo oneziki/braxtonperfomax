@@ -1,0 +1,767 @@
+<section id="customLayout" class="ptPDFMain ptPDF customlayout nav-{{ _navStatus }}">
+  <section id="prePrintContent">
+    <section class="prePrintContent" *ngIf="_contentData">
+      <!-- Header -->
+      <ion-row>
+        <ion-col sizeXs="6" sizeMd="8" class="ptPageHeader">
+          <strong class="headerText fs-18">
+            {{ _coverData['coverTitle'] }}
+            <small class="d-block">
+              {{ _contentData['details']['sAssesseeName'] }}
+            </small>
+          </strong>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="4" class="text-right">
+          <ion-button type="button" class="btn btn-primary" (click)="printPDFReport()">
+            <ion-icon name="print-outline"></ion-icon>
+            Print Report
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <!-- PERSONAL DETAILS -->
+      <ion-row class="score-header">
+        <ion-col sizeXs="12" sizeMd="12">
+          <strong>Vacancy Details</strong>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="m-tb-10-20">
+
+        <ion-col sizeXs="6" sizeMd="6" class="b-r-lightgray">
+          <ion-row>
+            <ion-col sizeXs="6" sizeMd="4"><strong class="d-block"> Applicant </strong></ion-col>
+            <ion-col sizeXs="6">
+              <p>{{ _contentData['details']['sAssesseeName'] }}</p>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col sizeXs="6" sizeMd="4"><strong class="d-block"> Date of Application </strong></ion-col>
+            <ion-col sizeXs="6">
+              <p>{{ _contentData['details']['dDateCompleted'] }}</p>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col sizeXs="6" sizeMd="4"><strong class="d-block"> Role Title </strong></ion-col>
+            <ion-col sizeXs="6">
+              <p>{{ _contentData['details']['sAssessmentName'] }}</p>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+
+
+        <ion-col sizeXs="6" sizeMd="6" class="text-center">
+          <h4>Overall Fit Score</h4>
+          <h1 class="fs-80 m-0" [ngStyle]="{ color:_contentData['details']['overall_sColor'] }">
+            {{ _contentData['details']['overallScore'] }}
+          </h1>
+
+        </ion-col>
+
+      </ion-row>
+
+      <!-- LEGEND -->
+      <ion-row class="score-header">
+        <ion-col sizeXs="12" sizeMd="12">
+          <strong>Expertise Legend</strong>
+        </ion-col>
+      </ion-row>
+      <ion-row class="m-tb-10 a-center">
+        <ion-col *ngFor="let legend of _contentData['expertiseLegend']; let iLegend = index">
+          <div class="p-t-12">
+            <span class="color-dot" [ngStyle]="{ background: legend['sColor'] }"></span>
+            <strong>{{ legend["iStart"] }} - {{ legend["iEnd"] }}</strong>
+            <p class="p-l-18 legend">{{ legend["sOptionName"] }}</p>
+          </div>
+        </ion-col>
+      </ion-row>
+
+
+      <!-- SECTION 1 Qualifications -->
+      <ion-row class="row">
+        <ion-col size="12" class="section-header">
+          <strong>Section 1</strong>
+          <small class="m-l-10">Qualifications</small>
+        </ion-col>
+      </ion-row>
+      <ion-row class="score-header d-flex">
+        <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '4': '3'">
+          <strong>Qualifications</strong>
+        </ion-col>
+        <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '2': ''"
+          [class]="numAssessors === 1? 'text-center': 'text-left'">
+          <strong>Benchmark</strong>
+        </ion-col>
+        <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '4': '3'" [class]="numAssessors === 1? 'col-4': 'col-3'">
+          <strong>Percentage</strong>
+          <ion-row>
+            <ion-col size="" class="text-right fw-thin">
+              <small>20%</small>
+            </ion-col>
+            <ion-col size="" class="text-right fw-thin">
+              <small>40%</small>
+            </ion-col>
+            <ion-col size="" class="text-right fw-thin">
+              <small>60%</small>
+            </ion-col>
+            <ion-col size="" class="text-right fw-thin">
+              <small>80%</small>
+            </ion-col>
+            <ion-col size="" class="text-right fw-thin">
+              <small>100%</small>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <ng-container *ngIf="numAssessors > 1">
+          <ion-col sizeXs="12" sizeMd="" class="text-center">
+            <strong>Overall Result</strong>
+          </ion-col>
+        </ng-container>
+        <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '2': ''"
+          [class]="numAssessors === 1? 'text-center': 'text-center'"
+          *ngFor="let assessor of _contentData['assessorTypes']; let assessorIndex = index">
+          <strong>{{assessor['sAssessorTypeDescription']}}</strong>
+        </ion-col>
+      </ion-row>
+      <!---->
+      <ng-container *ngFor="let q of _contentData['qualificationData']['questions']; let iQ = index">
+        <ion-row class="b-b-lightgray">
+          <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '4': '3'">
+            <p class="paragraph">{{ q['sQualificationName'] }}</p>
+          </ion-col>
+          <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '2': ''"
+            [class]="numAssessors === 1? 'text-center nowrap muted-text': 'text-center nowrap muted-text'">
+            <p>
+              <span class="color-dot" [ngStyle]="{ background: q['sBenchMarkColor'] }"
+                *ngIf="q['fBenchMarkScore'] != 'N/A'"></span>
+              {{ q['fBenchMarkScore'] }}
+              <span *ngIf="bShowPercentage && q['fBenchMarkScore'] != 'N/A'">%</span>
+            </p>
+          </ion-col>
+
+          <ng-container *ngIf="numAssessors > 1">
+            <ion-col sizeXs="12" sizeMd="3" class="m-t-5">
+              <div class="progressBar">
+                <span [ngStyle]="{'background': q['overall_color'] ,'width': q['sOverallScore'] + '%'}"></span>
+              </div>
+            </ion-col>
+            <ion-col size="" class="text-center nowrap">
+              <p>
+                <span class="color-dot" [ngStyle]="{ background: q['overall_color'] }"
+                  *ngIf="q['sOverallScore'] != 'N/A'"></span>
+                {{ q['sOverallScore'] }}
+                <span *ngIf="bShowPercentage && q['sOverallScore'] != 'N/A'">%</span>
+              </p>
+            </ion-col>
+          </ng-container>
+          <ng-container *ngFor="let assessor of q['assessors']; let assessorIndex = index">
+            <ng-container *ngIf="numAssessors === 1">
+              <ion-col sizeXs="12" sizeMd="4" class="m-t-5">
+                <div class="progressBar">
+                  <span [ngStyle]="{'background': assessor['sColor'] ,'width': assessor['sScore'] + '%'}"></span>
+                </div>
+              </ion-col>
+            </ng-container>
+
+            <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '2': ''"
+              [class]="numAssessors === 1? 'text-center nowrap': 'text-center nowrap'">
+              <p>
+                <span class="color-dot" [ngStyle]="{ background: assessor['sColor'] }"
+                  *ngIf="assessor['sScore'] != 'N/A'"></span>
+                {{assessor['sScore'] }}
+                <span *ngIf="bShowPercentage && assessor['sScore'] != 'N/A'">%</span>
+              </p>
+            </ion-col>
+          </ng-container>
+        </ion-row>
+      </ng-container>
+      <!-- Feedback -->
+      <br>
+      <ng-container *ngFor="let q of _contentData['qualificationData']['feedback']; let iQ = index">
+        <ion-row class="subheader">
+          <ion-col size="12">
+            <strong>{{q['sQuestion']}}</strong>
+          </ion-col>
+        </ion-row>
+        <ng-container *ngFor="let assessor of q['AssessorTypes']; let assessorIndex = index">
+          <ion-row *ngIf="numAssessors > 1">
+            <ion-col size="12">
+              <div class="p-heading">{{assessor['sAssessorTypeDescription']}}</div>
+            </ion-col>
+          </ion-row>
+          <ng-container *ngFor="let answer of assessor['answers']; let answerIndex = index">
+            <ion-row class="row">
+              <ion-col size="12">
+                <p class="paragraph">- {{answer}} </p>
+              </ion-col>
+            </ion-row>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+
+
+      <!-- SECTION 2 -->
+      <ion-row class="row">
+        <ion-col size="12" class="section-header">
+          <strong>Section 2</strong>
+          <small class="m-l-10">Experience</small>
+        </ion-col>
+      </ion-row>
+      <ion-row class="score-header d-flex">
+        <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '4': '3'">
+          <strong>Experience</strong>
+        </ion-col>
+        <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '2': ''"
+          [class]="numAssessors === 1? 'text-center': 'text-left'">
+          <strong>Benchmark</strong>
+        </ion-col>
+        <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '4': '3'" [class]="numAssessors === 1? 'col-4': 'col-3'">
+          <strong>Percentage</strong>
+          <ion-row>
+            <ion-col size="" class="text-right fw-thin">
+              <small>20%</small>
+            </ion-col>
+            <ion-col size="" class="text-right fw-thin">
+              <small>40%</small>
+            </ion-col>
+            <ion-col size="" class="text-right fw-thin">
+              <small>60%</small>
+            </ion-col>
+            <ion-col size="" class="text-right fw-thin">
+              <small>80%</small>
+            </ion-col>
+            <ion-col size="" class="text-right fw-thin">
+              <small>100%</small>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <ng-container *ngIf="numAssessors > 1">
+          <ion-col sizeXs="12" sizeMd="" class="text-center">
+            <strong>Overall Result</strong>
+          </ion-col>
+        </ng-container>
+        <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '2': ''"
+          [class]="numAssessors === 1? 'text-center': 'text-center'"
+          *ngFor="let assessor of _contentData['assessorTypes']; let assessorIndex = index">
+          <strong>{{assessor['sAssessorTypeDescription']}}</strong>
+        </ion-col>
+      </ion-row>
+
+      <ng-container *ngFor="let q of _contentData['experienceData']['questions']; let iQ = index">
+        <ion-row class="b-b-lightgray">
+          <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '4': '3'">
+            <p class="paragraph">{{ q['sExperienceName'] }}</p>
+          </ion-col>
+          <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '2': ''"
+            [class]="numAssessors === 1? 'text-center nowrap muted-text': 'text-center nowrap muted-text'">
+            <p>
+              <span class="color-dot" [ngStyle]="{ background: q['sBenchMarkColor'] }"
+                *ngIf="q['fBenchMarkScore'] != 'N/A'"></span>
+              {{ q['fBenchMarkScore'] }}
+              <span *ngIf="bShowPercentage && q['fBenchMarkScore'] != 'N/A'">%</span>
+            </p>
+          </ion-col>
+
+          <ng-container *ngIf="numAssessors > 1">
+            <ion-col sizeXs="12" sizeMd="3" class="m-t-5">
+              <div class="progressBar">
+                <span [ngStyle]="{'background': q['overall_color'] ,'width': q['sOverallScore'] + '%'}"></span>
+              </div>
+            </ion-col>
+            <ion-col size="" class="text-center nowrap">
+              <p>
+                <span class="color-dot" [ngStyle]="{ background: q['overall_color'] }"
+                  *ngIf="q['sOverallScore'] != 'N/A'"></span>
+                {{ q['sOverallScore'] }}
+                <span *ngIf="bShowPercentage && q['sOverallScore'] != 'N/A'">%</span>
+              </p>
+            </ion-col>
+          </ng-container>
+          <ng-container *ngFor="let assessor of q['assessors']; let assessorIndex = index">
+            <ng-container *ngIf="numAssessors === 1">
+              <ion-col sizeXs="12" sizeMd="4" class="m-t-5">
+                <div class="progressBar">
+                  <span [ngStyle]="{'background': assessor['sColor'] ,'width': assessor['sScore'] + '%'}"></span>
+                </div>
+              </ion-col>
+            </ng-container>
+            <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '2': ''"
+              [class]="numAssessors === 1? 'text-center nowrap': 'text-center nowrap'">
+              <p>
+                <span class="color-dot" [ngStyle]="{ background: assessor['sColor'] }"
+                  *ngIf="assessor['sScore'] != 'N/A'"></span>
+                {{assessor['sScore'] }}
+                <span *ngIf="bShowPercentage && assessor['sScore'] != 'N/A'">%</span>
+              </p>
+            </ion-col>
+          </ng-container>
+
+        </ion-row>
+      </ng-container>
+      <!-- Feedback -->
+      <br>
+      <ng-container *ngFor="let q of _contentData['experienceData']['feedback']; let iQ = index">
+        <ion-row class="subheader">
+          <ion-col size="12">
+            <strong>{{q['sQuestion']}}</strong>
+          </ion-col>
+        </ion-row>
+        <ng-container *ngFor="let assessor of q['AssessorTypes']; let assessorIndex = index">
+          <ion-row *ngIf="numAssessors > 1">
+            <ion-col size="12">
+              <div class="p-heading">{{assessor['sAssessorTypeDescription']}}</div>
+            </ion-col>
+          </ion-row>
+          <ng-container *ngFor="let answer of assessor['answers']; let answerIndex = index">
+            <ion-row class="row">
+              <ion-col size="12">
+                <p class="paragraph">- {{answer}} </p>
+              </ion-col>
+            </ion-row>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+
+      <!-- SECTION 3 -->
+      <ion-row class="row">
+        <ion-col size="12" class="section-header">
+          <strong>Section 3</strong>
+          <small class="m-l-10">Skills & Knowledge</small>
+        </ion-col>
+      </ion-row>
+      <ion-row class="score-header d-flex">
+        <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '4': '3'">
+          <strong>Skills & Knowledge</strong>
+        </ion-col>
+        <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '2': ''"
+          [class]="numAssessors === 1? 'text-center': 'text-left'">
+          <strong>Benchmark</strong>
+        </ion-col>
+        <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '4': '3'" [class]="numAssessors === 1? 'col-4': 'col-3'">
+          <strong>Percentage</strong>
+          <ion-row>
+            <ion-col size="" class="text-right fw-thin">
+              <small>20%</small>
+            </ion-col>
+            <ion-col size="" class="text-right fw-thin">
+              <small>40%</small>
+            </ion-col>
+            <ion-col size="" class="text-right fw-thin">
+              <small>60%</small>
+            </ion-col>
+            <ion-col size="" class="text-right fw-thin">
+              <small>80%</small>
+            </ion-col>
+            <ion-col size="" class="text-right fw-thin">
+              <small>100%</small>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <ng-container *ngIf="numAssessors > 1">
+          <ion-col sizeXs="12" sizeMd="" class="text-center">
+            <strong>Overall Result</strong>
+          </ion-col>
+        </ng-container>
+        <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '2': ''"
+          [class]="numAssessors === 1? 'text-center': 'text-center'"
+          *ngFor="let assessor of _contentData['assessorTypes']; let assessorIndex = index">
+          <strong>{{assessor['sAssessorTypeDescription']}}</strong>
+        </ion-col>
+      </ion-row>
+
+
+      <!---->
+      <ng-container *ngFor="let q of _contentData['skillsData']['questions']; let iQ = index">
+        <ion-row class="b-b-lightgray">
+          <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '4': '3'">
+            <p class="paragraph">{{ q['sSkillsKnowledgeIndicatorName'] }}</p>
+          </ion-col>
+          <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '2': ''"
+            [class]="numAssessors === 1? 'text-center nowrap muted-text': 'text-center nowrap muted-text'">
+            <p>
+              <span class="color-dot" [ngStyle]="{ background: q['sBenchMarkColor'] }"
+                *ngIf="q['fBenchMarkScore'] != 'N/A'"></span>
+              {{ q['fBenchMarkScore'] }}
+              <span *ngIf="bShowPercentage && q['fBenchMarkScore'] != 'N/A'">%</span>
+            </p>
+          </ion-col>
+
+          <ng-container *ngIf="numAssessors > 1">
+            <ion-col sizeXs="12" sizeMd="3" class="m-t-5">
+              <div class="progressBar">
+                <span [ngStyle]="{'background': q['overall_color'] ,'width': q['sOverallScore'] + '%'}"></span>
+              </div>
+            </ion-col>
+            <ion-col size="" class="text-center nowrap">
+              <p>
+                <span class="color-dot" [ngStyle]="{ background: q['overall_color'] }"
+                  *ngIf="q['sOverallScore'] != 'N/A'"></span>
+                {{ q['sOverallScore'] }}
+                <span *ngIf="bShowPercentage && q['sOverallScore'] != 'N/A'">%</span>
+              </p>
+            </ion-col>
+          </ng-container>
+          <ng-container *ngFor="let assessor of q['assessors']; let assessorIndex = index">
+            <ng-container *ngIf="numAssessors === 1">
+              <ion-col sizeXs="12" sizeMd="4" class="m-t-5">
+                <div class="progressBar">
+                  <span [ngStyle]="{'background': assessor['sColor'] ,'width': assessor['sScore'] + '%'}"></span>
+                </div>
+              </ion-col>
+            </ng-container>
+            <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '2': ''"
+              [class]="numAssessors === 1? 'text-center nowrap': 'text-center nowrap'">
+              <p>
+                <span class="color-dot" [ngStyle]="{ background: assessor['sColor'] }"
+                  *ngIf="assessor['sScore'] != 'N/A'"></span>
+                {{assessor['sScore'] }}
+                <span *ngIf="bShowPercentage && assessor['sScore'] != 'N/A'">%</span>
+              </p>
+            </ion-col>
+          </ng-container>
+
+        </ion-row>
+      </ng-container>
+
+      <!-- Feedback -->
+      <br>
+      <ng-container *ngFor="let q of _contentData['skillsData']['feedback']; let iQ = index">
+        <ion-row class="subheader">
+          <ion-col size="12">
+            <strong>{{q['sQuestion']}}</strong>
+          </ion-col>
+        </ion-row>
+        <ng-container *ngFor="let assessor of q['AssessorTypes']; let assessorIndex = index">
+          <ion-row *ngIf="numAssessors > 1">
+            <ion-col size="12">
+              <div class="p-heading">{{assessor['sAssessorTypeDescription']}}</div>
+            </ion-col>
+          </ion-row>
+          <ng-container *ngFor="let answer of assessor['answers']; let answerIndex = index">
+            <ion-row class="row">
+              <ion-col size="12">
+                <p class="paragraph">- {{answer}} </p>
+              </ion-col>
+            </ion-row>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+      <!-- SECTION 4 -->
+      <ng-container *ngIf="_contentData['competencylegend'].length">
+
+        <ion-row class="row ptItem">
+          <ion-col size="12" class="section-header">
+            <strong>Section 4</strong>
+            <small class="m-l-10">Competency Results</small>
+          </ion-col>
+        </ion-row>
+
+        <!-- LEGEND -->
+        <ion-row class="score-header">
+          <ion-col sizeXs="12" sizeMd="12">
+            <strong>Competency Legend</strong>
+          </ion-col>
+        </ion-row>
+        <ion-row class="m-tb-10 a-center">
+          <ion-col *ngFor="let legend of competencylegend; let iLegend = index">
+            <div class="p-t-12">
+              <span class="color-dot" [ngStyle]="{ background: legend['sColor'] }"></span>
+              <strong>{{ legend["iStart"] }} - {{ legend["iEnd"] }}</strong>
+              <p class="p-l-18 legend">{{ legend["sOptionName"] }}</p>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="score-header d-flex">
+          <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '5': '4'">
+            <strong>Dimensions</strong>
+          </ion-col>
+          <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '5': '4'">
+            <strong class="p-l-5">Percentage</strong>
+            <ion-row>
+              <ion-col class="text-right fw-thin">
+                <small>20%</small>
+              </ion-col>
+              <ion-col class="text-right fw-thin">
+                <small>40%</small>
+              </ion-col>
+              <ion-col class="text-right fw-thin">
+                <small>60%</small>
+              </ion-col>
+              <ion-col class="text-right fw-thin">
+                <small>80%</small>
+              </ion-col>
+              <ion-col class="text-right fw-thin">
+                <small>100%</small>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+          <ng-container *ngIf="numAssessors > 1">
+            <ion-col sizeXs="" sizeMd="" class="text-center">
+              <strong>Overall Result</strong>
+            </ion-col>
+          </ng-container>
+          <ion-col sizeXs="" [sizeMd]="numAssessors === 1? '2': ''"
+            [class]="numAssessors === 1? 'text-center': 'col text-center'"
+            *ngFor="let assessor of _contentData['assessorTypes']; let assessorIndex = index">
+            <strong>{{assessor['sAssessorTypeDescription']}}</strong>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+
+
+      <ng-container *ngFor="let ctHead of _contentData['competencyQuestionData']['sCompetencyType']; let iQ = index">
+        <!-- COMPETENCY TYPE -->
+        <ion-row class="row b-b-lightgray" *ngIf="_contentData['details']['bIncludeCompetencyType']">
+          <ng-container *ngIf="numAssessors === 1">
+            <ion-col sizeXs="12" sizeMd="5" class="spacing-header" style="font-size: 20px;">
+              <strong> {{ ctHead['sCompetencyTypeName'] }}</strong>
+            </ion-col>
+          </ng-container>
+          <ng-container *ngIf="numAssessors > 1">
+            <ion-col sizeXs="12" sizeMd="4" class="spacing-header" style="font-size: 20px;">
+              <strong> {{ ctHead['sCompetencyTypeName'] }}</strong>
+            </ion-col>
+
+            <ion-col sizeXs="12" sizeMd="4" class="m-t-5">
+              <div class="progressBar">
+                <span [ngStyle]="{'background': ctHead['sColor'] ,'width': ctHead['sScore'] + '%'}"></span>
+              </div>
+            </ion-col>
+
+            <ion-col sizeXs="" sizeMd="" class="text-center nowrap">
+              <p>
+                <span class="color-dot" [ngStyle]="{ background: ctHead['sColor'] }"
+                  *ngIf="ctHead['sScore'] != 'N/A'"></span>
+                {{ ctHead['sScore'] }}
+                <span *ngIf="bShowPercentage && ctHead['sScore'] != 'N/A'">%</span>
+              </p>
+            </ion-col>
+          </ng-container>
+
+          <ng-container *ngFor="let assessor of ctHead['assessorScores']; let assessorIndex = index">
+            <ng-container *ngIf="numAssessors === 1">
+              <ion-col sizeXs="12" sizeMd="5" class="m-t-5">
+                <div class="progressBar">
+                  <span [ngStyle]="{'background': assessor['sColor'] ,'width': assessor['sScore'] + '%'}"></span>
+                </div>
+              </ion-col>
+            </ng-container>
+            <ion-col sizeXs="" [sizeMd]="numAssessors === 1? '2': ''" class="text-center nowrap">
+              <p>
+                <span class="color-dot" [ngStyle]="{ background: assessor['sColor'] }"
+                  *ngIf="assessor['sScore'] != 'N/A'"></span>
+                {{assessor['sScore'] }}
+                <span *ngIf="bShowPercentage && assessor['sScore'] != 'N/A'">%</span>
+              </p>
+            </ion-col>
+          </ng-container>
+        </ion-row>
+
+        <ng-container *ngFor="let cCompetency of ctHead['Competencies'];let iE = index">
+          <!-- HEADER -->
+          <ion-row class="ptItem b-b-lightgray">
+            <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '5': '4'">
+              <p class=" spacing-header" *ngIf="!_contentData['details']['bIncludeCompetencyType']"
+                style="font-size: 20px;"><strong>
+                  {{ cCompetency['sCompetencyName'] }}</strong>
+              </p>
+              <p class="d-block" *ngIf="_contentData['details']['bIncludeCompetencyType']"
+                [ngStyle]="{'padding-left': _contentData['details']['bIncludeCompetencyType'] === 0 ? '0px' : '10px', 'font-weight' : 'bold'}">
+                {{ cCompetency['sCompetencyName'] }}
+              </p>
+            </ion-col>
+            <ng-container *ngIf="numAssessors > 1">
+              <ion-col sizeXs="12" sizeMd="4" class="m-t-5">
+                <div class="progressBar">
+                  <span [ngStyle]="{'background': cCompetency['sColor'] ,'width': cCompetency['sScore'] + '%'}"></span>
+                </div>
+              </ion-col>
+              <ion-col sizeXs="" sizeMd="" class="text-center nowrap">
+                <p>
+                  <span class="color-dot" [ngStyle]="{ background: cCompetency['sColor'] }"
+                    *ngIf="cCompetency['sScore'] != 'N/A'"></span>
+                  {{ cCompetency['sScore'] }}
+                  <span *ngIf="bShowPercentage && cCompetency['sScore'] != 'N/A'">%</span>
+                </p>
+              </ion-col>
+            </ng-container>
+            <ng-container *ngFor="let assessor of cCompetency['assessorScores']; let assessorIndex = index">
+              <ng-container *ngIf="numAssessors === 1">
+                <ion-col sizeXs="12" sizeMd="5">
+                  <div class="progressBar">
+                    <span [ngStyle]="{'background': assessor['sColor'] ,'width': assessor['sScore'] + '%'}"></span>
+                  </div>
+                </ion-col>
+              </ng-container>
+              <ion-col sizeXs="" [sizeMd]="numAssessors === 1? '2': ''" class="text-center nowrap">
+                <p>
+                  <span class="color-dot" [ngStyle]="{ background: assessor['sColor'] }"
+                    *ngIf="assessor['sScore'] != 'N/A'"></span>
+                  {{assessor['sScore'] }}
+                  <span *ngIf="bShowPercentage && assessor['sScore'] != 'N/A'">%</span>
+                </p>
+              </ion-col>
+            </ng-container>
+          </ion-row>
+
+          <ng-container *ngFor="let cHead of cCompetency['Outcomes'];let iG = index">
+            <!-- OUTCOME -->
+            <ion-row class="b-b-lightgray" *ngIf="cHead['bSameName'] === false && cCompetency['Outcomes'].length > 1">
+              <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '5': '4'">
+                <p class="d-block"
+                  [ngStyle]="{'padding-left': _contentData['details']['bIncludeCompetencyType'] === 0 ? '0px' : '10px'}">
+                  {{ cHead['sOutcomeName'] }} s</p>
+              </ion-col>
+              <ng-container *ngIf="numAssessors > 1">
+                <ion-col sizeXs="12" sizeMd="4" class="m-t-5">
+                  <div class="progressBar">
+                    <span [ngStyle]="{'background': cHead['sColor'] ,'width': cHead['sScore'] + '%'}"></span>
+                  </div>
+                </ion-col>
+                <ion-col sizeXs="12" sizeMd="" class="text-center nowrap">
+                  <p>
+                    <span class="color-dot" [ngStyle]="{ background: cHead['sColor'] }"
+                      *ngIf="cHead['sScore'] != 'N/A'"></span>
+                    {{ cHead['sScore'] }}
+                    <span *ngIf="bShowPercentage && cHead['sScore'] != 'N/A'">%</span>
+                  </p>
+                </ion-col>
+              </ng-container>
+              <ng-container *ngFor="let assessor of cHead['assessorScores']; let assessorIndex = index">
+                <ng-container *ngIf="numAssessors === 1">
+                  <ion-col sizeXs="12" sizeMd="5" class="m-t-5">
+                    <div class="progressBar">
+                      <span [ngStyle]="{'background': assessor['sColor'] ,'width': assessor['sScore'] + '%'}"></span>
+                    </div>
+                  </ion-col>
+                </ng-container>
+                <ion-col sizeXs="" [sizeMd]="numAssessors === 1? '2': ''" class="text-center nowrap">
+                  <p>
+                    <span class="color-dot" [ngStyle]="{ background: assessor['sColor'] }"
+                      *ngIf="assessor['sScore'] != 'N/A'"></span>
+                    {{assessor['sScore'] }}
+                    <span *ngIf="bShowPercentage && assessor['sScore'] != 'N/A'">%</span>
+                  </p>
+                </ion-col>
+              </ng-container>
+            </ion-row>
+
+            <ng-container *ngFor="let cIndicators of cHead['Indicators']">
+              <!-- INDICATOR -->
+              <ion-row class="b-b-lightgray">
+                <ion-col sizeXs="12" [sizeMd]="numAssessors === 1? '5': '4'">
+                  <p style="padding-left: 20px;" class="paragraph">- {{ cIndicators['sIndicatorName'] }}</p>
+                </ion-col>
+                <ng-container *ngIf="numAssessors > 1">
+                  <ion-col sizeXs="12" sizeMd="4" class="m-t-5">
+                    <div class="progressBar">
+                      <span
+                        [ngStyle]="{'background': cIndicators['sColor'] ,'width': cIndicators['sScore'] + '%'}"></span>
+                    </div>
+                  </ion-col>
+                  <ion-col sizeXs="" sizeMd="" class="text-center nowrap">
+                    <p>
+                      <span class="color-dot" [ngStyle]="{ background: cIndicators['sColor'] }"
+                        *ngIf="cIndicators['sScore'] != 'N/A'"></span>
+                      {{ cIndicators['sScore'] }}
+                      <span *ngIf="bShowPercentage && cIndicators['sScore'] != 'N/A'">%</span>
+                    </p>
+                  </ion-col>
+                </ng-container>
+                <ng-container *ngFor="let assessor of cIndicators['assessorScores']; let assessorIndex = index">
+                  <ng-container *ngIf="numAssessors === 1">
+                    <ion-col sizeXs="12" sizeMd="5" class="m-t-5">
+                      <div class="progressBar">
+                        <span [ngStyle]="{'background': assessor['sColor'] ,'width': assessor['sScore'] + '%'}"></span>
+                      </div>
+                    </ion-col>
+                  </ng-container>
+                  <ion-col sizeXs="" [sizeMd]="numAssessors === 1? '2': ''" class="text-center nowrap">
+                    <p>
+                      <span class="color-dot" [ngStyle]="{ background: assessor['sColor'] }"
+                        *ngIf="assessor['sScore'] != 'N/A'"></span>
+                      {{assessor['sScore'] }}
+                      <span *ngIf="bShowPercentage && assessor['sScore'] != 'N/A'">%</span>
+                    </p>
+                  </ion-col>
+                </ng-container>
+              </ion-row>
+
+              <ng-container *ngFor="let sQuestions of cIndicators['sOEQuestion']">
+                <!-- Comment -->
+                <ion-row class="ptItem b-b-lightgray">
+                  <ion-col sizeXs="6" sizeMd="10">
+                    <p>{{ sQuestions['sQuestion'] }}</p>
+                  </ion-col>
+                  <ion-col sizeXs="6" sizeMd="2">
+                    <p>
+                      {{ sQuestions['sAnswer'] }}
+                    </p>
+                  </ion-col>
+                </ion-row>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+
+      <!-- Qualitative  feedback  -->
+      <ng-container *ngIf="_contentData['competencyCommentsData'].length !== 0">
+        <ion-row>
+          <ion-col size="12">
+            <h4>
+              Qualitative Feedback
+            </h4>
+          </ion-col>
+        </ion-row>
+
+        <ng-container *ngFor="let questions of _contentData['competencyCommentsData']; let questionIndex = index">
+          <ion-row>
+            <ion-col size="12">
+              <ion-row class="sub-header">
+                <ion-col size="12">
+                  <strong>{{questions['sQuestion']}}</strong>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+            <ng-container *ngFor="let answers of questions['sAnswers']; let answerIndex = index">
+              <ion-col size="12">
+                <ion-row>
+                  <ion-col sizeXs="6" sizeMd="3">
+                    <p *ngIf="answers['bNewType']">{{answers['sAssessorTypeDescription']}} Comment:</p>
+                  </ion-col>
+                  <ion-col sizeXs="6" sizeMd="9">
+                    <p>{{answers['sScore']}}</p>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+            </ng-container>
+          </ion-row>
+        </ng-container>
+
+      </ng-container>
+
+      <!-- SECTION 5 Supporting Documents -->
+      <ng-container *ngIf="_contentData['documents'].length">
+        <ion-row>
+          <ion-col size="12">
+            <h4>
+              Section 5
+              <span class="fw-thin">Documents</span>
+            </h4>
+          </ion-col>
+        </ion-row>
+        <ion-list *ngIf="_contentData['documents']">
+          <ion-item lines="none" *ngFor="let doc of _contentData['documents']; let docIndex = index;">
+            <a [href]="doc['sUploadPath']" download target="_blank">
+              <ion-icon name="paper-plane-sharp"></ion-icon>
+              {{doc.sAttachmentName}}
+            </a>
+          </ion-item>
+        </ion-list>
+
+      </ng-container>
+      <!--  -->
+    </section>
+  </section>

@@ -1,0 +1,67 @@
+#bar-benchmark-wrapper {
+
+  .benchmark-score-40 {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 40%;
+  }
+  .benchmark-score-60 {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 60%;
+  }
+  .benchmark-score-80 {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 80%;
+  }
+
+  td {
+    position: relative;
+    padding: 5px 10px;
+    color: var(--table-text);
+    font-size: var(--fs-xmin);
+    vertical-align: middle;
+    border-bottom: 1px solid var(--lite-grey);
+  }
+
+  .vertBenchmark {
+    position: absolute;
+    transform: translateX(-50%);
+    z-index: 10;
+    top: -1px;
+    bottom: -1px;
+    left: 50%;
+    width: 2px;
+    background: var(--accent);
+
+    &.isFirst {
+      top: -10px;
+    }
+    &.isLast {
+      height: 10px;
+    }
+  }
+
+  .horzScore {
+    position: absolute;
+    transform: translateY(-50%);
+    z-index: 2;
+    top: 50%;
+    max-height: 20px;
+    height: 100%;
+  }
+
+  .horzAverage {
+    position: absolute;
+    transform: translateY(-50%);
+    z-index: 5;
+    top: 50%;
+    height: 1px;
+    background: var(--slate-grey) !important;
+  }
+
+}

@@ -1,0 +1,40 @@
+<ng-container *ngIf="type === 'appHome'">
+  <app-home-panel [companyTemplate]="companyTemplate" [notificationsList]="notificationsList" [conversationFeed]="conversationFeed" [activitySummery]="activitySummery">
+  </app-home-panel>
+</ng-container>
+
+<ng-container *ngIf="type === 'appPersonal'">
+  <app-personal-panel [companyTemplate]="companyTemplate" [managers]="managers" [sessionUser]="sessionUser"></app-personal-panel>
+</ng-container>
+
+<ng-container *ngIf="type === 'appTeam'">
+  <app-team-panel [companyTemplate]="companyTemplate" [managers]="managers" [directReports]="directReports"></app-team-panel>
+</ng-container>
+
+<ng-container *ngIf="type === 'perform'">
+  <app-perform-panel [sessionUser]="sessionUser"></app-perform-panel>
+</ng-container>
+
+<ng-container *ngIf="type === 'grow'">
+  <app-grow-panel [sessionUser]="sessionUser"></app-grow-panel>
+</ng-container> 
+
+<ng-container *ngIf="type === 'live'">
+  <app-live-panel [sessionUser]="sessionUser"></app-live-panel>
+</ng-container> 
+
+<ng-container *ngIf="type === 'choose'">
+  <app-choose-panel [sessionUser]="sessionUser"></app-choose-panel>
+</ng-container> 
+
+<ng-container *ngIf="type === 'aspire'">
+  <app-aspire-panel [sessionUser]="sessionUser"></app-aspire-panel>
+</ng-container> 
+
+<ng-container *ngIf="type === 'coach'">
+  <app-coach-panel [sessionUser]="sessionUser"></app-coach-panel>
+</ng-container> 
+
+<ng-container *ngIf="type === 'mymax-reporting'">
+  <app-mymax-reporting-panel [sessionUser]="sessionUser"></app-mymax-reporting-panel>
+</ng-container> 

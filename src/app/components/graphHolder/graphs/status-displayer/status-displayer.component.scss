@@ -1,0 +1,107 @@
+$iphone: 375px; // iphone X
+
+
+
+.status-displayer {
+  margin-top: 0px;
+  text-align: center;
+
+  .hideEmpty:empty {
+    display: none;
+  }
+
+  strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: var(--fs-xmin);
+    font-weight: 500;
+  }
+
+  h1 {
+    font-size: 50px;
+    margin-top: 10px;
+    i {
+      margin: 5px;
+      display: inline-block;
+    }
+    &.expectLargeVal {
+      font-size: unset;
+      .icofont {
+        font-size: 40px;
+      }
+      span {
+        vertical-align: super;
+        font-size: 20px;
+      }
+    }
+  }
+  table {
+    margin-top: 10px;
+    width: 100%;
+  }
+  tr {
+    cursor: default;
+  }
+  td {
+    border: 0;
+    padding: 2px !important;
+    strong {
+      font-size: var(--fs-mid);
+    }
+    small {
+      display: block;
+      font-weight: 600;
+    }
+  }
+
+  &.sd-wide {
+    // background: red;
+    strong {
+      font-size: 14px;
+    }
+    h1 {
+      font-size: 44px;
+      font-weight: 400;  
+      i {
+        font-size: 50px;
+      }
+    }
+    table {
+      strong {
+        font-size: 16px;
+      }
+    }
+  }
+  .va-wbm {
+    font-size: var(--fs-xmin);
+    display: inline-block;
+  }
+}
+
+.pta {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+@media only screen and (max-width: 764px) {
+  .pta {
+    display: grid;
+    margin-bottom: 25px;
+    margin-top: 15px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .pta-2 {
+    text-align: initial;
+  }
+  .pta {
+    text-align: initial;
+  }
+}
+
+.icofont-2 {
+  font-size: 50px !important;
+  padding-right: 5px;
+}

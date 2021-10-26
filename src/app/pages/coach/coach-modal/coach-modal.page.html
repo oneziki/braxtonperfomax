@@ -1,0 +1,194 @@
+<ion-content class="modal">
+  <ion-grid>
+    <!-- New Subject Modal -->
+    <ng-container *ngIf="type === 'email'">
+      <ion-card class="card">
+        <ion-card-header>
+          <ion-card-title> <strong class="text-lite-charcoal">{{conversation['sCategoryName']}} Guidance & Support</strong>
+            <ion-button size="small" shape="round " type="button" class="text-right f-right" (click)="dismiss()">
+              <ion-icon name="close"></ion-icon>
+            </ion-button>
+          </ion-card-title>
+        </ion-card-header>
+        <ion-col sizeXs="12" sizeMd="2" class="text-center">
+          <strong class="text-lite-charcoal">To</strong>
+          <ion-card button="true" class="transparentCard">
+            <div>
+              <!-- PROFILE-PIC -->
+              <img class="img-fluid img-radius z-depth-bottom-5" [src]="selectedUser['sProfilePic']" (error)="selectedUser['srcFail'] = true" *ngIf="!selectedUser['srcFail']"
+                loading="lazy" />
+              <!-- PROFILE-AVI -->
+              <ion-icon class="default-img color-avi iconAvatar text-center" name="person-circle-outline" *ngIf="selectedUser['srcFail']">
+              </ion-icon>
+            </div>
+            <ion-card-content>
+              <p><strong class="text-lite-charcoal">{{selectedUser['sFirstName']}} {{selectedUser['sLastName']}}</strong></p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-card-content class="content">
+          <ion-row>
+
+            <ion-col sizeXs="12" sizeMd="">
+              <ion-row>
+                <ion-col size="12">
+                  <ion-label>
+                    <strong class="text-lite-charcoal">Subject</strong>
+                  </ion-label>
+                  <ion-input id="sSubject" name="sSubject" type="text" class="form-control small-font" placeholder="Enter Subject..." [(ngModel)]="newSubject['sSubject']">
+                  </ion-input>
+                </ion-col>
+                <ion-col size="12">
+                  <ion-label class="p-r-25">
+                    <strong class="text-lite-charcoal">Upload Files</strong>
+                  </ion-label>
+                  <input type="file" id="FileUpload" name="FileUpload" ng2FileSelect [uploader]="file_Uploader">
+                </ion-col>
+                <ion-col size="12" *ngIf="newSubject['uploadedFiles'].length">
+                  <ion-label> <strong class="text-lite-charcoal">Uploaded Files</strong></ion-label>
+                  <ng-container *ngFor="let file of newSubject['uploadedFiles']">
+                    <ion-item *ngIf="file.bShowDocument">
+                      <ion-label> <span class="text-muted"> {{ file.sFileName }}</span>
+                      </ion-label>
+                      <ion-button size="small" fill="clear" type="button" class="badge btn btn-mini btn-primary f-right" (click)="removeFile(file)">
+                        <ion-icon name="close-circle"></ion-icon>
+                      </ion-button>
+                    </ion-item>
+                  </ng-container>
+                </ion-col>
+                <ion-col size="12">
+                  <ion-label>
+                    <strong class="text-lite-charcoal">Message</strong>
+                  </ion-label>
+                  <ion-textarea autoGrow="true" id="sConversation" name="sConversation" [(ngModel)]="newSubject['sConversation']"></ion-textarea>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+
+        <ion-row class="footer f-right">
+          <ion-button [disabled]="newSubject['sSubject'].length < 2 || newSubject['sConversation'].length < 2" type="button" size="small" shape="round" (click)="saveSubject()">Send
+          </ion-button>
+        </ion-row>
+      </ion-card>
+    </ng-container>
+
+    <!-- Filter Modal -->
+    <ng-container *ngIf="type === 'filter'">
+      <ion-card class="card">
+        <ion-card-header>
+          <ion-card-title> <strong class="text-lite-charcoal">Filter Criteria:</strong>
+            <ion-button size="small" shape="round " type="button" class="text-right f-right" (click)="dismiss()">
+              <ion-icon name="close"></ion-icon>
+            </ion-button>
+          </ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content class="content">
+          <ion-row class="row">
+            <ion-col size="12">
+              <ion-label> <strong class="text-lite-charcoal">Filter From</strong></ion-label>
+              <ion-input type="date" onkeydown="return false" id="from-date" name="from-date" displayFormat="MM DD YY" placeholder="Select From date" value=""
+                [(ngModel)]="searchFrom"></ion-input>
+            </ion-col>
+            <ion-col size="12">
+              <ion-label><strong class="text-lite-charcoal">Filter To</strong></ion-label>
+              <ion-input type="date" onkeydown="return false" id="to-date" name="to-date" displayFormat="MM DD YY" placeholder="Select To date" value="" [(ngModel)]="searchTo">
+              </ion-input>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+
+        <ion-row class="footer f-right">
+          <ion-button type="button" size="small" shape="round" (click)="dismiss()">
+            Cancel
+          </ion-button>
+          <ion-button type="button" size="small" shape="round" (click)="clearSearchBox()">
+            Reset Dates
+          </ion-button>
+          <ion-button type="button" size="small" shape="round" (click)="filterDates()">
+            Search
+          </ion-button>
+        </ion-row>
+      </ion-card>
+      <!-- <ion-col size="6">
+        <input type="date" onkeydown="return false" id="from-date" name="from-date" displayFormat="MM DD YY" placeholder="Select from date" value=""
+          [(ngModel)]="training['dDateCompletedTemp']" (ngModelChange)="reCalculateDate(training)">
+      </ion-col> -->
+      <!-- <div id="modal-email">
+        <div class="modal-header">
+          <strong class="modal-title">Filter Criteria:</strong>
+          <button type="button" class="btn btn-mini btn-primary" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row m-b-10">
+            <div class="col-md-4 align-self-center heading">
+              <span class="grey"> Filter From</span>
+            </div>
+            <div class="col-md-8">
+              <div class="input-group">
+                <input class="form-control" readonly="readonly" placeholder="yyyy-mm-dd" name="dpFrom" [(ngModel)]="_searchFrom" ngbDatepicker #dFrom="ngbDatepicker">
+                <div class="input-group-append">
+                  <button class="btn btn-primary" (click)="dFrom.toggle()" type="button"><i class="icofont icofont-ui-calendar"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row m-b-10">
+            <div class="col-md-4 align-self-center heading">
+              <span class="grey"> Filter to</span>
+            </div>
+            <div class="col-md-8">
+              <div class="input-group">
+                <input class="form-control" readonly="readonly" placeholder="yyyy-mm-dd" name="dpTo" [(ngModel)]="_searchTo" ngbDatepicker #dTo="ngbDatepicker">
+                <div class="input-group-append">
+                  <button class="btn btn-primary" (click)="dTo.toggle()" type="button"><i class="icofont icofont-ui-calendar"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="clearSearchBox()">Reset Dates</button>
+          <button type="button" class="btn btn-primary" (click)="filterDates()">Search</button>
+        </div>
+      </div> -->
+    </ng-container>
+
+    <!-- Edit Subject Modal -->
+    <ng-container *ngIf="type === 'editSubject'">
+      <ion-card class="card">
+        <ion-card-header>
+          <ion-card-title> <strong class="text-lite-charcoal">Edit Subject Heading</strong>
+            <ion-button size="small" shape="round " type="button" class="text-right f-right" (click)="dismiss()">
+              <ion-icon name="close"></ion-icon>
+            </ion-button>
+          </ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content class="content">
+          <ion-row class="row">
+            <ion-col size="12">
+              <ion-label><strong class="text-lite-charcoal">Subject</strong> </ion-label>
+              <ion-input id="sSubject" name="sSubject" type="text" class="form-control small-font" placeholder="Enter Subject..." [(ngModel)]="subjectHeadingEdit['sSubject']">
+              </ion-input>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+
+        <ion-row class="footer f-right">
+          <ion-button type="button" size="small" shape="round" (click)="dismiss()">
+            Cancel
+          </ion-button>
+          <ion-button [disabled]="subjectHeadingEdit['sSubject'].length < 2" type="button" size="small" shape="round" (click)="saveNewHeading()">
+            Save
+          </ion-button>
+        </ion-row>
+      </ion-card>
+    </ng-container>
+
+  </ion-grid>
+</ion-content>

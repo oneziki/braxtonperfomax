@@ -1,0 +1,52 @@
+.footerList {
+  padding: 0;
+
+  ion-col {
+    // padding: 0;
+  }
+  p {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--charcoal);
+    margin-top: 2px;
+  }
+  h1 {
+    text-align: center;
+    white-space: nowrap;
+    font-size: 20px;
+    font-weight: 900;
+  }
+}
+
+.footerLegend {
+  // padding: 0;
+
+  ion-col {
+    text-align: center;
+    // padding: 0;
+  }
+  strong {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 10px;
+    small {
+      color: var(--charcoal);
+      font-size: 10px;
+      line-height: 10px;
+      white-space: nowrap;
+    }
+  }
+}
+.graphMessage {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.text-muted {
+  color: var(--lite-grey) !important;
+}
+
+.align-content{
+  text-align: -webkit-center;
+}

@@ -1,0 +1,74 @@
+.aspireGrid {
+  .trainingNeedInput {
+    height: 28px;
+    font-size: 13px;
+    // width: 170px;
+  }
+
+  .clockResize {
+    font-size: 20px;
+  }
+
+  .arrow-16 {
+    font-size: 16px;
+  }
+
+  // .card-text-colour {
+  //   color: #8d9098;
+  // }
+
+  .b-t-lightgray {
+    border-top: 1px solid #e0e0e0;
+  }
+
+  .icon {
+    transition: all 0.5s ease;
+    display: inline-block;
+    &.rotate-m90 {
+      transform: rotate(-90deg);
+    }
+    &.rotate-90 {
+      transform: rotate(90deg);
+    }
+  }
+
+  .m-l-17 {
+    margin-left: 17px;
+  }
+
+  .fs-12 {
+    font-size: 12px;
+  }
+
+  .djustify {
+    text-align: justify;
+  }
+
+  .pointer {
+    cursor: pointer;
+  }
+
+  .m-t-100 {
+    margin-top: 100px;
+  }
+
+  .t-black {
+    color: black;
+  }
+
+.training-col-mobile{
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .training-col-mobile{
+    display: contents;
+  }
+
+  .training-col{
+    display: none;
+  }
+}
+
+
+}

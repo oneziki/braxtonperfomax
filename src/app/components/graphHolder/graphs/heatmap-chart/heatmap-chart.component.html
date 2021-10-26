@@ -1,0 +1,337 @@
+<div class="hmWrapper" [ngClass]="{'oneRow': data['rows'] === 1, 'tinyRow': overallHeight < 255, 'midRow': overallHeight > 254 && overallHeight < 375}">
+  <div class="box hmSidebar" [ngStyle]="{ 'height': (overallHeight - 40) + 'px' }">
+    <p class="tUpRight">
+      {{data['axisSettings']['yStatusName']}}
+    </p>
+  </div>
+  <div class="box hmContent"  [ngStyle]="{ 'height': (overallHeight - 40) + 'px' }">
+    <div class="hmWrapperInner {{ _gridClass }} mobile-view">
+      <!-- 4 Box (2x2) -->
+      <ng-container *ngIf="_gridType === '4 Box (2x2)'">
+        <!--  -->
+        <div class="box yAxis">
+          <p class="tUpRight">
+            {{ data['cutOffs']['yCuts'][1]['ystart'] }} - {{ data['cutOffs']['yCuts'][1]['yend'] }}
+          </p>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][0])">
+          <app-heatmap-pod [podData]="data['data'][0]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][1])">
+          <app-heatmap-pod [podData]="data['data'][1]"></app-heatmap-pod>
+        </div>
+        <!--  -->
+        <div class="box yAxis">
+          <p class="tUpRight">
+            {{ data['cutOffs']['yCuts'][0]['ystart'] }} - {{ data['cutOffs']['yCuts'][0]['yend'] }}
+          </p>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][2])">
+          <app-heatmap-pod [podData]="data['data'][2]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][3])">
+          <app-heatmap-pod [podData]="data['data'][3]"></app-heatmap-pod>
+        </div>
+        <!--  -->
+        <div class="box xAxis"></div>
+        <div class="box xAxis">
+          {{ data['cutOffs']['xCuts'][0]['xstart'] }} - {{ data['cutOffs']['xCuts'][0]['xend'] }}
+        </div>
+        <div class="box xAxis">
+          {{ data['cutOffs']['xCuts'][1]['xstart'] }} - {{ data['cutOffs']['xCuts'][1]['xend'] }}
+        </div>
+      </ng-container>
+      <!-- 6 Box (2x3) -->
+      <ng-container *ngIf="_gridType === '6 Box (2x3)'">
+        <div class="box yAxis">
+          <p class="tUpRight">
+            {{ data['cutOffs']['yCuts'][2]['ystart'] }} - {{ data['cutOffs']['yCuts'][2]['yend'] }}
+          </p>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][0])">
+          <app-heatmap-pod [podData]="data['data'][0]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][1])">
+          <app-heatmap-pod [podData]="data['data'][1]"></app-heatmap-pod>
+        </div>
+        <!--  -->
+        <div class="box yAxis">
+          <p class="tUpRight">
+            {{ data['cutOffs']['yCuts'][1]['ystart'] }} - {{ data['cutOffs']['yCuts'][1]['yend'] }}
+          </p>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][2])">
+          <app-heatmap-pod [podData]="data['data'][2]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][3])">
+          <app-heatmap-pod [podData]="data['data'][3]"></app-heatmap-pod>
+        </div>
+        <!--  -->
+        <div class="box yAxis">
+          <p class="tUpRight">
+            {{ data['cutOffs']['yCuts'][0]['ystart'] }} - {{ data['cutOffs']['yCuts'][0]['yend'] }}
+          </p>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][4])">
+          <app-heatmap-pod [podData]="data['data'][4]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][5])">
+          <app-heatmap-pod [podData]="data['data'][5]"></app-heatmap-pod>
+        </div>
+        <!--  -->
+        <div class="box xAxis"></div>
+        <div class="box xAxis">
+          {{ data['cutOffs']['xCuts'][0]['xstart'] }} - {{ data['cutOffs']['xCuts'][0]['xend'] }}
+        </div>
+        <div class="box xAxis">
+          {{ data['cutOffs']['xCuts'][1]['xstart'] }} - {{ data['cutOffs']['xCuts'][1]['xend'] }}
+        </div>
+      </ng-container>
+      <!-- 6 Box (3x2) -->
+      <ng-container *ngIf="_gridType === '6 Box (3x2)'">
+        <div class="box yAxis">
+          <p class="tUpRight">
+            {{ data['cutOffs']['yCuts'][1]['ystart'] }} - {{ data['cutOffs']['yCuts'][1]['yend'] }}
+          </p>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][0])">
+          <app-heatmap-pod [podData]="data['data'][0]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][1])">
+          <app-heatmap-pod [podData]="data['data'][1]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][2])">
+          <app-heatmap-pod [podData]="data['data'][2]"></app-heatmap-pod>
+        </div>
+        <!--  -->
+        <div class="box yAxis">
+          <p class="tUpRight">
+            {{ data['cutOffs']['yCuts'][0]['ystart'] }} - {{ data['cutOffs']['yCuts'][0]['yend'] }}
+          </p>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][3])">
+          <app-heatmap-pod [podData]="data['data'][3]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][4])">
+          <app-heatmap-pod [podData]="data['data'][4]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][5])">
+          <app-heatmap-pod [podData]="data['data'][5]"></app-heatmap-pod>
+        </div>
+        <!--  -->
+        <div class="box xAxis"></div>
+        <div class="box xAxis">
+          {{ data['cutOffs']['xCuts'][0]['xstart'] }} - {{ data['cutOffs']['xCuts'][0]['xend'] }}
+        </div>
+        <div class="box xAxis">
+          {{ data['cutOffs']['xCuts'][1]['xstart'] }} - {{ data['cutOffs']['xCuts'][1]['xend'] }}
+        </div>
+        <div class="box xAxis">
+          {{ data['cutOffs']['xCuts'][2]['xstart'] }} - {{ data['cutOffs']['xCuts'][2]['xend'] }}
+        </div>
+      </ng-container>
+      <!-- 9 Box (3x3) -->
+      <ng-container *ngIf="_gridType === '9 Box (3x3)'">
+        <div class="box yAxis">
+          <p class="tUpRight">
+            {{ data['cutOffs']['yCuts'][2]['ystart'] }} - {{ data['cutOffs']['yCuts'][2]['yend'] }}
+          </p>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][0])">
+          <app-heatmap-pod [podData]="data['data'][0]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][1])">
+          <app-heatmap-pod [podData]="data['data'][1]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][2])">
+          <app-heatmap-pod [podData]="data['data'][2]"></app-heatmap-pod>
+        </div>
+        <!--  -->
+        <div class="box yAxis">
+          <p class="tUpRight">
+            {{ data['cutOffs']['yCuts'][1]['ystart'] }} - {{ data['cutOffs']['yCuts'][1]['yend'] }}
+          </p>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][3])">
+          <app-heatmap-pod [podData]="data['data'][3]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][4])">
+          <app-heatmap-pod [podData]="data['data'][4]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][5])">
+          <app-heatmap-pod [podData]="data['data'][5]"></app-heatmap-pod>
+        </div>
+        <!--  -->
+        <div class="box yAxis">
+          <p class="tUpRight">
+            {{ data['cutOffs']['yCuts'][0]['ystart'] }} - {{ data['cutOffs']['yCuts'][0]['yend'] }}
+          </p>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][6])">
+          <app-heatmap-pod [podData]="data['data'][6]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][7])">
+          <app-heatmap-pod [podData]="data['data'][7]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][8])">
+          <app-heatmap-pod [podData]="data['data'][8]"></app-heatmap-pod>
+        </div>
+        <!--  -->
+        <div class="box xAxis"></div>
+        <div class="box xAxis">
+          {{ data['cutOffs']['xCuts'][0]['xstart'] }} - {{ data['cutOffs']['xCuts'][0]['xend'] }}
+        </div>
+        <div class="box xAxis">
+          {{ data['cutOffs']['xCuts'][1]['xstart'] }} - {{ data['cutOffs']['xCuts'][1]['xend'] }}
+        </div>
+        <div class="box xAxis">
+          {{ data['cutOffs']['xCuts'][2]['xstart'] }} - {{ data['cutOffs']['xCuts'][2]['xend'] }}
+        </div>
+      </ng-container>
+      <!-- 12 Box (3x4) -->
+      <ng-container *ngIf="_gridType === '12 Box (3x4)'">
+        <div class="box yAxis">
+          <p class="tUpRight">
+            {{ data['cutOffs']['yCuts'][3]['ystart'] }} - {{ data['cutOffs']['yCuts'][3]['yend'] }}
+          </p>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][0])">
+          <app-heatmap-pod [podData]="data['data'][0]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][1])">
+          <app-heatmap-pod [podData]="data['data'][1]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][2])">
+          <app-heatmap-pod [podData]="data['data'][2]"></app-heatmap-pod>
+        </div>
+        <!--  -->
+        <div class="box yAxis">
+          <p class="tUpRight">
+            {{ data['cutOffs']['yCuts'][2]['ystart'] }} - {{ data['cutOffs']['yCuts'][2]['yend'] }}
+          </p>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][3])">
+          <app-heatmap-pod [podData]="data['data'][3]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][4])">
+          <app-heatmap-pod [podData]="data['data'][4]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][5])">
+          <app-heatmap-pod [podData]="data['data'][5]"></app-heatmap-pod>
+        </div>
+        <!--  -->
+        <div class="box yAxis">
+          <p class="tUpRight">
+            {{ data['cutOffs']['yCuts'][1]['ystart'] }} - {{ data['cutOffs']['yCuts'][1]['yend'] }}
+          </p>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][6])">
+          <app-heatmap-pod [podData]="data['data'][6]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][7])">
+          <app-heatmap-pod [podData]="data['data'][7]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][8])">
+          <app-heatmap-pod [podData]="data['data'][8]"></app-heatmap-pod>
+        </div>
+        <!--  -->
+        <div class="box yAxis">
+          <p class="tUpRight">
+            {{ data['cutOffs']['yCuts'][0]['ystart'] }} - {{ data['cutOffs']['yCuts'][0]['yend'] }}
+          </p>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][9])">
+          <app-heatmap-pod [podData]="data['data'][9]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][10])">
+          <app-heatmap-pod [podData]="data['data'][10]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][11])">
+          <app-heatmap-pod [podData]="data['data'][11]"></app-heatmap-pod>
+        </div>
+        <!--  -->
+        <div class="box xAxis"></div>
+        <div class="box xAxis">
+          {{ data['cutOffs']['xCuts'][0]['xstart'] }} - {{ data['cutOffs']['xCuts'][0]['xend'] }}
+        </div>
+        <div class="box xAxis">
+          {{ data['cutOffs']['xCuts'][1]['xstart'] }} - {{ data['cutOffs']['xCuts'][1]['xend'] }}
+        </div>
+        <div class="box xAxis">
+          {{ data['cutOffs']['xCuts'][2]['xstart'] }} - {{ data['cutOffs']['xCuts'][2]['xend'] }}
+        </div>
+      </ng-container>
+      <!-- 12 Box (4x3) -->
+      <ng-container *ngIf="_gridType === '12 Box (4x3)'">
+        <div class="box yAxis">
+          <p class="tUpRight">
+            {{ data['cutOffs']['yCuts'][2]['ystart'] }} - {{ data['cutOffs']['yCuts'][2]['yend'] }}
+          </p>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][0])">
+          <app-heatmap-pod [podData]="data['data'][0]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][1])">
+          <app-heatmap-pod [podData]="data['data'][1]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][2])">
+          <app-heatmap-pod [podData]="data['data'][2]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][3])">
+          <app-heatmap-pod [podData]="data['data'][3]"></app-heatmap-pod>
+        </div>
+        <!--  -->
+        <div class="box yAxis">
+          <p class="tUpRight">
+            {{ data['cutOffs']['yCuts'][1]['ystart'] }} - {{ data['cutOffs']['yCuts'][1]['yend'] }}
+          </p>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][4])">
+          <app-heatmap-pod [podData]="data['data'][4]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][5])">
+          <app-heatmap-pod [podData]="data['data'][5]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][6])">
+          <app-heatmap-pod [podData]="data['data'][6]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][7])">
+          <app-heatmap-pod [podData]="data['data'][7]"></app-heatmap-pod>
+        </div>
+        <!--  -->
+        <div class="box yAxis">
+          <p class="tUpRight">
+            {{ data['cutOffs']['yCuts'][0]['ystart'] }} - {{ data['cutOffs']['yCuts'][0]['yend'] }}
+          </p>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][8])">
+          <app-heatmap-pod [podData]="data['data'][8]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][9])">
+          <app-heatmap-pod [podData]="data['data'][9]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][10])">
+          <app-heatmap-pod [podData]="data['data'][10]"></app-heatmap-pod>
+        </div>
+        <div class="box" (click)="chartClick(data['data'][11])">
+          <app-heatmap-pod [podData]="data['data'][11]"></app-heatmap-pod>
+        </div>
+        <!--  -->
+        <div class="box xAxis"></div>
+        <div class="box xAxis">
+          {{ data['cutOffs']['xCuts'][0]['xstart'] }} - {{ data['cutOffs']['xCuts'][0]['xend'] }}
+        </div>
+        <div class="box xAxis">
+          {{ data['cutOffs']['xCuts'][1]['xstart'] }} - {{ data['cutOffs']['xCuts'][1]['xend'] }}
+        </div>
+        <div class="box xAxis">
+          {{ data['cutOffs']['xCuts'][2]['xstart'] }} - {{ data['cutOffs']['xCuts'][2]['xend'] }}
+        </div>
+        <div class="box xAxis">
+          {{ data['cutOffs']['xCuts'][3]['xstart'] }} - {{ data['cutOffs']['xCuts'][3]['xend'] }}
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div class="box fmFooter">{{data['axisSettings']['xStatusName']}}</div>
+</div>

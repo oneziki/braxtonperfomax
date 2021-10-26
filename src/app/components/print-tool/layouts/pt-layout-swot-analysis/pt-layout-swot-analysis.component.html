@@ -1,0 +1,160 @@
+<section id="customLayout" class="ptPDFMain ptPDF customlayout nav-{{ _navStatus }}">
+  <section id="prePrintContent">
+    <section class="prePrintContent" *ngIf="_contentData">
+
+      <!-- Header -->
+      <ion-row>
+        <ion-col sizeXs="6" sizeMd="8" class="ptPageHeader">
+          <strong class="headerText fs-18">
+            {{ _coverData['coverTitle'] }}
+            <small class="d-block">
+              {{ _contentData['PersonalDetails']['sEmployeeFullName'] }}
+            </small>
+          </strong>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="4" class="text-right">
+          <ion-button type="button" class="btn btn-primary" (click)="printPDFReport()">
+            <ion-icon name="print-outline"></ion-icon>
+            Print Report
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <!-- PERSONAL DETAILS -->
+      <ion-row class="row">
+        <ion-col size="12" class="section-header">
+          <strong>Section 1</strong>
+          <small class="m-l-10">Personal Details</small>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="sub-header">
+        <ion-col size="12">
+          <ion-col sizeSm="6" sizeXs="8" sizeMd="10">
+            <strong>{{ _contentData['PersonalDetails']['sEmployeeFullName'] }}</strong>
+          </ion-col>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="m-tb-10-20 a-center">
+        <!-- row 1 -->
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Role:</strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData["PersonalDetails"]["sKraRoleName"] }}</p>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Manager:</strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData['PersonalDetails']['sAdminFullName'] }}</p>
+        </ion-col>
+        <!-- row 2 -->
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">Department:</strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p [innerHTML]="_contentData['PersonalDetails']['sUserStructure']"></p>
+        </ion-col>
+        <ion-col sizeXs="6" sizeMd="3"><strong class="d-block">2nd Manager:</strong></ion-col>
+        <ion-col sizeXs="6" sizeMd="3">
+          <p>{{ _contentData['PersonalDetails']['sAdmin2FullName'] }}</p>
+        </ion-col>
+      </ion-row>
+
+      <!-- SWOT Analysis Matrix -->
+      <ion-row class="row">
+        <ion-col size="12" class="section-header">
+          <strong>Section 2</strong>
+          <small class="m-l-10">SWOT Analysis Matrix</small>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="sub-header">
+        <ion-col sizeXs="12" sizeMd="6">
+          <strong>SWOT Analysis Matrix</strong>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="spacing-header">
+        <ion-col class="ion-margin-bottom" sizeXs="12" sizeMd="6"
+          *ngFor="let swot of _contentData['SWOTAnalysis']['SWOTScale']; let iSwot = index">
+          <strong>{{ swot['data'][0]['sName'] }}</strong>
+          <ng-container *ngFor="let analysis of swot['data']">
+            <p *ngIf="analysis['sSWOTAnalysis'] === ''">- N/A</p>
+            <p *ngIf="analysis['sSWOTAnalysis'] !== ''">- {{ analysis['sSWOTAnalysis'] }}</p>
+          </ng-container>
+        </ion-col>
+      </ion-row>
+
+
+      <!-- SWOT Analysis Matrix -->
+      <ion-row>
+        <ion-col size="12" class="section-header">
+          <strong>Section 3</strong>
+          <small class="m-l-10">SWOT Objectives</small>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="sub-header">
+        <ion-col sizeXs="12" sizeMd="6">
+          <strong>Identify your 3 months objectives(s)</strong>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col sizeXs="12" sizeMd="6">
+          <p *ngIf="_contentData['SWOTAnalysis']['sSWOT3monthsObjectiveComment'].length">
+            {{ _contentData['SWOTAnalysis']['sSWOT3monthsObjectiveComment'] }}
+          </p>
+          <p *ngIf="!_contentData['SWOTAnalysis']['sSWOT3monthsObjectiveComment'].length">
+            <i>N/A</i>
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="sub-header">
+        <ion-col sizeXs="12" sizeMd="6">
+          <strong>Identify your 6 months objectives(s)</strong>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col sizeXs="12" sizeMd="6">
+          <p *ngIf="_contentData['SWOTAnalysis']['sSWOT6monthsObjectiveComment'].length">
+            {{ _contentData['SWOTAnalysis']['sSWOT6monthsObjectiveComment'] }}
+          </p>
+          <p *ngIf="!_contentData['SWOTAnalysis']['sSWOT6monthsObjectiveComment'].length">
+            <i>N/A</i>
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="sub-header">
+        <ion-col sizeXs="12" sizeMd="6">
+          <strong>Identify your 12 months objectives(s)</strong>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col sizeXs="12" sizeMd="6">
+          <p *ngIf="_contentData['SWOTAnalysis']['sSWOT12monthsObjectiveComment'].length">
+            {{ _contentData['SWOTAnalysis']['sSWOT12monthsObjectiveComment'] }}
+          </p>
+          <p *ngIf="!_contentData['SWOTAnalysis']['sSWOT12monthsObjectiveComment'].length">
+            <i>N/A</i>
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="sub-header">
+        <ion-col sizeXs="12" sizeMd="6">
+          <strong>Identify your 2 to 3 years objectives(s)</strong>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col sizeXs="12" sizeMd="6">
+          <p *ngIf="_contentData['SWOTAnalysis']['sSWOT2to3YearsObjectiveComment'].length">
+            {{ _contentData['SWOTAnalysis']['sSWOT2to3YearsObjectiveComment'] }}
+          </p>
+          <p *ngIf="!_contentData['SWOTAnalysis']['sSWOT2to3YearsObjectiveComment'].length">
+            <i>N/A</i>
+          </p>
+        </ion-col>
+      </ion-row>
+
+
+    </section>
+  </section>

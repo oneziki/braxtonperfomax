@@ -1,0 +1,23 @@
+.assesseeGrid {
+
+  table {
+    width: 100%;
+    text-align: left;
+  }
+  .color-avi {
+    height: 60px !important;
+    width: 60px !important;
+    padding: 0 !important;
+    font-size: 60px;
+    margin-top: 0 !important;
+    margin-bottom: 10px !important;
+    border-radius: 50%;
+    margin: 0 auto 0 0;
+  }
+
+  .bg-primary {
+    background-color: var(--primary) !important;
+    background: var(--primary) !important;
+    border-color: var(--primary);
+  }
+}

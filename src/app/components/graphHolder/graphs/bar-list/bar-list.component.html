@@ -1,0 +1,19 @@
+<div class="bar-list-wrapper" [ngClass]="{'noClickThrough': !data['visualSettings'][filter['viewPrefix'] + 'bGraphClickThrough']}">
+  <table class="podTable table table-hover">
+    <tbody>
+      <ng-container *ngFor="let listItem of data['data']; let iListItem = index">
+        <ng-container *ngIf="iListItem > 0">
+          <tr (click)="chartClick(listItem)">
+            <td width="45%">
+              <small>{{ listItem[0] }}</small>
+            </td>
+            <td>
+              <span class="bar" [ngStyle]="getBar(listItem)"></span>
+              <span class="bar" [ngStyle]="getColor(listItem)">{{ listItem[2] }}</span>
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

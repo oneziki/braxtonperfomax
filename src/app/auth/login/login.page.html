@@ -1,0 +1,71 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="loginGrid">
+    <!-- BG -->
+    <ion-row class="appMenuBG">
+      <!-- Left Col -->
+      <ion-col size="12" style="min-height: 100vH;">
+        <ion-row class="login-logo">
+          <ion-col class="mobile-logo" *ngIf="!_authService['_fetchingTheme']">
+            <img alt="Client-Logo" class="braxtonLogo" [src]="_envTheme['logoimage']" (error)="_envTheme['srcFail'] = true" *ngIf="!_envTheme['srcFail']">
+            <img alt="Client-Logo" class="braxtonLogo" [src]="_envTheme['logoimagePhoto']" *ngIf="_envTheme['srcFail']">
+          </ion-col>
+        </ion-row>
+        <ion-row class="container">
+          <ion-col>
+            <ion-card id="authForm">
+              <ion-card-header>
+                <ion-card-subtitle class="text-center">
+                  <img alt="Performax-Logo" class="performaxLogo" src="./assets/imgs/logo/PeformaxLogo.png">
+                </ion-card-subtitle>
+                <ion-card-title class="text-center">Welcome to your <strong>Peformax7</strong></ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <form #f="ngForm" (ngSubmit)="submitLogin(f.value)">
+                  <div class="input-group">
+                    <div class="input-1">
+                      <ion-input id="loginUser" name="username" type="text" class="form-control bg-white" placeholder="Username" (ngModelChange)="loginStatus = ''"
+                        [ngClass]="{'form-control-danger': username.touched && !username.valid, 'form-control-success': username.touched && username.valid}" required ngModel
+                        #username="ngModel"></ion-input>
+                    </div>
+                    <div class="input-1">
+                      <ion-input id="loginPass" name="password" type="password" class="form-control bg-white" placeholder="Password" (ngModelChange)="loginStatus = ''"
+                        [ngClass]="{'form-control-danger': password.touched && !password.valid, 'form-control-success': password.touched && password.valid}" required ngModel
+                        #password="ngModel">
+                      </ion-input>
+                    </div>
+                  </div>
+                  <div class="input-group2">
+                    <ion-button type="submit" class="btn-login" expand="block">{{ _signInSubmitButton.text }}
+                    </ion-button>
+                    <ion-item lines="none">
+                      <ion-label class="text-center">
+                        <p>OR</p>
+                      </ion-label>
+                    </ion-item>
+                    <ion-button type="button" fill="clear" class="btn-azure" expand="block" (click)="loginAzure()">
+                      <ion-label>Azure Sign In</ion-label>
+                    </ion-button>
+                    <ion-item lines="none">
+                      <ion-label class="invalid-email">
+                        <p class="invalid-email">{{sErrorMessage}}</p>
+                      </ion-label>
+                    </ion-item>
+                    <!-- <ion-button type="button" expand="block" color="tertiary" style="margin-top: 20px;">
+                    <ion-icon name="logo-google" slot="start"></ion-icon>
+                    Sign in with Google
+                  </ion-button>
+                  <ion-button type="button" expand="block" color="tertiary">
+                    <ion-icon name="logo-apple" slot="start"></ion-icon>
+                    Sign in with Apple
+                  </ion-button> -->
+                  </div>
+                </form>
+                <!-- <div id="chart"></div> -->
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

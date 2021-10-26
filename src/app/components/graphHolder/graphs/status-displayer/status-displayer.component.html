@@ -1,0 +1,117 @@
+<!-- <h1>- {{ data['visualSettings']['ss_bStatusDisplayerAverages'] }} | {{ filter['viewPrefix'] }} -</h1> -->
+<!-- <h1>-- {{ data['visualSettings'][filter['viewPrefix'] + 'bStatusDisplayerAverages'] }} --</h1> -->
+<ion-grid class="status-displayer"  [ngClass]="{'sd-wide': data['cols'] > 2}">
+  <!-- [ngStyle]="{'margin-top': (overallHeight - (_statusHeight + _legendHeight)) / 1.8 + 'px'}" -->
+  <ion-row class="row no-gutters" #iconRow>
+
+    <ion-col sizeMd="6" sizeSm="12" sizeXs="12" class="col hideEmpty" *ngFor="let listItem of data['data']; let iListItem = index">
+      
+      <div class="container ">
+        <ng-container *ngIf="listItem && listItem['data']">
+
+          <div class="col">
+            <!-- HEADING & ICON | Data: 0 -->
+            <ng-container *ngIf="listItem['data'].length === 0">
+              <ng-container *ngIf="data['visualSettings'][filter['viewPrefix'] + 'bStatusDisplayerAverages'] && iListItem < 2">
+                <strong>{{ listItem['sHeading'] }}</strong>
+                <h1 [ngClass]="{'expectLargeVal': data['visualSettings'][filter['viewPrefix'] + 'bExpectLargeValues']}">
+                  <i class="icofont {{ listItem['icon']['icon'] }}" *ngIf="listItem['icon']['icon']"></i>
+                  <span class="text-primary">{{ listItem['icon']['iconText'] }}</span>
+                </h1>
+              </ng-container>
+              <ng-container *ngIf="!data['visualSettings'][filter['viewPrefix'] + 'bStatusDisplayerAverages']">
+                <strong>{{ listItem['sHeading'] }}</strong>
+                <h1 [ngClass]="{'expectLargeVal': data['visualSettings'][filter['viewPrefix'] + 'bExpectLargeValues']}">
+                  <i class="icofont {{ listItem['icon']['icon'] }}" *ngIf="listItem['icon']['icon']"></i>
+                  <span class="text-primary">{{ listItem['icon']['iconText'] }}</span>
+                </h1>
+              </ng-container>
+            </ng-container>
+    
+            <!-- HEADING & TEXT | Data: 1 -->
+            <ng-container *ngIf="listItem['data'].length === 1">
+              <strong>{{ listItem['sHeading'] }}</strong>
+              <h1>
+                <i class="icofont {{ listItem['icon']['icon'] }}" *ngIf="listItem['icon']['icon']"></i>
+                <ng-container *ngFor="let d of listItem['data']">
+                  <span [ngStyle]="{ color: d['color']}">{{ d['text'] }}</span>
+                </ng-container>
+              </h1>
+            </ng-container>
+          </div>
+
+          <div class="col">
+            <!-- ICON & LIST | Data: 1 -->
+          <ng-container *ngIf="listItem['data'].length > 1">
+            <!-- HEADING LIST -->
+            <ng-container *ngIf="listItem['sHeading'].length > 0">
+              <strong>{{ listItem['sHeading'] }}</strong>
+              <div class="row no-gutters">
+                <div class="col">
+                  <h1 class="m-t-0-impo">
+                    <i class="icofont {{ listItem['icon']['icon'] }} m-t-0-impo" *ngIf="listItem['icon']['icon']"></i>
+                  </h1>
+                </div>
+                <div class="col">
+                  <small>
+                    <ng-container *ngFor="let d of listItem['data']">
+                      <span class="d-block text-primary m-t-10">{{ d['text'] }}</span>
+                      <strong class="d-block fs-10-impo">{{ d['label'] }}</strong>
+                    </ng-container>
+                  </small>
+                </div>
+              </div>
+            </ng-container>
+            <!-- ICON LIST -->
+            <ng-container *ngIf="listItem['sHeading'].length === 0">
+              <div class="row no-gutters" *ngFor="let d of listItem['data']">
+                  <div class="col pta-2">
+                    <strong>{{ d['label'] }}</strong>
+                  </div>
+                  <div class="col text-center pta">
+                    <i class="icofont-2  {{ d['icon']['icon'] }} fs-45" *ngIf="d['icon']['icon']"></i>
+                    <span class="va-wbm">{{ d['text'] }}</span>
+                  </div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+      </ng-container>
+     </div>
+    </ion-col>
+
+    <!-- Status Displayer Averages -->
+    <ion-col size="12" *ngIf="data['visualSettings'][filter['viewPrefix'] + 'bStatusDisplayerAverages']">
+      <ion-row>
+        <ion-col class="col text-slate text-center fs-20" *ngFor="let listItem of data['data'] | slice:2:4">
+          <i class="icofont {{ listItem['icon']['icon'] }} m-r-10"></i>
+          <strong class="d-inline-block">{{ listItem['icon']['iconText'] }}</strong>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+
+  </ion-row>
+
+  <ng-container *ngIf="data && data[filter['viewPrefix'] + 'bShowFooterLegend'] && data['legends']">
+    <table *ngIf="data['legends'].length" #legendRow>
+      <tr>
+        <td *ngFor="let l of data['legends']">
+          <strong [ngStyle]="{ color: l['sColor']}">
+            {{ l['fStart'] }} - {{ l['fEnd'] }}
+            <small class="text-muted">
+              {{ l['sName'] }}
+            </small>
+          </strong>
+        </td>
+      </tr>
+    </table>
+  </ng-container>
+</ion-grid>
+
+
+
+<!-- 
+    <ion-grid class="contentPageWrapper status-displayer"  [ngClass]="{'sd-wide': data['cols'] > 2}">
+    <ion-row> 
+      <ion-col size="12" sizeMd="6">
+ -->

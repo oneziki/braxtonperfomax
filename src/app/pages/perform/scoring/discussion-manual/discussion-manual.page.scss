@@ -1,0 +1,148 @@
+.discManualGrid {
+  .col-header {
+    background: var(--bg-grey);
+    text-align: center;
+    h1 {
+      margin: 2px 0;
+      padding: 10px 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--lite-charcoal);
+    }
+  }
+
+  .supSearch {
+    .searchbar-search-icon.sc-ion-searchbar-md {
+      top: 5px !important;
+    }
+    .searchbar-input {
+      border-radius: 25px;
+      height: 28px;
+      text-align: left;
+    }
+    width: 20%;
+  }
+
+  .toolbar {
+    --background: none !important;
+  }
+
+  // img,
+  .default-img {
+    height: 100px;
+    width: 100px;
+    margin: 10px auto;
+    border-radius: 100%;
+  }
+
+  .convoImg {
+    text-align: -webkit-center;
+  }
+
+  .discCard {
+    text-align: center;
+    box-shadow: none !important;
+    background: none !important;
+    margin: 0 !important;
+  }
+
+  .aviUserDetails {
+    ion-avatar {
+      height: 100px;
+      width: 100px;
+      margin-left: 20%;
+      img {
+        border: 2px solid var(--lite-charcoal);
+      }
+    }
+    h3 {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--lite-charcoal);
+    }
+    p {
+      font-size: 18px;
+    }
+  }
+
+  ion-textarea {
+    border: 1px solid var(--lite-charcoal);
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  .radio-inline-icons {
+    margin-bottom: 10px;
+  
+    .inline-icons-outer {
+      padding: 0;
+      margin: 2px;
+    }
+  }
+  
+  .radio-inline-label {
+    .inline-icons-outer {
+      min-height: 25px;
+      margin-bottom: 0;
+    }
+  
+    .inline-icons-inner {
+      margin-top: 7px;
+      display: inline-block;
+    }
+  }
+  
+  .cutom-radio-ratings {
+    label {
+      padding-left: 15px;
+      font-weight: 400;
+      margin: 2px 10px 2px 2px !important;
+    }
+  
+    .helper {
+      cursor: pointer;
+      transition: all 0.5s ease;
+      border: 2px solid var(--primary);
+      color: var(--lite-charcoal);
+      background: transparent;
+      display: inline-block;
+      position: absolute;
+      transform: none;
+      font-style: normal;
+      left: 0;
+      width: 35px;
+      height: 35px;
+      text-align: center;
+      line-height: 30px;
+      font-size: 25px;
+      top: 0;
+      bottom: 0;
+  
+      border-radius: 100%;
+      font-weight: 600;
+  
+      &:after,
+      &:before {
+        content: none;
+      }
+    }
+  
+    label:hover .helper {
+      color: var(--primary);
+    }
+  
+    input[type="radio"]:checked + .helper {
+      background: var(--primary);
+      color: var(--primary-alt);
+      border: 2px solid var(--primary);
+    }
+  }
+
+  .p-relative {
+    position: relative !important;
+  }
+
+  .d-none {
+    display: none;
+  }
+}

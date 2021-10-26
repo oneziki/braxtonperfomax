@@ -1,0 +1,202 @@
+export class KraCompanySettings {
+
+	/*
+			The KRA Company settings are retrieved from the P5 Corporate Database.
+	*/
+
+	constructor(
+		// NAME CHANGES
+		public sKraNameChange: string,
+		public sKpiNameChange: string,
+		public sKpiDescriptionNameChange: string,
+		public sKpiBudgetLineNameChange: string,
+		public sPerspectiveNameChange: string,
+		public sBusinessUnitObjective: string,
+		public sKpiCommentsNameChange: string,
+		public sKpiTargetsNameChange: string,
+		public sKpiKeyResultsNameChange: string,
+		public sKpiActualNameChange: string,
+
+		// INSTRUCTIONS
+		public sExternalGeneralInst: string,
+		public sExternalKraReviewInst: string,
+		public sExternalOEQInst: string,
+		public sExternal360Inst: string,
+
+		public sEmployeeGeneralAgreementInst: string,
+		public sEmployeeGeneralScoringInst: string,
+		public sEmployeeInviteOthersInst: string,
+		public sEmployeeKraReviewInst: string,
+		public sEmployeeOEQInst: string,
+		public sEmployeeSetNewKrasInst: string,
+		public sEmployeePDPInst: string,
+		public sEmployee360Inst: string,
+		public sSWOTAnalysisInst: string,
+		public sSWOTAnalysisMatrixInst: string,
+		public sEmployeeSMARTkraInstructions: string,
+
+		// MANAGER  INSTRUCTIONS
+		public sManagerGeneralAgreementInst: string,
+		public sManagerGeneralScoringInst: string,
+		public sManagerKraReviewInst: string,
+		public sManagerOEQInst: string,
+		public sManagerSetNewKrasInst: string,
+		public sManagerPDPInst: string,
+		public sManagerPerformanceDiscussionInst: string,
+		public sManager360Inst: string,
+		// SECOND MANAGER  INSTRUCTIONS
+		public sSecondManagerGeneralAgreementInst: string,
+		public sSecondManagerGeneralScoringInst: string,
+		public sSecondManagerKraReviewInst: string,
+		public sSecondManagerKraOEQInst: string,
+		public sSecondManagerSetNewKrasInst: string,
+		public sSecondManagerPerformanceDiscussionInst: string,
+		public sSecondManager360Inst: string,
+
+		public sModerateGeneralInst: string,
+		public sModerateKraReviewInst: string,
+		public sModerateKraOEQInst: string,
+		public sModerateSetNewKrasInst: string,
+		public sModeratePerformanceDiscussionInst: string,
+
+		public sGeneralInstructionsManager: string,
+		public sGeneralInstructions: string,
+		public sInstructionColor: string,
+		// MANIPULATING VIEWS
+		public sPerformanceReviewMotivationNameChange,
+		public bShowPerformanceDiscussionRating,
+		public sPerformanceReviewDiscussionRatingNameChange,
+		public bShowPerspective,
+		public bHideBusinessUnitObjective,
+		public bPrepopulateProfiles,
+		public bShowKraDescription,
+		public bShowMultipleScales,
+		public bShowGlobalScales,
+		public bShowSetNewContract,
+		public bShowCareerPlan,
+		public bShowKraOEQ,
+		public bShowWeightings,
+		public bShowWeightingsOnAgreement,
+		public bShowWeightingsOnReview,
+		public bEditWeightings,
+		public bShowCRPs,
+		public bCommitShowToAgreement,
+		public bCommitShowToReview,
+		public bShowAgreementDiscussion,
+		public bAllowExternalAssessors,
+		public bShowBudgetLine,
+		public bSendMailAfterManagerScore,
+		public bAllowPopulateButton,
+		public sShowOverallScoreAsPercentage,
+		public bShowPreliminaryResults,
+		public bShowManagerAgreementFaQ,
+		public bShowEmployeeAgreementFaQ,
+		public bShowManagerReviewFaQ,
+		public bShowEmployeeReviewFaQ,
+		public bShowExternalReviewFaQ,
+		public bShowCombinedPortalLayout,
+		public bShowPDP,
+		public bShowSMARTkraInstructions,
+		public bShowIntegratedPDP: boolean,
+		public bShowAccordionLayoutOnAgreement,
+		public bShowObjectivesBeforeKRA,
+		public bIncludeOverallFeedback,
+		public bShowKRAInviteOthersBeforeReviewPage,
+		public bAddOwnScaleDescription,
+		public iAmountScaleItems,
+		// SWOT Analysis
+
+		public bSWOTAnalysis,
+		public bSWOT3monthsObjective,
+		public bSWOT6monthsObjective,
+		public bSWOT12monthsObjective,
+		public bSWOT2to3YearsObjective,
+		public bShowThreesixtySWOTanalysis,
+		public sSWOT3monthsObjectiveName,
+		public sSWOT6monthsObjectiveName,
+		public sSWOT12monthsObjectiveName,
+		public sSWOT2to3YearsObjectiveName,
+
+		public bShowPositionDescription,
+		public bLockModeration,
+		public bExternalScoreKra,
+		public bExternalScoreCompetency,
+		public bCanBuildOwnKraContract,
+		public bCanSelectDBKra,
+
+		public bManagerPrepopulateProfiles,
+		public bManagerAllowPopulateButton,
+		public bAllowLimitedKraProfileTotals,
+
+		public bLockAgreementEndDate,
+		public bManagerLockAgreementDates,
+		public bKraManagerContractCommentsCompulsory,
+		//PDP
+		public bShowLearningLibraryOnPDP,
+		public bShowDevelopmentNeedOnPDP,
+		public sPDPDevelopmentNeedChange,
+		public sPDPCategoryChange,
+		public sPDPActivitiesChange,
+		public sPDPActivityDescriptionChange,
+		public sPDPDueDateChange,
+		public sPDPPriorityChange,
+		public sPDPEmployeeStatusChange,
+		public sPDPManagerStatusChange,
+		public sPDPEmployeeCommentsChange,
+		public sPDPManagerCommentsChange,
+		public bMakePDPMandatory,
+		public sPDPSection1NameChange,
+		public sPDPSection2NameChange,
+		public sPDPSection3NameChange,
+		public sPDPSection4NameChange,
+
+		// CAREER PLAN
+		public sEmployeeCareerPlanInst,
+		public sManagerCareerPlanInst,
+
+		// TAB NAMES
+		public sEmployeeInviteOthersTab,
+		public sEmployeePDPTab,
+		public sEmployeeKraTab,
+		public sEmployee360Tab,
+		public sEmployeeKraOEQTab,
+		public sEmployeeSetNewKraTab,
+		public sEmployeePerformanceDiscussionTab,
+
+		public sManagerKraTab,
+		public sManagerPDPTab,
+		public sManagerKraOEQTab,
+		public sManagerSetNewKraTab,
+		public sManagerPerformanceDiscussionTab,
+
+		public sExternalKraTab,
+		public sExternalKraOEQTab,
+
+		public sManagerPositionDescriptionTab,
+		public sEmployeePositionDescriptionTab,
+
+		public sManagerCareerPlanTab,
+		public sEmployeeCareerPlanTab,
+
+		// VALUES
+		public iAgreementEndDayDate,
+		public iAgreementEndMonthDate,
+		public iKraExternalAssessors,
+		public iReportDecimals = 0,
+		public sModerationMonths,
+		public iMinimumTotalKras,
+		public iMaximumTotalKras,
+
+		public sBannerURL: string,
+		public sColorTheme: string,
+		public bMidYearManagerCommentsCompulsory: boolean,
+		public bMidYearEmployeeCommentsCompulsory: boolean,
+		public bActivateMidYearAgreement: boolean,
+		public iMaxNumberOfNewOrReplacementKRA = 0,
+		public iMaxNumberOfNewOrReplacementKPI = 0,
+
+		public bKraManagerCommentsCompulsory: boolean,
+		public bShowContribution: boolean
+	) { }
+
+}

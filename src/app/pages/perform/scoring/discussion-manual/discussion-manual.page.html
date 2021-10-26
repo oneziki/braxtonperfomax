@@ -1,0 +1,240 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper discManualGrid">
+    <ng-container *ngIf="_employeeView">
+      <ion-toolbar class="toolbar">
+        <ion-text>
+          <h2 class="contentHeader">Performance Discussion</h2>
+        </ion-text>
+        <ion-searchbar slot="primary" placeholder="Search Here..." class="supSearch" [(ngModel)]="_searchTextUsers">
+        </ion-searchbar>
+      </ion-toolbar>
+      <ion-row>
+        <ng-container *ngIf="_preCheckImages">
+          <ng-container
+            *ngFor="let employee of _directReportEmployees| searchPipe: _searchTextUsers : 'sFirstName' : 'sLastName' : 'sEmail1'; let iEmployee = index; let lEmployee = last">
+            <ion-col sizeXs="12" sizeSm="4" sizeMd="4" sizeLg="3" sizeXl="3">
+              <ion-card class="discCard hover" (click)="selectedUser(employee)">
+                <ion-card-content>
+                  <ion-grid>
+                    <ion-row>
+                      <ion-col>
+                        <img class="default-img" [src]="employee['sProfilePic']" (error)="employee['srcFail'] = true" *ngIf="employee['srcFail'] !== true">
+                        <ion-icon class="default-img" name="person-circle-outline" *ngIf="employee['srcFail'] === true">
+                        </ion-icon>
+                        <br>
+                        <ion-label>
+                          <strong>{{ employee['sFirstName'] }} {{ employee['sLastName'] }}</strong><br>
+                          <small>{{ employee['sJobTitleName'] }}</small>
+                          <ng-container *ngIf="employee['iYear'] !== ''">
+                            <br>
+                            <strong *ngIf="employee['iYear'] !== ''">
+                              {{ employee['sMonth'] }} {{ employee['iYear'] }}<br>
+                            </strong>
+                          </ng-container>
+                        </ion-label>
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ng-container>
+        </ng-container>
+      </ion-row>
+    </ng-container>
+
+    <ng-container *ngIf="!_employeeView">
+      <ion-row>
+        <ion-col>
+          <ion-col>
+            <ion-text>
+              <h2 class="contentHeader">Performance Discussion</h2>
+            </ion-text>
+            <ion-col size="12">
+              <ion-grid>
+                <ion-row class="userHeader">
+                  <ion-col sizeXs="12" sizeXl="6" class="p-0-impo">
+                    <ion-item lines="none" class="aviUserDetails">
+                      <ion-avatar slot="start">
+                        <img [src]="_employeeDetails['sEmployeeProfilePic']">
+                      </ion-avatar>
+                      <ion-label>
+                        <h3>{{_employeeDetails['sNormalUserFullName']}}</h3>
+                        <p>{{_employeeDetails['sNormalUserJobTitleName']}}</p>
+                      </ion-label>
+                    </ion-item>
+                    <div class="col-header">
+                      <h1>Employee</h1>
+                    </div>
+                  </ion-col>
+                  <ion-col sizeXs="12" sizeXl="6" class="p-0-impo">
+                    <ion-item lines="none" class="aviUserDetails">
+                      <ion-avatar slot="start">
+                        <img [src]="_employeeDetails['sAdminProfilePic']">
+                      </ion-avatar>
+                      <ion-label>
+                        <h3>{{_employeeDetails['sAdminFullName']}}</h3>
+                        <p>{{_employeeDetails['sAdminJobTitleName']}}</p>
+                      </ion-label>
+                    </ion-item>
+                    <div class="col-header">
+                      <h1>Manager</h1>
+                    </div>
+                  </ion-col>
+                </ion-row>
+
+                <ng-container *ngIf="!_bCompleted">
+
+                  <ion-row class="ion-margin-top ion-margin-bottom">
+                    <ion-col sizeXs="12" sizeSm="12" sizeMd="6" sizeLg="6" sizeXl="6">
+                      <ion-label>
+                        Discussion Date:
+                      </ion-label>
+                      <input type="date" id="discussion-date" name="discussion-date" class="periodDate" placeholder="Select discussion date" value=""
+                        [(ngModel)]="_discussionNotes[0]['selectedDateCreated']">
+                    </ion-col>
+                    <ion-col sizeXs="12" sizeSm="12" sizeMd="6" sizeLg="6" sizeXl="6">
+                      <ion-label>
+                        Provide Evidence (optional):
+                      </ion-label>
+                      <input type="file" id="sEvidence" name="sEvidence" ng2FileSelect [uploader]="uploader">
+                      <ion-list *ngIf="!isEmpty(_discussionDocs)">
+                        <ion-item lines="none">
+                          <ion-icon name="paper-plane-sharp" size="small" slot="start"></ion-icon>
+                          <ion-label>
+                            <a [href]="_discussionDocs['sUploadPath']" download target="_blank">
+                              {{ _discussionDocs['sFileName'] }}
+                            </a>
+                          </ion-label>
+                        </ion-item>
+                      </ion-list>
+                    </ion-col>
+                  </ion-row>
+
+                  <ion-row>
+                    <ion-col>
+                      <h5 class="text-primary">Summarise Key Elements of Performance Conversation:</h5>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col>
+                      <ion-item lines="none">
+                        <ion-textarea autoGrow="true" id="summary" name="summary" [(ngModel)]="_discussionNotes[0]['sComment']">
+                        </ion-textarea>
+                      </ion-item>
+                    </ion-col>
+                  </ion-row>
+
+                  <ion-row>
+                    <ion-col>
+                      <h5 class="text-primary">Greatest Strengths:</h5>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col>
+                      <ion-item lines="none">
+                        <ion-textarea id="strengths" name="strengths" required [(ngModel)]="_discussionNotes[0]['sStrengths']" autoGrow="true">
+                        </ion-textarea>
+                      </ion-item>
+                    </ion-col>
+                  </ion-row>
+
+                  <ion-row>
+                    <ion-col>
+                      <h5 class="text-primary">Areas requiring improvements:</h5>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col>
+                      <ion-item lines="none">
+                        <ion-textarea id="improvements" name="improvements" required [(ngModel)]="_discussionNotes[0]['sImprovements']" autoGrow="true">
+                        </ion-textarea>
+                      </ion-item>
+                    </ion-col>
+                  </ion-row>
+
+                  <ion-row>
+                    <ion-col>
+                      <h5 class="text-primary">Goals for next review period:</h5>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col>
+                      <ion-item lines="none">
+                        <ion-textarea id="goals" name="goals" required [(ngModel)]="_discussionNotes[0]['sGoals']" autoGrow="true">
+                        </ion-textarea>
+                      </ion-item>
+                    </ion-col>
+                  </ion-row>
+
+                  <ion-row>
+                    <ion-col>
+                      <h5 class="text-primary">{{ _kraCompanySettings.sPerformanceReviewDiscussionRatingNameChange}}
+                      </h5>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col>
+                      <div class="radio cutom-radio-ratings radio-inline-icons">
+                        <label class="d-inline-block inline-icons-outer" *ngFor="let scaleItem of _discussionScaleItems; let iScale = index">
+                          <input name="radioScaleAccuracy-{{iScale}}" type="radio" class="d-none" [value]="scaleItem['PerformanceDiscussionScaleUID']"
+                            [(ngModel)]="_discussionRating['PerformanceDiscussionScaleUID']"
+                            [checked]="scaleItem['PerformanceDiscussionScaleUID'] === _discussionRating['PerformanceDiscussionScaleUID'] ? true : false">
+                          <i class="helper p-relative" *ngIf="scaleItem['iValue'] == -1"> N/A</i>
+                          <i class="helper p-relative" *ngIf="scaleItem['iValue'] != -1">{{ scaleItem['iValue'] }}</i>
+                        </label>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+
+                  <ion-row>
+                    <ion-col>
+                      <h5 class="text-primary">{{ _kraCompanySettings.sPerformanceReviewMotivationNameChange}}</h5>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col>
+                      <div class="cutom-radio-ratings radio-inline-icons">
+                        <label class="d-inline-block inline-icons-outer" *ngFor="let scaleItem of _discussionAccuracyScaleItems; let iScale = index">
+                          <input name="radioScale-{{iScale}}" type="radio" class="d-none" [value]="scaleItem['PerformanceAccuracyScaleUID']"
+                            [(ngModel)]="_discussionRating['PerformanceAccuracyScaleUID']"
+                            [checked]="scaleItem['PerformanceAccuracyScaleUID'] === _discussionRating['PerformanceAccuracyScaleUID'] ? true : false">
+                          <i class="helper p-relative" *ngIf="scaleItem['iValue'] == -1"> N/A</i>
+                          <i class="helper p-relative" *ngIf="scaleItem['iValue'] != -1">{{ scaleItem['iValue'] }}</i>
+                        </label>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ng-container>
+
+                <ng-container *ngIf="_bCompleted">
+                  <div class="card portal-card p-10 p-t-10 p-b-20 animated fadeIn">
+                    <div class="card-body p-10 text-center">
+                      <p class="text-muted"> Your {{_kraCompanySettings['sDiscussionNameChange']}} has already been
+                        completed for
+                        {{ _selectedUser['sFirstName'] }} {{ _selectedUser['sLastName'] }} for the scoring month
+                        {{ _selectedUser['sMonth'] }} {{ _selectedUser['iYear'] }}
+                        <br> and can be viewed within the Performance Review
+                      </p>
+                    </div>
+                  </div>
+                </ng-container>
+              </ion-grid>
+            </ion-col>
+          </ion-col>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-button class="btnRound" shape="round" (click)="goPerformPage()" *ngIf="_employeeView">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-button>
+  <ion-button class="btnRound" shape="round" (click)="cancel()" *ngIf="!_employeeView">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-button>
+  <ion-button class="f-right" shape="round" (click)="savePerformanceDiscussion()" *ngIf="!_employeeView && !_bCompleted">Submit
+  </ion-button>
+</ion-footer>

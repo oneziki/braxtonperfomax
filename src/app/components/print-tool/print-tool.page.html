@@ -1,0 +1,109 @@
+<ng-container *ngIf="isPageVisible">
+  <section class="ion-page higer-z-index">
+    <ion-content [fullscreen]="true">
+      <ion-grid class="printToolGrid">
+        <ion-button class="btn btn-primary btn-mini btn-ptviewBack" (click)="ptViewHide()" *ngIf="showBackButton">
+          <!-- <i class="icofont icofont-arrow-left"></i> -->
+        </ion-button>
+
+        <!-- AdminGeneric -->
+        <ng-container *ngIf="_printerOptions['layout'] === 'AdminGeneric'">
+          <app-pt-layout-admin-generic [_coverData]="_coverData" [_contentData]="_contentData">
+          </app-pt-layout-admin-generic>
+        </ng-container>
+        <!-- PerformanceReviews -->
+        <ng-container *ngIf="_printerOptions['layout'] === 'PerformanceReviews'">
+          <app-pt-layout-performance-reviews [_coverData]="_coverData" [_contentData]="_contentData" (backHandler)="ptViewHide()">
+          </app-pt-layout-performance-reviews>
+        </ng-container>
+        <!-- PerformanceAgreements -->
+        <ng-container *ngIf="_printerOptions['layout'] === 'PerformanceAgreements'">
+          <app-pt-layout-performance-agreements [_coverData]="_coverData" [_contentData]="_contentData" (backHandler)="ptViewHide()">
+          </app-pt-layout-performance-agreements>
+        </ng-container>
+        <!-- EsurveyAssessment -->
+        <ng-container *ngIf="_printerOptions['layout'] === 'EsurveyAssessment'">
+          <app-pt-layout-esurvey-assessment [_coverData]="_coverData" [_contentData]="_contentData">
+          </app-pt-layout-esurvey-assessment>
+        </ng-container>
+        <!-- Threesixty Reports -->
+        <ng-container *ngIf="_printerOptions['layout'] === 'ThreesixtyReport'">
+          <app-pt-layout-threesixty-report [_coverData]="_coverData" [_contentData]="_contentData" (backHandler)="ptViewHide()">
+          </app-pt-layout-threesixty-report>
+        </ng-container>
+        <!-- Period Summary Reports -->
+        <ng-container *ngIf="_printerOptions['layout'] === 'PeriodSummary'">
+          <app-pt-layout-period-summary [_coverData]="_coverData" [_contentData]="_contentData" (backHandler)="ptViewHide()">
+          </app-pt-layout-period-summary>
+        </ng-container>
+        <!-- Swot Analysis Reports -->
+        <ng-container *ngIf="_printerOptions['layout'] === 'SwotReport'">
+          <app-pt-layout-swot-analysis [_coverData]="_coverData" [_contentData]="_contentData" (backHandler)="ptViewHide()">
+          </app-pt-layout-swot-analysis>
+        </ng-container>
+        <!-- Integrated Personal Development Plan -->
+        <ng-container *ngIf="_printerOptions['layout'] === 'IntegratedPDP'">
+          <app-pt-layout-integrated-pdp [_coverData]="_coverData" [_contentData]="_contentData" (backHandler)="ptViewHide()">
+          </app-pt-layout-integrated-pdp>
+        </ng-container>
+        <!-- Personal Development Plan -->
+        <ng-container *ngIf="_printerOptions['layout'] === 'PDP'">
+          <app-pt-layout-pdp [_coverData]="_coverData" [_contentData]="_contentData" (backHandler)="ptViewHide()">
+          </app-pt-layout-pdp>
+        </ng-container>
+        <!-- Survey Assessment -->
+        <ng-container *ngIf="_printerOptions['layout'] === 'SelfAssessmentReportView'">
+          <app-pt-layout-self-assessment [_coverData]="_coverData" [_contentData]="_contentData" (backHandler)="ptViewHide()">
+          </app-pt-layout-self-assessment>
+        </ng-container>
+        <!-- Choose Questionnaire -->
+        <ng-container *ngIf="_printerOptions['layout'] === 'ChooseQuestionnaireReport'">
+          <app-pt-layout-choose-questionnaire [_coverData]="_coverData" [_contentData]="_contentData" (backHandler)="ptViewHide()">
+          </app-pt-layout-choose-questionnaire>
+        </ng-container>
+        <!--Expertise Review Report -->
+        <ng-container *ngIf="_printerOptions['layout'] === 'ExpertiseReviewReport'">
+          <app-pt-layout-expertise-review-report [_coverData]="_coverData" [_contentData]="_contentData" (backHandler)="ptViewHide()">
+          </app-pt-layout-expertise-review-report>
+        </ng-container>
+        <!-- Contribution Scorecard -->
+        <ng-container *ngIf="_printerOptions['layout'] === 'ContributionScorecard'">
+          <app-pt-layout-contribution-scorecard [_coverData]="_coverData" [_contentData]="_contentData" (backHandler)="ptViewHide()"></app-pt-layout-contribution-scorecard>
+        </ng-container>
+        <!-- Company Scorecard -->
+        <ng-container *ngIf="_printerOptions['layout'] === 'CompanyScorecard'">
+          <app-pt-layout-company-scorecard [_coverData]="_coverData" [_contentData]="_contentData" (backHandler)="ptViewHide()"></app-pt-layout-company-scorecard>
+        </ng-container>
+        <!-- Safety Metric -->
+        <ng-container *ngIf="_printerOptions['layout'] === 'SafetyMetric'">
+          <app-pt-layout-safety-metric [_coverData]="_coverData" [_contentData]="_contentData" (backHandler)="ptViewHide()">
+          </app-pt-layout-safety-metric>
+        </ng-container>
+        <!-- Conversation -->
+        <ng-container *ngIf="_printerOptions['layout'] === 'ConversationFeed'">
+          <app-pt-layout-conversation-report [_coverData]="_coverData" [_contentData]="_contentData" (backHandler)="ptViewHide()">
+          </app-pt-layout-conversation-report>
+        </ng-container>
+        <ng-container *ngIf="_printerOptions['layout'] === 'PersonalPortfolio'">
+          <app-pt-layout-personal-portfolio [_coverData]="_coverData" [_contentData]="_contentData" (backHandler)="ptViewHide()">
+          </app-pt-layout-personal-portfolio>
+        </ng-container>
+        <!--Exit Interview Report -->
+        <ng-container *ngIf="_printerOptions['layout'] === 'ExitInterviewReport'">
+          <app-pt-layout-exit-interview-report [_coverData]="_coverData" [_contentData]="_contentData" (backHandler)="ptViewHide()">
+          </app-pt-layout-exit-interview-report>
+        </ng-container>
+        <!--Recruitment Report -->
+        <ng-container *ngIf="_printerOptions['layout'] === 'RecruitmentReport'">
+          <app-pt-layout-recruitment-report [_coverData]="_coverData" [_contentData]="_contentData" (backHandler)="ptViewHide()">
+          </app-pt-layout-recruitment-report>
+        </ng-container>
+      </ion-grid>
+    </ion-content>
+    <ion-footer>
+      <ion-button class="btnRound" shape="round" (click)="ptViewHide()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-footer>
+  </section>
+</ng-container>

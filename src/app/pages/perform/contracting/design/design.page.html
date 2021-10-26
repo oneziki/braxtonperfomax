@@ -1,0 +1,350 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper contractDesignGrid">
+    <ion-row>
+      <ion-col>
+        <ion-text>
+          <h2 class="contentHeader">Performance Contracting</h2>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+    <!--  -->
+    <ion-row>
+      <ion-col size="12">
+        <ion-grid>
+          <ion-row class="userHeader">
+            <ion-col sizeXs="12" sizeXl="6" class="p-0-impo">
+              <ion-item lines="none" class="aviUserDetails" *ngIf="_userProfileData">
+                <ion-avatar slot="start">
+                  <img [src]="_userProfileData['sEmployeeProfileImageUrl']" (error)="_userProfileData['empSrcFail'] = true" *ngIf="_userProfileData['empSrcFail'] !== true">
+                  <ion-icon class="default-img" name="person-circle-outline" *ngIf="_userProfileData['empSrcFail'] === true"></ion-icon>
+                </ion-avatar>
+                <ion-label>
+                  <h3>{{ _userProfileData['sEmployeeName'] }}</h3>
+                  <p>{{_userProfileData['sJobTitleName']}}</p>
+                </ion-label>
+              </ion-item>
+              <div class="col-header">
+                <h1>Employee</h1>
+              </div>
+            </ion-col>
+            <ion-col sizeXs="12" sizeXl="6" class="p-0-impo">
+              <ion-item lines="none" class="aviUserDetails" *ngIf="_userProfileData">
+                <ion-avatar slot="start">
+                  <img [src]="_userProfileData['sAdminProfileImageUrl']" (error)="_userProfileData['managerSrcFail'] = true" *ngIf="_userProfileData['managerSrcFail'] !== true">
+                  <ion-icon class="default-img" name="person-circle-outline" *ngIf="_userProfileData['managerSrcFail'] === true"></ion-icon>
+                </ion-avatar>
+                <ion-label>
+                  <h3>{{ _userProfileData['sAdminFullName'] }}</h3>
+                  <p>{{_userProfileData['sAdminJobTitle']}}</p>
+                </ion-label>
+              </ion-item>
+              <div class="col-header">
+                <h1>
+                  Manager
+                </h1>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+    <!--  -->
+    <ion-row>
+      <ion-col>
+        <h2 class="sectionHeader no-m">Contract Period:
+          <span class="text-lite-charcoal">{{ _userProfileData['agreementPeriod'] }}</span>
+        </h2>
+      </ion-col>
+    </ion-row>
+    <!-- EDIT Agreement -->
+    <ion-row *ngIf="_sRoleToEmployee !== 'Manager'">
+      <ion-col>
+
+        <ion-grid class="busObjOuter" *ngFor="let busObj of _design.busObjectives; let iBusObj = index; let isFirst = first; let isLastBusObj = last">
+          <!-- Business Objective -->
+          <ion-row>
+            <ion-col>
+              <h2 class="sectionHeader no-m">Business Objective: <span class="text-lite-charcoal"> {{
+                  busObj['sObjectivesName'] }} </span></h2>
+            </ion-col>
+          </ion-row>
+          <!-- KRA -->
+          <ng-container *ngFor="let kra of busObj['Kra']; let iKRA = index; let isFirstKRA = first; let isLastKRA = last">
+            <ion-row class="busObjRow busObjRowKRA" *ngIf="iKRA === busObj['activeKra']">
+              <ion-col sizeXs="12" sizeMd="8" class="b-b-1">
+                <strong class="kraHeading">
+                  {{ iKRA + 1 }}. {{ _kraCompanySettings.sKraNameChange }}
+                </strong>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="" class="busObjBadgeList text-right b-b-1">
+                <span class="floorTabs">
+                  <ng-container *ngFor="let kraBtns of busObj['Kra']; let iKraTabBtn = index">
+                    <span class="badgeTab floorTab" [ngClass]="{ 'activeTab': iKraTabBtn === busObj['activeKra'] }" (click)="kraTabChanged(busObj, iKraTabBtn)">{{ iKraTabBtn + 1
+                      }}</span>
+                  </ng-container>
+                </span>
+
+                <ion-button color="primary" size="small" (click)="adjustKRAsCount(busObj, true)" *ngIf="!_bCannotEditAgreement">
+                  +
+                </ion-button>
+                <ion-button color="primary" size="small" (click)="adjustKRAsCount(busObj, false)" *ngIf="!_bCannotEditAgreement">
+                  -
+                </ion-button>
+              </ion-col>
+              <ion-col size="12">
+                <ion-label>Your Contribution</ion-label>
+                <ion-input [(ngModel)]="kra['sKraName']" placeholder="Enter {{ _kraCompanySettings.sKraNameChange }} here" [readonly]="_bCannotEditAgreement">
+                </ion-input>
+              </ion-col>
+              <ion-col size="12">
+
+                <ion-grid class="busObjKPI">
+                  <!-- KPI -->
+                  <ng-container *ngFor="let kpi of kra['Kpi']; let iKPI = index;">
+                    <ion-row class="busObjRow busObjRowKPI" *ngIf="iKPI === kra['activeKpi']">
+                      <ion-col sizeXs="12" sizeMd="6" class="b-b-1">
+                        <strong class="kpiHeading">
+                          {{ iKRA + 1 }}.{{ iKPI + 1 }} {{ _kraCompanySettings.sKpiNameChange }}
+                        </strong>
+                      </ion-col>
+                      <ion-col sizeXs="12" sizeMd="" class="busObjBadgeList text-right b-b-1">
+                        <span class="floorTabs">
+                          <ng-container *ngFor="let kpiBtns of kra['Kpi']; let iKpiTabBtn = index;">
+                            <span class="badgeTab floorTab" [ngClass]="{ 'activeTab': iKpiTabBtn === kra['activeKpi'] }" (click)="kpiTabChanged(kra, iKpiTabBtn)">{{ iKRA + 1 }}.{{
+                              iKpiTabBtn + 1 }}</span>
+                          </ng-container>
+                        </span>
+                        <ion-button color="primary" size="small" (click)="adjustCountKPI(kra, iKRA, true)" *ngIf="!_bCannotEditAgreement">
+                          +
+                        </ion-button>
+                        <ion-button color="primary" size="small" (click)="adjustCountKPI(kra, iKRA, false)" *ngIf="!_bCannotEditAgreement">
+                          -
+                        </ion-button>
+                      </ion-col>
+                      <ion-col size="12">
+                        <ion-label>How will you measure this?</ion-label>
+                        <ion-input [(ngModel)]="kpi['sKpiname']" placeholder="Enter {{ _kraCompanySettings.sKpiNameChange }} here" [readonly]="_bCannotEditAgreement"></ion-input>
+                      </ion-col>
+                      <ion-col size="12">
+                        <ion-row>
+                          <ion-col sizeXs="12" sizeMd="">
+                            <strong class="kpiHeading">
+                              {{ _kraCompanySettings['sScaleNameChange'] }}
+                            </strong>
+                            <ion-list class="busObjBadgeList">
+                              <ion-item lines="none" *ngFor="let scale of kpi['scales']">
+                                <ion-badge slot="start" *ngIf="scale['fScaleScoreValue'] === -1">N/A</ion-badge>
+                                <ion-badge slot="start" *ngIf="scale['fScaleScoreValue'] != -1">
+                                  {{ scale['fScaleScoreValue'] }}
+                                </ion-badge>
+                                <ion-input [(ngModel)]="scale['sScaleDescription']" required placeholder="{{ scale.placeholder }}" [readonly]="_bCannotEditAgreement"></ion-input>
+                              </ion-item>
+                            </ion-list>
+                          </ion-col>
+                          <ion-col sizeXs="12" sizeMd="6">
+                            <strong class="kpiHeading">
+                              Weight
+                            </strong>
+                            <ion-item lines="none" class="kpiWeightPicker">
+                              <ion-button color="primary" slot="start" class="btnLeft" (click)="setKPIWeight(kra, iKPI, false)" *ngIf="!_bCannotEditAgreement">
+                                -
+                              </ion-button>
+                              <ion-input [(ngModel)]="kpi['fWeight']" type="number"></ion-input>
+                              <ion-button color="primary" slot="end" class="btnRight" (click)="setKPIWeight(kra, iKPI, true)" *ngIf="!_bCannotEditAgreement">
+                                +
+                              </ion-button>
+                            </ion-item>
+
+                            <strong class="kpiHeading m-t-10">
+                              {{ _kraCompanySettings['sKpiTargetsNameChange'] }}
+                            </strong>
+                            <ion-item lines="none">
+                              <ion-textarea [(ngModel)]="kpi['sKpiTargetHTML']" placeholder="Enter {{ _kraCompanySettings['sKpiTargetsNameChange'] }} here" autoGrow="true"
+                                [readonly]="_KRAStatus === 'bView'">
+                              </ion-textarea>
+                            </ion-item>
+                          </ion-col>
+                          <ion-col size="12">
+                            <strong class="kpiHeading">
+                              {{ _kraCompanySettings.sKpiCommentsNameChange }}
+                            </strong>
+                            <ion-item lines="none">
+                              <!-- If there are comments already linked to kpi -->
+                              <ng-container *ngIf="kpi && kpi['employeeContractComment'] && kpi['employeeContractComment'].length > 0">
+                                <ng-container *ngFor="let comment of kpi['employeeContractComment']">
+                                  <ion-textarea autoGrow="true" [(ngModel)]="comment['sComment']" [readonly]="_KRAStatus === 'bView'">
+                                  </ion-textarea>
+                                </ng-container>
+                              </ng-container>
+                              <ng-container *ngIf="(kpi && kpi['employeeContractComment'] && kpi['employeeContractComment'].length === 0) || !kpi['employeeContractComment']">
+                                <ion-textarea autoGrow="true" [(ngModel)]="kpi['sComment']" placeholder="Enter {{ _kraCompanySettings.sKpiCommentsNameChange }} here"
+                                  [readonly]="_KRAStatus === 'bView'">
+                                </ion-textarea>
+                              </ng-container>
+                            </ion-item>
+                          </ion-col>
+                        </ion-row>
+                      </ion-col>
+                    </ion-row>
+                  </ng-container>
+                </ion-grid>
+
+              </ion-col>
+            </ion-row>
+          </ng-container>
+        </ion-grid>
+
+      </ion-col>
+    </ion-row>
+    <!-- VIEW | COMPLETE Agreement -->
+    <ng-container *ngIf="( _KRAStatus === 'bView' || _KRAStatus === 'bComplete' ) && _sRoleToEmployee === 'Manager'">
+      <ion-grid class="busObjOuter {{ _KRAStatus }}" *ngFor="let busObj of _design.busObjectives; let iBusObj = index;">
+        <!-- Business Objective -->
+        <ion-row>
+          <ion-col>
+            <h2 class="sectionHeader no-m">Business Objective: <span class="text-lite-charcoal"> {{
+                busObj['sObjectivesName'] }} </span></h2>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <!-- KRA -->
+            <ng-container *ngFor="let kra of busObj['Kra']; let iKRA = index; let isFirstKRA = first; let isLastKRA = last">
+              <ion-row class="busObjRow busObjRowKRA">
+                <ion-col size="12">
+                  <strong class="text-primary">
+                    {{ _kraCompanySettings.sKraNameChange }}:
+                    <span class="text-lite-charcoal fw-400">{{ kra['sKraName'] }}</span>
+                  </strong>
+                </ion-col>
+                <ion-col size="12">
+
+                  <ion-grid class="busObjKPI1">
+                    <!-- KPI -->
+                    <ng-container *ngFor="let kpi of kra['Kpi']; let iKPI = index;">
+                      <ion-row class="busObjRow busObjRowKPI">
+
+                        <ion-col sizeXs="12" sizeMd="6">
+                          <ion-col size="12">
+                            <strong class="text-primary">
+                              {{ _kraCompanySettings.sKpiNameChange }} {{ iKPI + 1 }}:
+                              <span class="text-lite-charcoal fw-400">{{ kpi['sKpiname'] }}</span>
+                            </strong>
+                          </ion-col>
+                          <ion-col>
+                            <strong class="text-primary">
+                              Weight:
+                              <span class="text-lite-charcoal fw-400">{{ kpi['fWeight'] }}%</span>
+                            </strong>
+                          </ion-col>
+                          <ion-col>
+                            <strong class="text-primary">
+                              {{ _kraCompanySettings['sKpiTargetsNameChange'] }}:
+                              <span class="text-lite-charcoal fw-400">{{ _kraCompanySettings['sKpiTarget'] }}</span>
+                            </strong>
+                          </ion-col>
+                          <ion-col size="12">
+                            <br>
+                          </ion-col>
+                        </ion-col>
+
+                        <ion-col sizeXs="12" sizeMd="6">
+                          <ion-row class="busObjRow busObjRowKRA">
+                            <ion-col size="12">
+                              <strong class="text-primary">
+                                {{ _kraCompanySettings.sKpiCommentsNameChange }}
+                              </strong>
+                            </ion-col>
+                            <ion-col>
+                              <ng-container *ngIf="kpi && kpi['employeeContractComment'] && kpi['employeeContractComment'].length > 0 ">
+                                <ng-container *ngFor="let comment of kpi['employeeContractComment']">
+                                  <p class="text-lite-charcoal">
+                                    {{ comment['sComment'] }}
+                                    <small><i><br>- {{ comment['sFullName'] }} on {{ comment['sCommentDate']
+                                        }}</i></small>
+                                    <br><br>
+                                  </p>
+                                </ng-container>
+                              </ng-container>
+                              <ng-container *ngIf="kpi && kpi['managerContractComment'] && kpi['managerContractComment'].length > 0 &&  _sRoleToEmployee === 'Manager'">
+                                <ng-container *ngFor="let comment of kpi['managerContractComment']">
+                                  <ion-item lines="none">
+                                    <ion-textarea autoGrow="true" [(ngModel)]="comment['sComment']" [disabled]="_KRAStatus === 'bView'" autoGrow="true"
+                                      placeholder="Enter manager {{ _kraCompanySettings.sKpiCommentsNameChange }} here">
+                                    </ion-textarea>
+                                  </ion-item>
+                                </ng-container>
+                              </ng-container>
+
+                              <ng-container *ngIf="kpi && kpi['managerContractComment'] && kpi['managerContractComment'].length > 0 && _sRoleToEmployee !== 'Manager'">
+                                <ng-container *ngFor="let comment of kpi['managerContractComment']">
+                                  <p class="text-lite-charcoal">
+                                    {{ comment['sComment'] }}
+                                    <small><i><br>- {{ comment['sFullName'] }} on {{ comment['sCommentDate']
+                                        }}</i></small>
+                                    <br><br>
+                                  </p>
+                                </ng-container>
+                              </ng-container>
+
+                              <ng-container *ngIf="kpi && kpi['managerContractComment'] && kpi['managerContractComment'].length == 0 && _sRoleToEmployee == 'Manager'">
+                                <ion-item lines="none">
+                                  <ion-textarea *ngIf="_KRAStatus === 'bView'" [(ngModel)]="kpi['sComment']" disabled autoGrow="true" placeholder="No manager comments added">
+                                  </ion-textarea>
+                                  <ion-textarea *ngIf="_KRAStatus !== 'bView'" [(ngModel)]="kpi['sComment']" autoGrow="true"
+                                    placeholder="Enter manager {{ _kraCompanySettings.sKpiCommentsNameChange }} here">
+                                  </ion-textarea>
+                                </ion-item>
+                              </ng-container>
+                            </ion-col>
+                          </ion-row>
+                        </ion-col>
+                      </ion-row>
+                    </ng-container>
+                  </ion-grid>
+
+                </ion-col>
+              </ion-row>
+            </ng-container>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+    </ng-container>
+
+  </ion-grid>
+</ion-content>
+
+
+
+<ion-footer>
+  <ion-row>
+    <ion-col size="12">
+      <div class="alert alert-primary icons-alert" role="alert" *ngIf="_sErrorMessage.length > 0">
+        <ion-button class="close" type="button" (click)="_sErrorMessage = []">
+          <ion-icon name="close-circle-outline"></ion-icon>
+        </ion-button>
+        <ng-container *ngFor="let e of _sErrorMessage;">
+          <strong>{{ e }}</strong>
+          <br>
+        </ng-container>
+      </div>
+    </ion-col>
+  </ion-row>
+  <ng-container *ngIf="_sErrorMessage.length === 0">
+    <ion-row>
+      <ion-col size="12">
+        <ion-button class="btnRound" shape="round" (click)="goContractPeriod()">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+        <ion-button class="btnRound" shape="round" (click)="printKraContratingPDF()">
+          <ion-icon name="print"></ion-icon>
+        </ion-button>
+        <ion-button class="f-right" shape="round" *ngIf="_KRAStatus !== 'bView'" (click)="savePerformanceAgreement(true)">Save as Draft</ion-button>
+        <ion-button class="f-right" shape="round" *ngIf="_KRAStatus !== 'bView'" (click)="validateProfile()">{{_submitButton['text']}}</ion-button>
+
+      </ion-col>
+    </ion-row>
+  </ng-container>
+
+</ion-footer>

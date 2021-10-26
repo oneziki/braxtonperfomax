@@ -1,0 +1,67 @@
+
+<ion-grid *ngIf="data">
+  <ion-row class="card-stairway-wrapper" myMatchHeight="card-stair">
+
+  <ng-container *ngIf="!_noData; else noData">
+    <ion-col sizeXs="12" sizeMd="4" class="left-col">
+      <ng-container *ngFor="let listItem of data['data'][0]; let iListItem = index">
+        <div class="card card-stair text-white bg-primary pointer animated"
+        [ngClass]="{'headShake': _mouseOveredPre === iListItem}"
+        (mouseover)="_mouseOveredPre = iListItem"
+        (mouseout)="_mouseOveredPre = -1" (click)="open(listItem)">
+        <div class="card-body">
+          <h5 class="card-title text-white">
+            {{ listItem['sTitle'] }}
+          </h5>
+        </div>
+        <!-- <i class="icofont icofont-caret-left"></i> -->
+      </div>
+    </ng-container>
+  </ion-col>
+  <ion-col class="mobile-left-col show-mobile">
+    <ion-row style="text-align: center">
+      <i class="icofont icofont-caret-down" style="margin: 0 auto;"></i>
+    </ion-row>
+  </ion-col>
+    <ion-col sizeXs="12" sizeMd="4" class="b-primary">
+      <div class="card card-center">
+        <div class="card-body text-center">
+          <img class="coded-inner-navbar-img img-radius" alt="Hannes Visagie Avatar" 
+            [src]="data['data'][1]['propic']">
+          <h5 class="card-title text-slate-impo">
+            {{ data['data'][1]['sHeading'] }}
+          </h5>
+          <small class="card-text text-slate-impo d-block-impo text-center">
+            {{ data['data'][1]['data'][0]['label'] }}
+          </small>
+        </div>
+      </div>
+    </ion-col>
+    <ion-col class="mobile-left-col show-mobile">
+      <ion-row style="text-align: center">
+        <i class="icofont icofont-caret-up" style="margin: 0 auto;"></i>
+      </ion-row>
+    </ion-col>
+    <ion-col sizeXs="12" sizeMd="4" class="right-col">
+      <ng-container *ngFor="let listItem of data['data'][2]; let iListItem = index">
+        <div class="card card-stair text-white bg-primary pointer animated"
+        [ngClass]="{'headShake': _mouseOveredPost === iListItem, 'pointer': data['visualSettings'][filter['viewPrefix'] + 'bGraphClickThrough']}"
+        (mouseover)="_mouseOveredPost = iListItem"
+        (mouseout)="_mouseOveredPost = -1" (click)="open(listItem)">
+        <div class="card-body">
+          <h5 class="card-title text-white">
+            {{ listItem['sTitle'] }}
+          </h5>
+        </div>
+        <!-- <i class="icofont icofont-caret-right"></i> -->
+      </div>
+      </ng-container>
+    </ion-col>
+  </ng-container>
+
+  <ng-template #noData>
+    <strong class="noDataDisplay">*No Data To Display</strong>
+  </ng-template>
+
+  </ion-row>
+</ion-grid>

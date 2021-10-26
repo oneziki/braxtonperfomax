@@ -1,0 +1,709 @@
+$menuBreakPoint: 768px;
+
+.appMenuBG {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('https\:\/\/barrickstaging\.pmaxonline\.com\/performax_res\/setup\/background_0104ea2d-cb60-44a7-b0f4-d21666eeef71\.jpg')
+    no-repeat center center;
+  background-size: cover;
+}
+@media (max-width: $menuBreakPoint) {
+  ion-menu {
+    --width: 100%;
+    width: 100%;
+  }
+}
+@media (min-width: $menuBreakPoint) {
+  ion-menu {
+    --width: 75vw;
+    width: 75vw;
+  }
+}
+@media (min-width: 1250px) {
+  ion-menu {
+    --width: 45vw;
+    width: 45vw;
+  }
+}
+@media (min-width: 1366px) {
+  .menuMobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .menuMobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1450px) {
+  ion-menu {
+    // --width: 15vw;
+    // width: 15vw;
+    &.noExpandedPanel {
+      --width: 15vw;
+      width: 15vw;
+    }
+  }
+}
+
+.appMenu {
+  transition: all 1s ease;
+
+  &.auth,
+  &.authlogin {
+    display: none !important;
+  }
+
+  .appMenuGrid {
+    background: var(--bg-grey);
+    height: 100vh;
+    width: 100%;
+    overflow-y: auto;
+    padding: 0;
+    margin-right: 0;
+  }
+  @media (min-width: $menuBreakPoint) {
+    .aviGrid {
+      .tabBarWrapper {
+        display: none;
+      }
+      .default-img {
+        margin-top: 25px;
+        height: 150px;
+        width: 150px;
+        border-radius: 100%;
+        object-fit: fill !important;
+        color: var(--lite-grey) !important;
+      }
+    }
+    .appMenuGrid {
+      min-height: 100vh;
+      .appMenuGridLeft {
+        min-height: 100vh;
+        .appUserHeading {
+          display: none;
+        }
+      }
+      .appMenuGridRight {
+        // min-height: 100vH;
+        .nav-footer-logo {
+          display: none;
+        }
+        .app-team-grid {
+          display: none;
+        }
+      }
+    }
+  }
+  @media (max-width: $menuBreakPoint) {
+    .aviGrid {
+      border-bottom: 1px solid var(--bg-grey);
+
+      ion-toolbar {
+        --background: transparent;
+
+        .tabBar {
+          ion-label {
+            color: var(--primary-alt);
+            font-size: 12px;
+            font-weight: 900;
+          }
+          ion-button {
+            width: 30%;
+            height: 30px;
+          }
+          .tabMenuActive {
+            border-radius: 10px;
+            background: var(--primary-alt);
+            ion-label {
+              color: var(--primary);
+            }
+          }
+        }
+      }
+      .default-img {
+        color: var(--lite-grey) !important;
+        height: 100px;
+        width: 100px;
+      }
+    }
+    .appAvi {
+      height: 100px;
+      width: 100px;
+    }
+    .menuMobile {
+      .tileOverlay {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: var(--primary);
+        opacity: 0.3;
+        z-index: 5;
+      }
+    }
+    .appMenuGrid {
+      background: var(--primary);
+      min-height: 100vh;
+
+      ion-item {
+        --padding-start: 0;
+        --padding-end: 0;
+        --inner-padding-start: 0;
+        --inner-padding-end: 0;
+        border-bottom: 0;
+        border-radius: 10px;
+        text-align: center;
+        background-size: cover;
+        padding: 0;
+        .actionBadge {
+          position: absolute;
+          top: 5px;
+          right: 5px;
+          height: 24px;
+          width: 24px;
+          font-size: 20px;
+          line-height: 18px;
+          color: var(--primary-alt);
+        }
+
+        .actionBadgeGt9 {
+          position: absolute;
+          top: 5px;
+          right: 5px;
+          height: 24px;
+          font-size: 20px;
+          line-height: 18px;
+          color: var(--primary-alt);
+        }
+        ion-label {
+          z-index: 10;
+          margin: 25% auto;
+          p {
+            color: var(--primary-alt);
+          }
+        }
+      }
+      .appMenuGridLeft {
+        .nav-footer-logo {
+          display: block;
+        }
+      }
+      .appMenuGridRight {
+        background: var(--primary);
+        overflow-y: hidden;
+
+        .appUserHeading {
+          display: block;
+        }
+        .nav-footer-logo {
+          transform: none;
+          position: relative;
+          background: var(--primary);
+          filter: none;
+          opacity: 1;
+          margin: 0;
+          max-height: 100px;
+          width: auto;
+          padding: 15px 5px;
+          width: 100vw;
+          left: 20%;
+          right: 20%;
+          bottom: -10px;
+          padding-top: 0px;
+          // .menu-logo {
+          //   display: none;
+          // }
+          .menu-logo {
+            // display: none;
+          }
+          strong {
+            color: var(--bg-grey);
+          }
+        }
+
+        .app-team-grid {
+          img {
+            object-fit: fill !important;
+            border-radius: 100%;
+            width: 11vw;
+            height: 11vw;
+          }
+          .default-img {
+            border-radius: 100%;
+            width: 11vw;
+            height: 11vw;
+            color: var(--lite-grey);
+          }
+          .app-team-header {
+            margin-left: 15px;
+            font-size: clamp(15px, 4vw, 18px);
+            font-weight: 600;
+            color: var(--bg-grey) !important;
+          }
+          ion-label {
+            font-size: clamp(12px, 3vw, 16px);
+            font-weight: 400;
+            color: var(--bg-grey) !important;
+          }
+        }
+      }
+    }
+  }
+  @media (max-width: 1250px) {
+    .appMenuGrid {
+      // background: var(--primary);
+      min-height: 100vh;
+    }
+  }
+  // &.noExpandedPanel {
+  //   background: red;
+  //   min-width: 250px;
+  //   max-width: 275px;
+  // }
+}
+
+.appAvi {
+  margin-top: 25px;
+  height: 150px;
+  width: 150px;
+  border-radius: 100%;
+  border: 2px solid var(--charcoal);
+  object-fit: fill !important;
+}
+
+#inbox-list {
+  width: 85%;
+  margin: 10px auto 75px;
+
+  .appMenuIcon {
+    max-width: 35px;
+    margin-right: 10px;
+  }
+  ion-item {
+    cursor: pointer;
+  }
+  .menuHomeItem {
+    transition: all 0.7s ease;
+    margin: 0;
+    padding: 8px 0;
+
+    ion-label {
+      margin: 5px auto;
+    }
+    &.menuActive {
+      border-radius: 0;
+      border: none;
+      background: var(--bg-grey);
+
+      ion-icon,
+      ion-item,
+      ion-label,
+      ion-label p {
+        color: var(--lite-charcoal);
+        font-weight: 600;
+      }
+      img {
+        filter: brightness(0.5);
+        object-fit: fill !important;
+      }
+      .icofont-appPage {
+        color: var(--lite-charcoal);
+      }
+    }
+    .icofont-appPage {
+      color: var(--bg-grey);
+    }
+  }
+
+  ion-item,
+  ion-label,
+  ion-label p {
+    color: var(--bg-grey);
+    font-weight: 400;
+  }
+}
+
+.appUserHeading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--primary);
+  color: var(--bg-grey);
+
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 20px;
+  margin: 0;
+  padding: 50px 10px 0;
+  height: 150px;
+
+  small {
+    font-size: 18px;
+    font-weight: 400;
+  }
+
+  ion-button {
+    background: var(--primary-light);
+    margin-top: 10px;
+    border-radius: 3px;
+  }
+}
+
+.secondButton {
+  margin-left: 5px;
+  // display: none;
+}
+
+@media only screen and (max-width: 456px) {
+ .secondButton ion-button {
+  //  display: none !important;
+   background: red;
+ }
+}
+
+.secondButton ion-button {
+  background: var(--primary-light);
+  border-radius: 3px;
+
+}
+
+.ion-button-end ion-button {
+  width: 10% !important;
+  margin-right: 25px;
+}
+
+ion-menu {
+  border: 0;
+  min-width: 250px;
+
+  ion-list {
+    background: transparent !important;
+  }
+
+  ion-header {
+    padding: 10px;
+    background-color: var(--dv-background-accent-dark);
+
+    img {
+      width: 50px;
+      object-fit: fill !important;
+    }
+
+    p {
+      padding-top: 10px;
+      line-height: 24px;
+    }
+  }
+
+  ion-item {
+    color: var(--bg-grey);
+    font-weight: 600;
+    border-bottom: 1px solid var(--bg-grey);
+    padding: 8px 5px;
+
+    ion-icon {
+      color: var(--bg-grey);
+      font-size: 30px;
+      margin-right: 5px;
+    }
+  }
+}
+
+.nav-footer-logo {
+  position: absolute;
+  bottom: 2px;
+  margin: 5px 10px 0;
+  opacity: 0.5;
+  left: 45%;
+  transform: translateX(-50%);
+  min-width: 165px;
+
+  img {
+    max-height: 55px;
+    max-width: 65%;
+    margin: 0 auto;
+    // filter: grayscale(1);
+    object-fit: fill !important;
+  }
+  a {
+    color: var(--bg-grey);
+    margin-bottom: 2px;
+  }
+  strong {
+    color: var(--bg-grey);
+  }
+}
+
+ion-menu-button {
+  color: var(--primary-alt);
+}
+
+// ------------------------------------ //
+.homeHeader {
+  height: 150px;
+  z-index: 999;
+
+  ion-toolbar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    --background: var(--primary);
+  }
+
+  .tabBar {
+    --background: var(--primary);
+    text-align: end;
+
+    ion-label {
+      color: #f6f8fa;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    ion-button {
+      width: 29%;
+      max-height: 30px;
+    }
+    .tabMenuActive {
+      border-radius: 10px;
+      background: #f6f8fa;
+      ion-label {
+        color: var(--primary);
+      }
+    }
+    @media (max-width: $menuBreakPoint) {
+      text-align: right;
+      ion-button {
+        width: auto;
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+ion-tab-bar {
+  border: 0;
+}
+
+.humBurgerMobile {
+  padding: 0 !important;
+  ion-buttons {
+    float: right;
+  }
+}
+
+@media (max-width: $menuBreakPoint) {
+  .homeHeader {
+    text-align: center;
+  }
+  .appUserHeading {
+    text-align: left;
+    position: relative;
+    height: auto;
+    font-size: 18px;
+    padding: 30px 10px 0;
+
+    small {
+      font-size: 14px;
+      line-height: 10px !important;
+    }
+  }
+  ion-item {
+    font-size: 14px;
+    padding: 5px;
+    ion-icon {
+      font-size: 20px;
+    }
+  }
+  #inbox-list {
+    ion-label {
+      text-align: center;
+    }
+  }
+  .mdMenuItem {
+    display: none;
+  }
+  .smMenuItem {
+    display: inline;
+  }
+}
+
+.appMenuGridRowStyle {
+  height: 100%; 
+}
+
+.nav-footer-logo {
+  margin-bottom: 15px;
+}
+
+@media screen and (max-width: 420px) {
+  .appMenuGridRowStyle{
+    height: 72% !important;
+  }  
+}
+
+@media (min-width: $menuBreakPoint) {
+  .mdMenuItem {
+    display: inline;
+  }
+  .smMenuItem {
+    display: block;
+  }
+}
+
+@media (max-width: $menuBreakPoint) {
+  .menuDesk {
+    display: block;
+  }
+}
+
+@media (max-width: 767px) {
+  .menuDesk {
+    display: none;
+  }
+  .appMenuGridRight .appUserHeading {
+    display: none !important;
+  }
+}
+
+@media (min-width: $menuBreakPoint) and (width: 1024px) and (width: 1366px) {
+  .menuMobile {
+    display: none !important;
+  }
+}
+
+@media only screen and (max-width: 1535px) {
+  .userJobTitle {
+    font-size: 16px !important;
+  }
+}
+
+@media only screen and (max-width: 1535px) {
+  .homeHeader {
+    font-size: 16px !important;
+  }
+}
+
+@media only screen and (max-width: 1629px) {
+  .homeHeader ion-button .tabMenuActive {
+    width: 20%;
+  }
+}
+
+@media only screen and (min-width: 4000px) {
+  .secondButton {
+    display: none !important;
+  }
+}
+
+@media only screen and (max-width: 4000px) {
+  .appUserHeading {
+    // padding-top: calc(3% + 33px) !important;
+    .userJobTitle {
+      line-height: 0.1 !important;
+    }
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .logout-button-end {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 768px) and (width: 768px) {
+  .appMenuGrid .menuMobile{
+    display: none;
+  }
+
+  .mobile-view-log-out {
+    float: right !important;
+  }
+  .menuMobile ion-row {
+    height: 135px;
+    ion-item {
+      height: 120px;
+    }
+    .appHome .rPanelWrapper {
+      margin: 0 auto 0;
+    }
+  }
+}
+
+@media only screen and (max-width: 770px) {
+  .tabBarWrapper {
+    border-bottom: 1px solid var(--bg-grey);
+  }
+}
+
+@media only screen and (max-width: 770px) {
+  .homeHeader .tabBar ion-button {
+    width: 15% !important;
+    margin-right: 10px;
+    margin-left: 10px;
+    ion-label {
+      font-size: 12px !important;
+      font-weight: 900;
+    }
+  }
+}
+
+@media only screen and (max-width: 770px) {
+  .appAvi {
+    margin: 0;
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media only screen and (min-width: 771px) {
+  .mobile-view-log-out {
+    display: none !important;
+  }
+}
+
+@media only screen and (max-width: 1629px) {
+  .homeHeader .tabBar ion-button {
+    width: 23%;
+  }
+}
+
+@media only screen and (max-width: 1629px) {
+  .homeHeader .tabBar .tabMenuActive ion-button {
+    border-radius: 10px !important;
+    background: #f6f8fa !important;
+    width: 23% !important;
+  }
+}
+
+@media (max-width: 1366px) {
+  .appMenuGridRight .rPanelWrapper .rPanelHeading {
+    display: none;
+  }
+}
+@media screen and (min-width: 1239px) {
+  ion-menu{
+    --width: 75vw;
+    width: 75vw;
+  }
+  .appUserHeading {
+    font-size: var(--fs-max);
+    .userJobTitle {
+      font-size: var(--fs-xmin);
+    }
+  }
+}
+
+@media only screen and (max-width: 1450px) {
+  .appMenuGridRow {
+    height: 100%;
+  }
+}

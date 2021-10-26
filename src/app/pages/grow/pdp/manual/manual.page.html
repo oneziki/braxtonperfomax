@@ -1,0 +1,278 @@
+<ion-content [fullscreen]="true">
+
+  <ion-grid class="contentPageWrapper">
+    <ng-container *ngIf="!_bDisplayNoData">
+      <ion-row>
+        <ion-col size="12">
+          <ion-grid>
+            <ion-row class="userHeader" *ngIf="_bManager">
+              <ion-col sizeXs="12" sizeXl="6" class="p-0-impo">
+                <ion-item lines="none" class="aviUserDetails" [ngClass]="{'opacity': _bManager }">
+                  <ion-avatar slot="start">
+                    <img [src]="_performUser['sProfilePic']">
+                  </ion-avatar>
+                  <ion-label>
+                    <h3>{{ _performUser['sFullName'] }}</h3>
+                    <p>{{_performUser['sJobTitleName']}}</p>
+                  </ion-label>
+                </ion-item>
+                <div class="col-header">
+                  <h1>Employee</h1>
+                </div>
+              </ion-col>
+              <ion-col sizeXs="12" sizeXl="6" class="p-0-impo">
+                <ion-item lines="none" class="aviUserDetails" *ngIf="_sessionUser">
+                  <ion-avatar slot="start">
+                    <img [src]="_sessionUser['profilePhoto']">
+                  </ion-avatar>
+                  <ion-label>
+                    <h3>{{ _sessionUser['sFullName'] }}</h3>
+                    <p>{{_sessionUser['sJobTitle']}}</p>
+                  </ion-label>
+                </ion-item>
+                <div class="col-header">
+                  <h1>
+                    Manager
+                  </h1>
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-text>
+                  <h2 class="contentHeader">
+                    Personal Development Plan
+                    <ion-button color="primary" size="small" (click)="adjustPDPCount(true,0)" *ngIf="!_bManager">
+                      +
+                    </ion-button>
+                  </h2>
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-col>
+      </ion-row>
+      <!--  -->
+      <ion-grid class="busObjOuter" *ngIf="!_bisLoading">
+        <ion-row>
+          <ion-col>
+            <strong class="busObjHeader">
+              Complete Personal Development Plan
+            </strong>
+          </ion-col>
+        </ion-row>
+        <!-- pdp -->
+        <ng-container *ngFor="let pdp of _pdpProfile; let iPDP = index;">
+          <ng-container *ngIf="iPDP === _iActivePDP">
+            <ion-row class="busObjRow busObjRowKRA">
+              <ion-col sizeXs="12" sizeMd="8" class="b-b-1">
+                <strong class="text-primary fs-16">
+                  {{ iPDP + 1 }}.{{getTabName(pdp['sDevelopmentPriority']) }}
+                </strong>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="" class="busObjBadgeList text-right b-b-1">
+                <span class="floorTabs">
+                  <ng-container *ngFor="let pdpBtns of _pdpProfile; let iPDPTabBtn = index">
+                    <span class="badgeTab floorTab" [ngClass]="{ 'activeTab': iPDPTabBtn === _iActivePDP }" (click)="pdpTabChanged( iPDPTabBtn)">{{ iPDPTabBtn + 1
+                      }}</span>
+                  </ng-container>
+                </span>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col sizeXs="12" sizeMd="2">
+                <ion-label>
+                  <strong>{{ _kraCompanySettings.sPDPDevelopmentNeedChange }}</strong>
+                </ion-label>
+              </ion-col>
+              <ion-col>
+                <ion-item lines="none">
+                  <ion-input [(ngModel)]="pdp['sDevelopmentPriority']" placeholder="Enter {{  _kraCompanySettings.sPDPDevelopmentNeedChange }} here" [disabled]="pdp['bView']">
+                  </ion-input>
+                  <ion-button color="danger" size="small" slot="end" (click)="adjustPDPCount(false,iPDP)" *ngIf="!pdp['bView']">
+                    <ion-icon name="close-circle-outline" class="fs-24">
+                    </ion-icon>
+                  </ion-button>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col sizeXs="12" sizeMd="2">
+                <ion-label>
+                  <strong>{{ _kraCompanySettings.sPDPActivitiesChange }}</strong>
+                </ion-label>
+              </ion-col>
+              <ion-col>
+                <ion-item lines="none">
+                  <ion-input [(ngModel)]="pdp['sDescription']" placeholder="Enter {{  _kraCompanySettings.sPDPActivityDescriptionChange }} here" [disabled]="pdp['bView']">
+                  </ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col sizeXs="12" sizeMd="2">
+                <ion-label>
+                  <strong>{{ _kraCompanySettings.sPDPDueDateChange }}</strong>
+                </ion-label>
+              </ion-col>
+              <ion-col>
+                <ion-item lines="none">
+                  <input type="date" id="from-date" name="from-date" class="periodDate" displayFormat="MM DD YY" placeholder="Select {{_kraCompanySettings.sPDPDueDateChange}}"
+                    value="" [(ngModel)]="pdp['dPeriodOfImprovementEnd']" [disabled]="pdp['bView']">
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col sizeXs="12" sizeMd="2">
+                <ion-label>
+                  <strong>{{ _kraCompanySettings.sPDPPriorityChange }}</strong>
+                </ion-label>
+              </ion-col>
+              <ion-col>
+                <ion-item lines="none">
+                  <ion-select [interfaceOptions]='{ showBackdrop: false }' interface="popover" name="sPriority" id="sPriority" [(ngModel)]="pdp.sPriority" [disabled]="pdp['bView']"
+                    placeholder="Please Select {{ _kraCompanySettings.sPDPPriorityChange }}">
+                    <ion-select-option *ngFor="let priority of _pdpPriority" [value]="priority.label">
+                      {{ priority.label }}
+                    </ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row *ngIf="!_bManager">
+              <ion-col sizeXs="12" sizeMd="2">
+                <ion-label>
+                  <strong>{{ _kraCompanySettings.sPDPEmployeeStatusChange }}</strong>
+                </ion-label>
+              </ion-col>
+              <ion-col>
+                <ion-item lines="none">
+                  <ion-textarea class="text-lite-grey" value="New" readonly="true">
+                  </ion-textarea>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ng-container *ngIf="_bManager">
+              <ion-row>
+                <ion-col sizeXs="12" sizeMd="2">
+                  <ion-label>
+                    <strong>{{ _kraCompanySettings.sPDPManagerStatusChange }}</strong>
+                  </ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-item lines="none">
+                    <ion-select [interfaceOptions]='{ showBackdrop: false }' interface="popover" name="sAcceptStatus" id="sAcceptStatus" [(ngModel)]="pdp.sAcceptStatus"
+                      placeholder="Please Select {{ _kraCompanySettings.sPDPManagerStatusChange }}">
+                      <ion-select-option *ngFor="let options of _pdpApproveOptions" [value]="options.label">
+                        {{ options.label }}
+                      </ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ng-container>
+
+            <!--EMPLOYEE COMMENTS -->
+            <ng-container *ngIf="!_bManager pdp['comments'].length > 0">
+              <ng-container *ngFor="let comment of pdp['comments']">
+                <ng-container *ngIf="comment['bEditComment'] == 0 || comment['bEditComment'] == 1 && pdp.sAcceptStatus == 'Declined'">
+                  <ion-row>
+                    <ion-col sizeXs="12" sizeMd="2">
+                      <ion-label>
+                        <strong>{{ _kraCompanySettings.sPDPEmployeeCommentsChange }}</strong>
+                      </ion-label>
+                    </ion-col>
+                    <ion-col>
+                      <ion-item lines="none">
+                        <p>
+                          <b> {{ comment.sCommentBy }} <small>( {{comment.dCommentDate }} )</small> </b>
+                          {{ comment.sComment}}
+                        </p>
+                      </ion-item>
+                    </ion-col>
+                  </ion-row>
+                </ng-container>
+                <ng-container *ngIf="pdp['bEditComment'] === 0 || comment['bEditComment'] == 1 && pdp.sAcceptStatus == 'Declined'">
+                  <ion-col sizeXs="12" sizeMd="2">
+                    <ion-label>
+                      <strong>{{ _kraCompanySettings.sPDPEmployeeCommentsChange }}</strong>
+                    </ion-label>
+                  </ion-col>
+                  <ion-col>
+                    <ion-item lines="none">
+                      <ion-textarea [(ngModel)]="comment['sComment']" autoGrow="true" placeholder="Enter {{ _kraCompanySettings.sPDPEmployeeCommentsChange }} here">
+                      </ion-textarea>
+                    </ion-item>
+                  </ion-col>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+            <ng-container *ngIf="!_bManager && pdp['comments'] && !pdp['comments'].length">
+              <ion-row>
+                <ion-col sizeXs="12" sizeMd="2">
+                  <ion-label>
+                    <strong>{{ _kraCompanySettings.sPDPEmployeeCommentsChange }}</strong>
+                  </ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-item lines="none">
+                    <ion-textarea [(ngModel)]="pdp['sComment']" autoGrow="true" placeholder="Enter {{ _kraCompanySettings.sPDPEmployeeCommentsChange }} here"
+                      [disabled]="pdp['bView']">
+                    </ion-textarea>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ng-container>
+
+            <!-- MANAGER COMMENTS -->
+            <ng-container *ngIf="_bManager pdp['comments'].length > 0">
+              <ng-container *ngFor="let comment of pdp['comments']">
+                <ion-row>
+                  <ion-col sizeXs="12" sizeMd="2">
+                    <ion-label>
+                      <strong>{{ _kraCompanySettings.sPDPEmployeeCommentsChange }}</strong>
+                    </ion-label>
+                  </ion-col>
+                  <ion-col>
+                    <ion-item lines="none">
+                      <p>
+                        <b> {{ comment.sCommentBy }} <small>( {{comment.dCommentDate }} )</small> </b>
+                        {{ comment.sComment}}
+                      </p>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+              </ng-container>
+              <ng-container *ngIf="pdp['sContractedBy'] === '' && pdp.sAcceptStatus != 'Declined'">
+                <ion-col sizeXs="12" sizeMd="2">
+                  <ion-label>
+                    <strong>{{ _kraCompanySettings.sPDPManagerCommentsChange }}</strong>
+                  </ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-item lines="none">
+                    <ion-textarea autoGrow="true" [(ngModel)]="pdp['sComment']" placeholder="Enter {{ _kraCompanySettings.sPDPEmployeeCommentsChange }} here">
+                    </ion-textarea>
+                  </ion-item>
+                </ion-col>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </ion-grid>
+    </ng-container>
+  </ion-grid>
+  <strong *ngIf="_bDisplayNoData" class="noDataDisplay">*No Data To Display</strong>
+</ion-content>
+
+<ion-footer>
+  <ion-row>
+    <ion-col size="12">
+      <ion-button class="btnRound" shape="round" (click)="goGrowPage()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+      <ion-button shape="round" class="f-right" (click)="validateProfile()" *ngIf="_bShowSubmitButton">
+        {{_sSubmitButtonText}}</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

@@ -1,0 +1,163 @@
+<ion-content [fullscreen]="true">
+  <ion-grid id="esurvey" class="reportGrid contentPageWrapper">
+    <ion-card>
+      <ion-card-header>
+        <!-- Header -->
+        <ion-row>
+          <ion-col sizeXs="6" sizeMd="8">
+            <h4 class="sub-title">
+              {{ _details['sSurveyName'] }}
+            </h4>
+          </ion-col>
+          <ion-col sizeXs="6" sizeMd="4" class="text-right">
+            <ion-button type="button" class="btn btn-primary" (click)="printEsurveyReport()">
+              <ion-icon name="print-outline"></ion-icon>
+              Print Report
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-card-header>
+      <ion-card-content>
+        <!-- DETAILS -->
+        <ion-row>
+          <ion-col sizeXs="12" sizeMd="6">
+            <h4 class="sub-title">
+              Details
+            </h4>
+            <ion-row>
+              <ion-col size="6" class="p-0">
+                <strong>Name</strong>
+              </ion-col>
+              <ion-col size="6" class="p-0">
+                <p>{{ _details['sFullName'] }}</p>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6" class="p-0">
+                <strong>Email</strong>
+              </ion-col>
+              <ion-col size="6" class="p-0">
+                <p>{{ _details['sEmail'] }}</p>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6" class="p-0">
+                <strong>Completed</strong>
+              </ion-col>
+              <ion-col size="6" class="p-0">
+                <p>{{ _details['dtLastSubmitted'] }}</p>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6" class="p-0">
+                <strong>Overall Score</strong>
+              </ion-col>
+              <ion-col size="6" class="p-0">
+                <p>
+                  <span class="color-dot" [ngStyle]="{ 'background': _details['overall_sColor']  }"></span>
+                  {{ _details['overallScore'] }}
+                </p>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="6">
+            <h4 class="sub-title">
+              {{ _details['sLegendHeading'] }}
+            </h4>
+            <ion-row *ngFor="let legendItem of _legend">
+              <ion-col size="12" class="p-0">
+                <p>
+                  <span class="color-dot" [ngStyle]="{ 'background': legendItem.sColor  }"></span>
+                  {{ legendItem.sLegend }}: {{ legendItem.iStart}} - {{ legendItem.iEnd }}
+                </p>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+
+
+        <!-- QUESTIONS -->
+        <ion-row class="row">
+          <ion-col size="12">
+
+            <div class="m-t-10">
+              <table style="margin-bottom: 0px;">
+                <thead>
+                  <tr class="bg-primary">
+                    <th style="width: 80%">Questions Responded To</th>
+                    <th class="text-center" style="width: 20%">Your Results</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let item of _questionData">
+                    <tr class="sub-header" *ngIf="item.sType == 'Dimension' || item.sType == 'Heading'">
+                      <td>
+                        <p>{{ item.sSurveyQuestionText }}</p>
+                      </td>
+                      <td class="text-center">
+                        <p>
+                          <span class="color-dot" [ngStyle]="{ 'background': item.sColor, 'border': '2px solid ' + item.sColor }"
+                            *ngIf="item.bShowColorDot && item.sScore != 'N/A'"></span>
+                          {{ item.sScore }}
+                          <span *ngIf="item.bShowPercentage">%</span>
+                        </p>
+                      </td>
+                    </tr>
+                    <tr *ngIf="item.sType == 'Question'">
+                      <td>
+                        <p>{{ item.sSurveyQuestionText }}</p>
+                      </td>
+                      <td class="text-center">
+                        <p>
+                          <span class="color-dot" [ngStyle]="{ 'background': item.sColor, 'border': '2px solid ' + item.sColor }"
+                            *ngIf="item.bShowColorDot && item.sScore != 'N/A'"></span>
+                          {{ item.sScore }}
+                          <span *ngIf="item.bShowPercentage">%</span>
+                        </p>
+                      </td>
+                    </tr>
+
+                    <!-- COMMENTS -->
+                    <!-- COMMENTS ARE NOT GROUPED AT THE BOTTOM AND DISPLAYS BETWEEN QUESTIONS -->
+                    <tr *ngIf="!_bGroupReportComments && item.sType == 'Comment'">
+                      <td>
+                        <p>{{ item.sSurveyQuestionText }}</p>
+                      </td>
+                      <td class="text-center">
+                        <p class="text-grey-light" *ngIf="item.sScore !== ''">{{ item.sScore }}</p>
+                        <p class="text-grey-light" *ngIf="item.sScore === ''"><small>* No comment provided</small></p>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+              <table>
+                <tbody>
+                  <ng-container *ngFor="let item of _commentsData">
+                    <tr *ngIf="item.sType == 'Comment'">
+                      <td style="width: 50%;">
+                        <p>{{ item.sSurveyQuestionText }}</p>
+                      </td>
+                      <td class="text-left" style="width: 50%;">
+                        <p class="text-grey-light" *ngIf="item.sScore !== ''">{{ item.sScore }}</p>
+                        <p class="text-grey-light" *ngIf="item.sScore === ''"><small>* No comment provided</small></p>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </ion-col>
+        </ion-row>
+
+
+      </ion-card-content>
+    </ion-card>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-button class="btnRound" shape="round" (click)="goBack()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-button>
+</ion-footer>

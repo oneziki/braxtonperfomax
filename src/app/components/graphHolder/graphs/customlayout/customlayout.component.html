@@ -1,0 +1,305 @@
+<section class="customlayout">
+  <!-- PERSONAL DETAILS-->
+  <div class="row">
+    <div class="col-12">
+      <strong class="d-block small-header">Personal Details</strong>
+      <br />
+    </div>
+    <div class="col-12 col-md-8">
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-4">
+          <strong class="d-block">Employee Name</strong>
+        </div>
+        <div class="col">
+          <p>
+            {{ pdfData["pdfData"]["userPersonalDetails"]["sEmployeeFullName"] }}
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-4">
+          <strong class="d-block">Manager</strong>
+        </div>
+        <div class="col">
+          <p>
+            {{ pdfData["pdfData"]["userPersonalDetails"]["sAdminFullName"] }}
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-4">
+          <strong class="d-block">Second Manager</strong>
+        </div>
+        <div class="col">
+          <p>
+            {{ pdfData["pdfData"]["userPersonalDetails"]["sAdmin2FullName"] }}
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-4">
+          <strong class="d-block">Month Scored</strong>
+        </div>
+        <div class="col">
+          <p>
+            {{ pdfData["pdfData"]["userPersonalDetails"]["dMonthScoredFor"] | date: "MMM y" }}
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-4">
+          <strong class="d-block">Role</strong>
+        </div>
+        <div class="col">
+          <p>{{ pdfData["pdfData"]["userPersonalDetails"]["sKraRoleName"] }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-4">
+          <strong class="d-block">Department</strong>
+        </div>
+        <div class="col">
+          <p [innerHTML]="pdfData['pdfData']['userPersonalDetails']['sUserStructure'] | safe"></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-4">
+          <strong class="d-block">Employee Scored</strong>
+        </div>
+        <div class="col">
+          <p>
+            {{ pdfData["pdfData"]["userPersonalDetails"]["dDateScored_Self"] }}
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-4">
+          <strong class="d-block">Manager Scored</strong>
+        </div>
+        <div class="col">
+          <p>
+            {{ pdfData["pdfData"]["userPersonalDetails"]["dDateScored_Admin"] }}
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-4">
+          <strong class="d-block">Second Manager Scored</strong>
+        </div>
+        <div class="col">
+          <p>
+            {{ pdfData["pdfData"]["userPersonalDetails"]["dDateScored_Admin2"] }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col text-center">
+      <h5 class="m-t-35">KRA Overall Score</h5>
+      <h1 class="fs-100" [ngStyle]="{ color: '#' + pdfData['pdfData']['overallData'][0]['overallResult_color'] }">
+        {{ pdfData["pdfData"]["overallData"][0]["kra_overAllScore"] }}
+      </h1>
+    </div>
+  </div>
+  <!-- LEGEND -->
+  <div class="row">
+    <div class="col-12">
+      <hr />
+    </div>
+    <div class="col">
+      <strong class="d-block p-t-10">LEGEND</strong>
+    </div>
+    <div class="col" *ngFor="let legend of pdfData['legends']; let iLegend = index">
+      <p>
+        <span class="color-dot" [ngStyle]="{ background: legend['sColor'] }"></span>
+        <strong>{{ legend["fStart"] }} - {{ legend["fEnd"] }}</strong>
+        <br />
+        {{ legend["sName"] }}
+      </p>
+    </div>
+    <div class="col-12">
+      <hr class="m-b-0"/>
+    </div>
+  </div>
+  <!-- Key Result Area Summary -->
+  <div class="row">
+    <div class="col-12">
+      <h4>Key Result Area Summary</h4>
+    </div>
+  </div>
+  <div class="row no-gutters">
+    <div class="col-12 col-sm-10">
+      <strong class="d-block small-header">KRA</strong>
+    </div>
+    <div class="col-12 col-sm-2 text-center">
+      <strong class="d-block small-header">Overall</strong>
+    </div>
+  </div>
+  <!--  -->
+  <div class="row no-gutters b-b-lightgray" *ngFor="let kra of pdfData['pdfData']['kraOverall']; let iKRA = index">
+    <div class="col-12 col-sm-10">
+      <p>{{ iKRA + 1 }}. {{ kra["sKraName"] }}</p>
+    </div>
+    <div class="col-12 col-sm-2 text-center">
+      <p>
+        <span class="color-dot" [ngStyle]="{ background: '#' + kra['sColor'] }"></span>
+        {{ kra["fKraScore"] }}
+      </p>
+    </div>
+  </div>
+  <!--  -->
+
+  <!-- KRA RESULTS -->
+  <div class="row">
+    <div class="col-12">
+      <h4 class="mt-t-30">KRA Results</h4>
+    </div>
+  </div>
+  <!-- ROLES -->
+  <ng-container *ngFor="let role of pdfData['pdfData']['kraProfile'][0]['Role']; let iRole = index">
+    <ng-container *ngFor="let kra of role['kras']; let iKRA = index">
+      <div class="row">
+        <div class="col-12">
+          <h5>
+            <strong>KRA {{ kra["kraIndex"] }} - </strong>
+            <span class="fw-thin">{{ kra["sKraDisplayName"] }}</span>
+          </h5>
+        </div>
+      </div>
+
+      <ng-container *ngFor="let kpi of kra['kpis']; let iKPI = index">
+        <div class="row">
+          <div class="col-12">
+            <span class="d-block small-header">
+              <strong>KPI {{ iKPI + 1 }} - </strong>
+              {{ kpi["sKpiDisplayName"] }}
+            </span>
+            <br />
+          </div>
+          <!-- GENERAL -->
+          <div class="col-12 col-sm-4 b-r-lightgray">
+            <p class="m-b-10">
+              <b>Perspective</b>
+              {{ kpi["sObjectivesName"] }}
+            </p>
+            <p class="m-b-10">
+              <b>Description</b>
+              {{ kpi["sKpidescriptionDisplayName"] }}
+            </p>
+            <p class="m-b-10">
+              <b>Additional Comments</b>
+              <ng-container *ngFor="let sComment of kpi['agreementComments']; let iCom = index">
+                <p>
+                  {{ sComment["sDisplayURPKpiComment"] }}
+                </p>
+                <p class="m-b-10 text-right" *ngIf="sComment['sFullName'] && sComment['sFullName'].length">
+                  - {{ sComment["sFullName"] }}
+                </p>
+              </ng-container>
+            </p>
+            <p class="m-b-10">
+              <b>Weight</b>
+              {{ kpi["fWeight"] }}%
+            </p>
+          </div>
+          <!-- SELF -->
+          <div class="col-12 col-sm-4 b-r-lightgray">
+            <strong class="d-block m-b-10">
+              Employee Self-Assessment
+              <span class="f-right">
+                <span class="color-dot" [ngStyle]="{ background: '#' + kpi['fScore_selfColor'] }"></span>
+                <ng-container *ngIf="!kpi['fScore_Self'].toString().length">N/A</ng-container>
+                <ng-container *ngIf="kpi['fScore_Self'].toString().length">{{ kpi["fScore_Self"] }}</ng-container>
+              </span>
+            </strong>
+            <p class="m-b-10">
+              <b>Target</b>
+              {{ kpi["sTarget"] }}
+            </p>
+            <p class="m-b-10">
+              <b>Actual Achievement</b>
+              {{ kpi["sActual_Self"] }}
+            </p>
+            <p class="m-b-10">
+              <b>Additional Comments</b>
+              <ng-container *ngFor="let sComment of kpi['scoreComments']; let iCom = index">
+                <ng-container *ngIf="sComment['bExternalComment'] === 0 && sComment['bManagerComment'] === 0">
+                  <p class="m-b-10">
+                    {{ sComment["sDisplayComment"] }}
+                  </p>
+                </ng-container>
+              </ng-container>
+            </p>
+          </div>
+          <!-- MANAGER -->
+          <div class="col-12 col-sm-4 b-r-lightgray">
+            <strong class="d-block m-b-10">
+              Manager-Assessment
+              <span class="f-right">
+                <span class="color-dot" [ngStyle]="{ background: '#' + kpi['fScore_AdminColor'] }"></span>
+                <ng-container *ngIf="!kpi['fScore_Admin'].toString().length">N/A</ng-container>
+                <ng-container *ngIf="kpi['fScore_Admin'].toString().length">{{ kpi["fScore_Admin"] }}</ng-container>
+              </span>
+            </strong>
+            <p class="m-b-10">
+              <b>Comments/Enabling factors added by the manager</b>
+              <ng-container *ngFor="let sComment of kpi['scoreComments']; let iCom = index">
+                <ng-container *ngIf="sComment['bManagerComment'] === 1">
+                  <p class="m-b-10">
+                    {{ sComment["sDisplayComment"] }}
+                  </p>
+                </ng-container>
+              </ng-container>
+            </p>
+          </div>
+          <div class="col-12">
+            <hr />
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+
+  <div class="row">
+    <div class="col-12">
+      <h4>Performance Discussion</h4>
+    </div>
+  </div>
+  <div class="row no-gutters">
+    <div class="col-12 col-md-2">
+      <span class="d-block small-header">Date</span>
+    </div>
+    <div class="col">
+      <span class="d-block small-header" >Comments from performance review discussion</span>
+    </div>
+  </div>
+  <div class="row no-gutters" *ngFor="let sComment of pdfData['pdfData']['discussionNotes']; let iCom = index">
+    <div class="col-12 col-sm-2">
+      <p>{{ sComment["dDateCreated"] }}</p>
+    </div>
+    <div class="col">
+      <p>{{ sComment["sStrippedComment"] }}</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <h4 class="m-t-25">Second Manager Comment</h4>
+    </div>
+  </div>
+  <div class="row no-gutters">
+    <div class="col-12 col-sm-2">
+      <span class="d-block small-header">Date</span>
+    </div>
+    <div class="col">
+      <span class="d-block small-header">Comments from second manager</span>
+    </div>
+  </div>
+  <div class="row no-gutters" *ngFor="let sComment of pdfData['pdfData']['kraProfile']; let iCom = index">
+    <div class="col-12 col-md-2">
+      <p>{{ sComment["dDateScored_Admin2"] }}</p>
+    </div>
+    <div class="col">
+      <p>{{ sComment["sSecondManagerReviewComment"] }}</p>
+    </div>
+  </div>
+</section>

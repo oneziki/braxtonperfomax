@@ -1,0 +1,8 @@
+.theme-loader {
+    transition: background 0.75s eae-out;
+    background: #FFF;
+    
+    &.opac {
+      background: rgba(255, 255, 255, 0.55);
+    }
+  }

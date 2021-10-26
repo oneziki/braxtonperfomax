@@ -1,0 +1,245 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper moduleLanding pesonalGrid">
+    <ion-row>
+      <ion-col sizeXs="12" sizeMd="" *ngIf="_companyTemplate['bP7PersonalCurrentStatus']">
+
+        <ion-text class="colHeader">
+          <h2 class="text-primary">My Current Status</h2>
+        </ion-text>
+
+        <!-- Performance & Contributions -->
+        <ion-card class="homeCard" *ngIf="_chartsLoaded">
+          <ion-card-header>
+            <ion-card-title>
+              Performance & Contributions
+              <img src="../../assets/imgs/demo/personal4.png" class="sourceLogo">
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-row>
+              <ion-col sizeXs="12" sizeMd="12" sizeLg="6">
+                <!-- <img src="../../assets/imgs/demo/Untitled5.png"> -->
+                <div class="d-block mymaxCol chart-center" *ngIf="_myMaxData['kraBusinessObjective']">
+                  <app-graphHolder type="apex" [data]="_myMaxData['kraBusinessObjective']['apexData']" [options]="chartOptionsRadial" *ngIf="_myMaxData['kraBusinessObjective']['apexData']['series'].length !== 0">
+                  </app-graphHolder>
+                  <ion-col size="12"*ngIf="_myMaxData['kraBusinessObjective']['apexData']['series'].length === 0">
+                    <p class="text-muted no-data">*Reserved For Your Business Objective Results</p>
+                  </ion-col>
+                </div>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="12" sizeLg="6">
+                <div class="d-block mymaxCol bRight" *ngIf="_chartsLoaded">
+                  <app-graphHolder type="listTable" [data]="_myMaxData['overallKraResults']['apexData']" *ngIf="_myMaxData['overallKraResults']['apexData']['series'] && _myMaxData['overallKraResults']['apexData']['series'].length !== 0">
+                  </app-graphHolder>
+                  <ion-col size="12" *ngIf="!_myMaxData['overallKraResults']['apexData']['series'] || _myMaxData['overallKraResults']['apexData']['series'].length === 0">
+                    <p class="text-muted no-data">*Reserved For Your Overall KRA Results</p>
+                  </ion-col>
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-text *ngIf="_myMaxData && _myMaxData['UserData'] && _myMaxData['overallKraResults']['apexData']['series'] || _myMaxData['kraBusinessObjective']['apexData']['series'].length !== 0">
+              <small class="footerNote">{{_myMaxData['UserData']['sKraDate']}}</small>
+            </ion-text>
+          </ion-card-content>
+        </ion-card>
+
+        <!-- Competency &  Expertise -->
+        <ion-card class="homeCard" *ngIf="_chartsLoaded">
+          <ion-grid class="p-0-impo">
+            <ion-row>
+              <ion-col sizeXs="12" sizeMd="6" *ngIf="_chartsLoaded" class="p-0-impo">
+                <ion-card-header>
+                  <ion-card-title>
+                    Competency
+                  </ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                  <div class="d-block mymaxCol chart-center" *ngIf="_chartsLoaded">
+                    <app-graphHolder type="apex" [data]="_myMaxData['competency']['apexData']" *ngIf="_myMaxData['competency']['apexData']['series'].length !== 0">
+                    </app-graphHolder>
+                    <ion-col size="12" *ngIf="_myMaxData['competency']['apexData']['series'].length === 0">
+                      <p class="text-muted no-data">*Reserved For Your Competency Results</p>
+                    </ion-col>
+                  </div>
+                  <ion-text *ngIf="_myMaxData && _myMaxData['UserData'] && _myMaxData['competency']['apexData']['series'].length !== 0">
+                    <small class="footerNote">{{_myMaxData['UserData']['sCompetencyDate']}}</small>
+                  </ion-text>
+                </ion-card-content>
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="6" *ngIf="_chartsLoaded" class="p-0-impo">
+                <ion-card-header>
+                  <ion-card-title>
+                    Expertise
+                    <img src="../../assets/imgs/demo/personal4.png" class="sourceLogo">
+                  </ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                  <div class="d-block mymaxCol bRight" *ngIf="_chartsLoaded">
+                    <app-graphHolder type="listTable" [data]="_myMaxData['expertise']['apexData']" *ngIf="_myMaxData['expertise']['apexData']['series'].length !== 0">
+                    </app-graphHolder>
+                    <ion-col size="12" *ngIf="_myMaxData['expertise']['apexData']['series'].length === 0">
+                      <p class="text-muted no-data">*Reserved For Your Expertise Results</p>
+                    </ion-col>
+                  </div>
+                  <ion-text *ngIf="_myMaxData && _myMaxData['UserData'] && _myMaxData['expertise']['apexData']['series'].length !== 0">
+                    <small class="footerNote">{{_myMaxData['UserData']['sExpertiseDate']}}</small>
+                  </ion-text>
+                </ion-card-content>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
+
+        <!-- Engagement &  Motivation -->
+        <ion-card class="homeCard" *ngIf="(_myMaxData['engagement'] && _myMaxData['engagement']['apexData'] && _myMaxData['engagement']['apexData']['series'].length !== 0) ||
+        (_myMaxData['motivation'] && _myMaxData['motivation']['apexData'] && _myMaxData['motivation']['apexData']['series'].length !== 0)">
+          <ion-grid>
+            <ion-row>
+              <ion-col sizeXs="12" sizeMd="6"
+                *ngIf="_myMaxData['engagement'] && _myMaxData['engagement']['apexData'] && _myMaxData['engagement']['apexData']['series'].length !== 0">
+                <ion-card-header>
+                  <ion-card-title>
+                    Engagement
+                  </ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                  <ion-img src="../../assets/imgs/demo/personal2.png" style="width: 70%;margin: 5px auto;"></ion-img>
+                  <ion-text>
+                    <small class="footerNote">31 March 2021</small>
+                  </ion-text>
+                </ion-card-content>
+
+              </ion-col>
+              <ion-col sizeXs="12" sizeMd="6"
+                *ngIf="_myMaxData['motivation'] && _myMaxData['motivation']['apexData'] && _myMaxData['motivation']['apexData']['series'].length !== 0">
+
+                <ion-card-header>
+                  <ion-card-title>
+                    Motivation
+                    <img src="../../assets/imgs/demo/personal4.png" class="sourceLogo">
+                  </ion-card-title>
+                </ion-card-header>
+                <ion-card-content class="p-0-impo">
+                  <ion-img src="../../assets/imgs/demo/personal3.png" style="width: 70%;margin: 5px auto;"></ion-img>
+                </ion-card-content>
+                <!-- <ion-text>
+                  <small class="footerNote">31 March 2021</small>
+                </ion-text> -->
+
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+        </ion-card>
+
+        <!-- Development Needs -->
+        <ion-card class="homeCard"
+          *ngIf="_myMaxData['developmentNeeds'] && _myMaxData['developmentNeeds']['apexData'] && _myMaxData['developmentNeeds']['apexData']['series'].length !== 0">
+          <ion-card-header>
+            <ion-card-title>
+              Development Needs
+              <img src="../../assets/imgs/demo/personal4.png" class="sourceLogo">
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list>
+              <ion-item lines="inset">
+                <ion-label>Public Speaking</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>Strategic Planning</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>Environmental Grading</ion-label>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-label>Advanced Cost Accounting</ion-label>
+              </ion-item>
+            </ion-list>
+            <ion-text>
+              <small class="footerNote">30 April 2021</small>
+            </ion-text>
+          </ion-card-content>
+        </ion-card>
+
+      </ion-col>
+      <ion-col sizeXs="12" sizeMd="6" *ngIf="_companyTemplate['bP7PersonalLeaveStatus']">
+
+        <ion-text class="colHeader">
+          <h2 class="text-primary">My Leave Status</h2>
+        </ion-text>
+
+        <!-- Leave -->
+        <ion-card class="homeCard personalLeave">
+          <ion-card-content style="padding-top: 2px;">
+            <img src="../../assets/imgs/demo/personal10a.png" class="sourceLogo">
+            <ion-list>
+              <ion-item lines="inset">
+                <ion-label class="leaveHeader" style="margin-top: 5px;">
+                  Holiday
+                  <img src="../../assets/imgs/demo/personal9.png" class="sourceLogoInner">
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label class="m-l-10">Entitlement</ion-label>
+                <ion-label slot="end" class="text-right">25.00</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label class="m-l-10">Brough forward</ion-label>
+                <ion-label slot="end" class="text-right">5.00</ion-label>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-label class="m-l-10">Remaining</ion-label>
+                <ion-label slot="end" class="text-right">30.00</ion-label>
+              </ion-item>
+            </ion-list>
+
+            <ion-list>
+              <ion-item lines="inset">
+                <ion-label class="leaveHeader m-t-40">
+                  Sickness
+                  <img src="../../assets/imgs/demo/personal9.png" class="sourceLogoInner">
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label class="m-l-10">Total taken</ion-label>
+                <ion-label slot="end" class="text-right">0.00</ion-label>
+              </ion-item>
+            </ion-list>
+
+            <ion-list>
+              <ion-item lines="inset">
+                <ion-label class="leaveHeader m-t-40">
+                  Additional Time Off
+                  <img src="../../assets/imgs/demo/personal9.png" class="sourceLogoInner">
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label class="m-l-10">Remaining</ion-label>
+                <ion-label slot="end" class="text-right">0.00</ion-label>
+              </ion-item>
+            </ion-list>
+
+          </ion-card-content>
+        </ion-card>
+
+        <!-- Enneagram -->
+        <ion-card class="homeCard">
+          <ion-card-header>
+            <ion-card-title>
+              Enneagram
+              <img src="../../assets/imgs/demo/personal8.png" class="sourceLogo">
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-img src="../../assets/imgs/demo/personal5.png"></ion-img>
+            <ion-text>
+              <small class="footerNote">31 January 2021</small>
+            </ion-text>
+          </ion-card-content>
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

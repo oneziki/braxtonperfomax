@@ -1,0 +1,30 @@
+<ion-grid class="icon-group-list-wrapper">
+  <ng-container *ngFor="let listItem of data['data']; let iListItem = index">
+    <ion-row (mouseover)="_mouseOvered = iListItem" (mouseout)="_mouseOvered = -1">
+      <ion-col size="12" [ngClass]="{'col-sm-3': data['data'].length && data['data'].length > 1}">
+        <strong *ngIf="listItem['icon'] && listItem['icon']['label']">
+          {{ listItem['icon']['label'] }}
+        </strong>
+        <h1 *ngIf="listItem['icon'] && listItem['icon']['icon']"
+          class="d-inline-block m-t-10 m-b-0 text-muted animated" [ngClass]="{'jello': _mouseOvered === iListItem}">
+          <i class="icofont {{ listItem['icon']['icon'] }}"></i>          
+        </h1>
+        <small *ngIf="listItem['icon'] && listItem['icon']['iconText']">
+          <br> {{ listItem['icon']['iconText'] }}
+        </small>
+      </ion-col>
+      <ion-col>
+        <table class="m-b-20">
+          <tr *ngFor="let item of listItem['data']; let iListItem = index">
+            <td>
+              <p>{{ item['sLabel1'] }}</p>
+            </td>
+            <td class="text-center">
+              <strong class="text-primary">{{ item['fScore1'] }}</strong>
+            </td>
+          </tr>
+        </table>
+      </ion-col>
+    </ion-row>
+  </ng-container>
+</ion-grid>

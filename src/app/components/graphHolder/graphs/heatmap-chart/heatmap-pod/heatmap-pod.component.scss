@@ -1,0 +1,53 @@
+.card.heat-pod {
+  color: var(--bg-white);
+  cursor: pointer;
+  height: 90% !important;
+  width: inherit;
+  margin: 5px;
+  margin-bottom: 5px;
+  box-shadow: none;
+
+  &:hover {
+    box-shadow: 0 12px 25px -5px #2e323d, 0 1px 5px 0 rgba(0, 0, 0, 0.1), 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+
+  .card-content {
+    padding: 10px 0 0;
+    margin: 0;
+
+    strong {
+      font-size: larger;
+    }
+    small {
+      font-size: 70%;
+    }
+  }
+}
+
+.oneRow {
+  .card-content {
+    padding: 3px 0 !important;
+  }  
+  .card.heat-pod {
+    font-size: 12px;
+  }
+}
+.oneRow.tinyRow {
+  .card.heat-pod {
+    font-size: 10px;
+    padding: 2px;
+  }
+}
+.oneRow.midRow {
+  .card.heat-pod {
+    font-size: 12px;
+    padding: 10px 4px 0;
+
+  }
+}
+
+.barone {
+  .card.heat-pod {
+    border-radius: 10px;
+  }
+}

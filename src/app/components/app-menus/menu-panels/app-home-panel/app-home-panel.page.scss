@@ -1,0 +1,54 @@
+.rPanelActions {
+  ion-badge {
+    font-size: clamp(15px, 4vw, 20px);
+    background: transparent;
+    border: 3px solid var(--lite-grey);
+    border-radius: 100%;
+    height: clamp(30px, 6vw, 35px);
+    width: clamp(30px, 6vw, 35px);
+    line-height: 23px;
+    &.smText {
+      font-size: clamp(12px, 3vw, 14px);
+      line-height: 28px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    ion-badge {
+      margin-right: 10px;
+      line-height: 21px;
+  
+      &.smText {
+        line-height: 25px;
+        padding: 0px;
+      }
+    }
+  }
+}
+.rPanelNotification {
+  ion-badge {
+    font-size: clamp(8px, 4vw, 10px);
+    background: transparent;
+    color: var(--lite-charcoal);
+    border: 1px solid var(--charcoal);
+    border-radius: 0;
+    height: clamp(30px, 6vw, 35px);
+    width: clamp(30px, 6vw, 35px);
+    line-height: 13px;
+  }
+
+  .loadMore {
+    color: var(--lite-grey);
+    text-decoration: none;
+    float: right;
+    margin: 10px;
+  }
+
+  @media (max-width: 768px) {
+    ion-badge {
+      line-height: 11px;
+      margin-right: 10px;
+    }
+  }
+}
+

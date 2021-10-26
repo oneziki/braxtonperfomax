@@ -1,0 +1,10 @@
+
+<div class="measure-list-wrapper">
+  <ng-container *ngFor="let listItem of data['data']; let iListItem = index;">
+    <ng-container *ngIf="iListItem > 0">
+      <div class="measure-list-item {{ listItem[4] }}" [ngStyle]="{'background': listItem[2]}" (click)="chartClick(listItem)">
+        {{ listItem[1] }}
+      </div>
+    </ng-container>
+  </ng-container>
+</div>

@@ -1,0 +1,128 @@
+<ion-col class="chat-box-wrapper sizeOption-{{ sizeOption }} animated " [ngClass]="{'fadeInRightBig': _showChat, 'fadeOutRightBig': !_showChat}" (mouseover)="_hasHovered = true">
+  <ion-card class="showChat_box" *ngIf="!_isLoading">
+    <ion-row>
+      <ion-col size="1">
+        <label (click)='toggleShowChat()' class="hover">
+          <ion-icon name="chevron-forward-outline" (click)="toggleShowChat()"></ion-icon>
+        </label>
+      </ion-col>
+      <ion-col class="ion-text-center">
+        <button *ngIf="_chatCardType === 'Braxton Support' && _bSupportOnline" type="button" class="btn btn-danger chatbot-online animated pulse infinite">
+        </button>
+        <strong class="text-slate">
+          {{ _chatCardType }}
+        </strong>
+        <small class="text-muted" *ngIf="_chatCardType === 'Braxton Support' && !_bSupportOnline">
+          <i>(Offline)</i>
+        </small>
+        <ng-container *ngIf="_chatCardType === 'Braxton Support'">
+          <ion-button shape="round" size="small" class="btnPill animated fadeInRight f-right" (click)="hideKnowledgeBase()">
+            FAQ
+          </ion-button>
+        </ng-container>
+        <ng-container *ngIf="_chatCardType === 'Knowledge Base'">
+          <label class="animated fadeInRight f-right hover" (click)="hideKnowledgeBase()">
+            <ion-icon name="chatbubbles"></ion-icon>
+          </label>
+        </ng-container>
+      </ion-col>
+    </ion-row>
+
+
+    <ion-card-content id="knowledge" class="knowledge-wrapper animated fadeInRight">
+      <ion-list *ngFor="let knowledgeBase of _knowledgeBaseCategories; let iKB = index;">
+        <ng-container *ngIf="knowledgeBase['categoryQuestions'].length > 0">
+          <div>
+            <strong class="knowledgeCat hover" (click)="kbToggleCat(knowledgeBase['KnowledgeBaseCategoriesUID'])">
+              <ion-icon name="caret-forward-outline" [ngClass]="{'rotate-down': _kbCat === knowledgeBase['KnowledgeBaseCategoriesUID']}"></ion-icon>
+              {{knowledgeBase['sCategoryName']}}
+            </strong>
+            <small class="animated fadeInDown" *ngIf="_kbCat === knowledgeBase['KnowledgeBaseCategoriesUID']">
+              <ng-container *ngFor="let categoryQuestions of knowledgeBase['categoryQuestions']">
+                <p class="knowledgeQuestion" (click)="kbToggleQuestion(categoryQuestions['KnowledgeBaseQuestionsUID'])"
+                   [ngClass]="{'text-primary': _kbQuestion === categoryQuestions['KnowledgeBaseQuestionsUID']}">
+                  {{categoryQuestions['sKnowledgeBaseQuestion']}}
+                  <small class="knowledgeAwns text-slate" *ngIf="_kbQuestion === categoryQuestions['KnowledgeBaseQuestionsUID']"
+                         [innerHTML]="categoryQuestions['sKnowledgeBaseResponse']">
+                  </small>
+                </p>
+              </ng-container>
+            </small>
+          </div>
+          <hr>
+        </ng-container>
+      </ion-list>
+    </ion-card-content>
+
+    <ion-card-content id="chatBlock" #chatlist class="chat-wrapper chatlist animated fadeInRight">
+
+      <ion-row class="chat-msg-wrapper">
+        <ion-col *ngFor="let msg of _conversation">
+          <div class="media chat-messages m-r-10">
+            <!-- USER MESSAGE -->
+            <ng-container *ngIf="msg['sSenderType'] !== 'Support'">
+              <div class="media-body chat-menu-reply">
+                <div>
+                  <p class="chat-cont">{{ msg['sMessage'] }}</p>
+                  <p class="chat-time text-prime-alt text-right m-r-10"><small>{{ msg['sPosted'] }}</small></p>
+                </div>
+                <a class="chatUserPicWrapper media-left photo-table" href="javascript:">
+                  <img class="chatUserPic media-object img-radius img-radius m-t-5" alt="User" [src]="msg['sProfilePic']" alt="Chat Avatar" (error)="userDefaultImg()"
+                       *ngIf="!_setUserDefaultImage">
+                </a>
+              </div>
+            </ng-container>
+            <!-- BOT MESSAGE -->
+            <ng-container *ngIf="msg['sSenderType'] === 'Support'">
+              <div class="media-body chat-menu-content">
+                <div>
+                  <p class="chat-cont">{{ msg['sMessage'] }}</p>
+                  <ion-row *ngIf="msg['uploadedFiles']">
+                    <ion-col class="text-center" *ngFor="let doc of msg['uploadedFiles']">
+                      <a [href]="doc.sDocumentPath" download target="_blank" class="m-r-5 m-l-10 link-wrap">
+                        {{ doc.sDocumentUploadName }}
+                      </a>
+                    </ion-col>
+                  </ion-row>
+                  <p class="chat-time text-right m-r-10"><small>{{ msg['sPosted'] }}</small></p>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="chat-txt-wrapper">
+        <ion-col>
+            <!-- (keyup)='typingChat()' -->
+            <ion-input type="text" name="sMessage" class="form-control" [(ngModel)]="_newMessage['sMessage']" placeholder='Start typing...' (keydown)="chatKeyDown($event)">
+            </ion-input>
+            <button type="submit" class="btn-send" (click)='sendChat()'>
+              <ion-icon name="send" class="text-prime-alt"></ion-icon>
+            </button>
+        </ion-col>
+      </ion-row>
+        <!--  -->
+        <ion-row>
+        <ion-col class="isTyping" *ngIf="_isUserTyping">
+          <div class="spinner">
+            <small class="text-muted">
+              Support is typing
+            </small>
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-col>
+
+
+<!-- fab placed to the bottom end -->
+<ion-fab class="chatFab" vertical="bottom" horizontal="end" slot="fixed" *ngIf="_selectedAppTab !== 'auth'">
+  <ion-fab-button (click)="toggleShowChat()" class="animated " [ngClass]="{'fadeInRightBig': !_showChat, 'fadeOutRightBig': _showChat}">
+    <ion-icon name="chatbubbles"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

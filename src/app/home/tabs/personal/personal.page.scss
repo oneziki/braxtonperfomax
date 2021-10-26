@@ -1,0 +1,106 @@
+$menuBreakPoint: 768px;
+
+ion-menu-button {
+  color: var(--ion-color-primary);
+}
+
+// ------------------------------------ //
+ion-tab-bar {
+  border: 0;
+}
+
+.pesonalGrid {
+  
+  ion-label {
+    color: var(--charcoal);
+    font-weight: 400;
+  }
+  .colHeader {
+    h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-left: 15px;
+      margin-top: 0;
+    }
+  }
+  .homeCard {
+    box-shadow: none;
+    height: 60vh;
+    overflow-y: auto;
+    ion-card-title {
+      color: var(--primary);
+      font-size: 20px;
+      font-weight: 600;
+    }
+    ion-card-header,
+    ion-card-content {
+      padding: 10px 15px;
+    }
+  
+    .sourceLogo {
+      float: right;
+      max-height: 30px;
+      max-width: 100px;
+
+      @media (max-width: 768px) {
+        max-width: 75px;
+        margin-top: 5px;
+        margin-right: -8px;
+      }
+    }
+    .footerNote {
+      display: block;
+      text-align: right;
+      font-size: 12px;
+      color: var(--lite-grey);
+      font-weight: 400;
+    }
+    .no-data{
+      margin-top: 55px;
+      text-align: center;
+      margin-bottom: 55px;
+    }
+    .chart-center{
+      text-align: -webkit-center;
+    }
+  }
+
+  .personalLeave {
+    .sourceLogoInner {
+      float: right;
+      max-height: 30px;
+      margin-top: 5px !important;
+    }
+    .sourceLogo {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+    ion-list {
+      width: 85%;
+      ion-label {
+        font-size: clamp(14px, 2vw, 20px)
+      }
+    }
+    .leaveHeader {
+      color: var(--primary);
+      font-size: 20px;
+      font-weight: 600;
+    }
+  }
+
+}
+
+@media (max-width: $menuBreakPoint) {
+  ion-card {
+    margin: 10px 0;
+  }
+}
+
+@media (min-width: $menuBreakPoint) {
+  ion-card {
+    margin: 10px 2px;
+  }
+
+}
+

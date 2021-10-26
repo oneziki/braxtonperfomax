@@ -1,0 +1,29 @@
+.list-displayer {
+  margin: 10px;
+  ion-row {
+    padding: 2px 5px;
+    margin: 2px 5px;
+    border-bottom: 1px solid var(--lite-grey);
+  }
+  strong {
+    font-size: 14px;
+    color: var(--charcoal);
+  }
+  h2 {
+    font-size: 14px;
+    font-weight: 600;
+    float: right;
+  }
+  .loadMore {
+    text-align: right;
+    font-size: 20px;
+    color: var(--lite-grey);
+    font-size: 80% !important;
+  }
+  .list-text{
+    font-size: clamp(14px, 2vw, 16px);
+  }
+  .list-col{
+    line-height: 1;
+  }
+}

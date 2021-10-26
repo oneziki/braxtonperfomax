@@ -1,0 +1,70 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper supportGrid" *ngIf="_supportInfo">
+
+    <ion-toolbar class="toolbar">
+      <ion-title class="ion-padding-start colHeader text-primary">Support</ion-title>
+      <ion-searchbar slot="primary" placeholder="Search Here..." class="supSearch" [(ngModel)]="_searchText">
+      </ion-searchbar>
+    </ion-toolbar>
+
+    <ion-row>
+      <ion-col sizeXs="12" sizeMd="6" style="padding-left: 15px;">
+        <ion-row>
+          <ion-col sizeXs="4" sizeSm="4" sizeMd="4" sizeLg="3" sizexL="2"><strong>Tel:</strong></ion-col>
+          <ion-col sizeXs="8" sizeSm="8" sizeMd="8" sizeLg="9" sizexL="10">{{_supportInfo['sTelephone']}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col sizeXs="4" sizeSm="4" sizeMd="4" sizeLg="3" sizexL="2"><strong>Fax:</strong></ion-col>
+          <ion-col sizeXs="8" sizeSm="8" sizeMd="8" sizeLg="9" sizexL="10">{{_supportInfo['sFax']}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col sizeXs="4" sizeSm="4" sizeMd="4" sizeLg="3" sizexL="2"><strong>Email:</strong></ion-col>
+          <ion-col sizeXs="8" sizeSm="8" sizeMd="8" sizeLg="9" sizexL="10">{{_supportInfo['sEmail']}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col sizeXs="4" sizeSm="4" sizeMd="4" sizeLg="3" sizexL="2"><strong>Address:</strong></ion-col>
+          <ion-col sizeXs="8" sizeSm="8" sizeMd="8" sizeLg="9" sizexL="10"><span [innerHTML]="_supportInfo['sAddress']">{{_supportInfo['sAddress']}}</span></ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col sizeXs="12" sizeMd="6" class="support-col">
+        <ng-container *ngFor="let day of _supportInfo['businessHours']">
+          <ion-row>
+            <ion-col sizeXs="4" sizeSm="4" sizeMd="4" sizeLg="3" sizexL="2"><strong>{{day['sDay']}}:</strong></ion-col>
+            <ion-col sizeXs="8" sizeSm="8" sizeMd="8" sizeLg="9" sizexL="10">{{day['sHours']}}</ion-col>
+          </ion-row>
+        </ng-container>
+      </ion-col>
+    </ion-row>
+
+    <ng-container *ngFor="let region of _supportInfo['regions']">
+      <ng-container *ngIf="region['RegionUID'] !== ''">
+        <ion-row>
+          <ng-container *ngFor="let unit of region['businessUnits']">
+            <ion-col sizeXs="12" sizeMd="6">
+              <ion-card *ngIf="isMatch(unit)" class="support-card">
+                <ion-card-header>
+                  <ion-card-title class="text-primary">
+                    <strong>{{ unit.sBusinessUnitName }}</strong>
+                  </ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                  <h5><strong>Contact Person:</strong>{{unit['sUnitContactPerson']}}</h5>
+                  <h5><strong>Tel:</strong>{{unit['sUnitTelephone']}}</h5>
+                  <h5><strong>Fax:</strong>{{unit['sUnitFax']}}</h5>
+                  <h5><strong>Email:</strong>{{unit['sUnitEmail']}}</h5>
+                  <h5><strong>Description:</strong>{{unit['sBusinessUnitDescription']}}</h5>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ng-container>
+        </ion-row>
+      </ng-container>
+    </ng-container>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-button class="btnRound" shape="round" (click)="goBack()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-button>
+</ion-footer>

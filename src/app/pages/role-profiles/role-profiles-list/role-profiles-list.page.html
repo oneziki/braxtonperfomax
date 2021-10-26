@@ -1,0 +1,224 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper roleProfileListGrid">
+
+    <ion-row>
+      <ion-title class="colHeader text-primary">Role Profile Library</ion-title>
+      <!-- <ion-col size="4">
+        <h2 class="contentHeader colHeader">Role Profile Library</h2>
+      </ion-col> -->
+      <ion-col>
+
+        <ion-toolbar class="toolbar contentToolbar">
+
+          <!-- <ion-item slot="start" lines="none"> -->
+          <!-- <ion-label>Filter By Department</ion-label> -->
+          <ion-select interface="popover" (ionChange)="departmentFilterChange($event)" placeholder="Department...">
+            <ion-select-option *ngFor="let department of _orgDepartments" [value]="department">{{
+              department.sOrganisationTierName }}</ion-select-option>
+          </ion-select>
+          <!-- </ion-item> -->
+          <!-- <ion-item lines="none"> -->
+          <!-- <ion-label>Filter By Type</ion-label> -->
+          <ion-select interface="popover" (ionChange)="searchFilterOptionChanged($event)" placeholder="Type...">
+            <ion-select-option *ngFor="let type of _searchFilterOptions" [value]="type">{{type}}</ion-select-option>
+          </ion-select>
+          <!-- </ion-item> -->
+          <ion-searchbar slot="primary" placeholder="Search Here..." class="supSearch" [(ngModel)]="_searchText">
+          </ion-searchbar>
+        </ion-toolbar>
+
+      </ion-col>
+    </ion-row>
+
+    <ion-card class="homeCard homeResources">
+      <ion-card-content>
+        <ion-grid class="stripedGrid">
+          <ng-container *ngIf="_sSearchFilterOption === 'Role Title'">
+            <ion-row class="stripedHeader">
+              <ion-col sizeXs="8" sizeSm="4" sizeMd="4" sizeLg="4" sizeXl="4" (click)="sortBy('RoleTitle')">
+                <strong>Role Title</strong>
+                <ion-icon name="caret-down-sharp" *ngIf="_sortType['RoleTitle'] === 'asc'"></ion-icon>
+                <ion-icon name="caret-up-sharp" *ngIf="_sortType['RoleTitle'] === 'desc'"></ion-icon>
+              </ion-col>
+              <ion-col sizeSm="3" sizeMd="3" sizeLg="3" sizeXl="3" class="ion-hide-sm-down"
+                (click)="sortBy('Department')">
+                <strong>Department</strong>
+                <ion-icon name="caret-down-sharp" *ngIf="_sortType['Department'] === 'asc'"></ion-icon>
+                <ion-icon name="caret-up-sharp" *ngIf="_sortType['Department'] === 'desc'"></ion-icon>
+              </ion-col>
+              <ion-col sizeSm="3" sizeMd="3" sizeLg="3" sizeXl="3" class="ion-hide-sm-down">
+                <strong> Location</strong>
+              </ion-col>
+              <ion-col sizeLg="1" sizeXl="1" class="ion-hide-lg-down text-center">
+                <strong>Revision</strong>
+              </ion-col>
+              <ion-col sizeXs="4" sizeSm="1" sizeMd="1" sizeLg="1" sizeXl="1">
+              </ion-col>
+            </ion-row>
+
+            <ion-row class="stripedContent" *ngFor="let role of _jobTitleRoles">
+              <ion-col sizeXs="8" sizeSm="4" sizeMd="4" sizeLg="4" sizeXl="4">
+                {{role.sJobTitleRoleName}}
+              </ion-col>
+              <ion-col sizeSm="3" sizeMd="3" sizeLg="3" sizeXl="3" class="ion-hide-sm-down">
+                {{role.sOrganisationTierName}}
+              </ion-col>
+              <ion-col sizeSm="3" sizeMd="3" sizeLg="3" sizeXl="3" class="ion-hide-sm-down">
+                {{role.sLocation}}
+              </ion-col>
+              <ion-col sizeLg="1" sizeXl="1" class="ion-hide-lg-down text-center">
+                {{role.iRevision}}
+              </ion-col>
+              <ion-col sizeXs="4" sizeSm="1" sizeMd="1" sizeLg="1" sizeXl="1" class="text-right">
+                <ion-button size="small" color="primary" (click)="printPDFReport(role.JobTitleUUID)">
+                  <ion-icon name="print"></ion-icon>
+                </ion-button>
+                <ion-button size="small" color="primary" (click)="viewRolePorfile(role.JobTitleUUID)">
+                  <ion-icon name="search"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ng-container>
+
+          <ng-container *ngIf="_sSearchFilterOption === 'Competency'">
+            <ion-row class="stripedHeader">
+              <ion-col sizeXl="2">
+                <strong>Competency Type</strong>
+              </ion-col>
+              <ion-col sizeXl="2" class="ion-hide-sm-down">
+                <strong>Competency</strong>
+              </ion-col>
+              <ion-col sizeXl="3" class="ion-hide-sm-down">
+                <strong>Indicator</strong>
+              </ion-col>
+              <ion-col sizeXl="3" class="ion-hide-lg-down">
+                <strong>Role Title</strong>
+              </ion-col>
+              <ion-col sizeXl="2">
+              </ion-col>
+            </ion-row>
+
+            <ng-container *ngFor="let role of _jobTitleRoles">
+              <ng-container *ngFor="let compType of role['competencyProfile'];let x = index">
+                <ng-container *ngFor="let comp of compType['competencies'];let i = index">
+                  <ng-container *ngFor="let outcome of comp['outcomes']">
+                    <ion-row class="stripedContent" *ngIf="(x === 0 && i === 0) || _expandedComp || _searchText">
+                      <ion-col sizeXl="2">
+                        {{compType.sCompetencyTypeName}}
+                      </ion-col>
+                      <ion-col sizeXl="2" class="ion-hide-sm-down">
+                        {{comp.sCompetencyName}}
+                      </ion-col>
+                      <ion-col sizeXl="3" class="ion-hide-sm-down">
+                        <ng-container *ngFor="let Indicatior of outcome['indicators']">
+                          <ion-row>
+                            <ion-col>
+                              -{{Indicatior.sIndicatorName}}
+                            </ion-col>
+                          </ion-row>
+                        </ng-container>
+                      </ion-col>
+                      <ion-col sizeXl="3" class="ion-hide-sm-down">
+                        {{role.sJobTitleRoleName}}
+                      </ion-col>
+                      <ion-col sizeXl="2" class="text-right">
+                        <ion-button size="small" color="primary" *ngIf="!_expandedComp && x === 0 && i === 0"
+                          (click)="_expandedComp = true">
+                          <ion-icon name="eye-sharp"></ion-icon>
+                        </ion-button>
+                        <ion-button size="small" color="primary" *ngIf="_expandedComp && x === 0 && i === 0"
+                          (click)="_expandedComp = false">
+                          <ion-icon name="eye-off-sharp"></ion-icon>
+                        </ion-button>
+                        <ion-button size="small" color="primary" (click)="printPDFReport(role.JobTitleUUID)">
+                          <ion-icon name="print"></ion-icon>
+                        </ion-button>
+                        <ion-button size="small" color="primary" (click)="viewRolePorfile(role.JobTitleUUID)">
+                          <ion-icon name="search"></ion-icon>
+                        </ion-button>
+                      </ion-col>
+                    </ion-row>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+
+          <ng-container *ngIf="_sSearchFilterOption === 'KRA' && _kraCompanySettings">
+            <ion-row class="stripedHeader">
+              <ion-col sizeXl="3">
+                <strong>{{ _kraCompanySettings.sKraNameChange }}</strong>
+              </ion-col>
+              <ion-col sizeXl="3" class="ion-hide-sm-down">
+                <strong>{{ _kraCompanySettings.sKpiNameChange }}</strong>
+              </ion-col>
+              <ion-col sizeXl="3" class="ion-hide-sm-down">
+                <strong>Role Title</strong>
+              </ion-col>
+              <ion-col sizeXl="1" class="ion-hide-lg-down">
+                <strong>Revision</strong>
+              </ion-col>
+              <ion-col sizeXl="2">
+              </ion-col>
+            </ion-row>
+
+            <ng-container *ngFor="let role of _jobTitleRoles">
+              <ng-container *ngFor="let item of role['kraProfile'];let x = index">
+                <ng-container *ngFor="let kra of item['kras'] | searchPipe: _searchText : 'sKraName';let i = index">
+                  <ion-row class="stripedContent" *ngIf="(x === 0 && i === 0) || role['expanded']  || _searchText">
+                    <ion-col sizeXl="3">
+                      {{x}}-{{i}}-{{ kra['sKraName'] }}
+                    </ion-col>
+                    <ion-col sizeXl="3" class="ion-hide-sm-down">
+                      <ng-container *ngFor="let kpi of kra['kpis']; let j = index">
+                        <ion-row>
+                          <ion-col>
+                            -{{kpi['sKpiname'] }}
+                          </ion-col>
+                        </ion-row>
+                      </ng-container>
+                    </ion-col>
+                    <ion-col sizeXl="3" class="ion-hide-sm-down">
+                      {{role.sJobTitleRoleName}}
+                    </ion-col>
+                    <ion-col sizeXl="1" class="ion-hide-sm-down">
+                      {{role.iRevision}}
+                    </ion-col>
+                    <ion-col sizeXl="2" class="text-right">
+                      <ion-button size="small" color="primary" *ngIf="role['expanded'] === false && x === 0 && i === 0 "
+                        (click)="role['expanded'] = true">
+                        <ion-icon name="eye-sharp"></ion-icon>
+                      </ion-button>
+                      <ion-button size="small" color="primary" *ngIf="role['expanded'] === true && x === 0 && i === 0"
+                        (click)="role['expanded'] = false">
+                        <ion-icon name="eye-off-sharp"></ion-icon>
+                      </ion-button>
+                      <ion-button size="small" color="primary" *ngIf="role['expanded'] === false && x === 0 && i === 0"
+                        (click)="role['expanded'] = true">
+                        <ion-icon></ion-icon>
+                      </ion-button>
+                      <ion-button size="small" color="primary" (click)="printPDFReport(role.JobTitleUUID)">
+                        <ion-icon name="print"></ion-icon>
+                      </ion-button>
+                      <ion-button size="small" color="primary" (click)="viewRolePorfile(role.JobTitleUUID)">
+                        <ion-icon name="search"></ion-icon>
+                      </ion-button>
+                    </ion-col>
+                  </ion-row>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+
+          </ng-container>
+        </ion-grid>
+
+      </ion-card-content>
+    </ion-card>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-button class="btnRound" shape="round" (click)="goBack()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-button>
+</ion-footer>

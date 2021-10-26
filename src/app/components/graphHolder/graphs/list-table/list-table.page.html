@@ -1,0 +1,54 @@
+<ion-grid class="list-displayer " *ngIf="data">
+  <ng-container *ngFor="let d of data['series']; let i = index">
+    <ion-row *ngIf="i < 15 && !bLoadMore">
+      <ion-col size="10" class="list-col">
+        <ion-text *ngIf="data['labels'][i] === 'Overall Result'">
+          <strong>
+            {{ data['labels'][i] }}
+          </strong>
+        </ion-text>
+        <ion-text *ngIf="data['labels'][i] != 'Overall Result'" class="list-text">
+          {{ data['labels'][i] }}
+        </ion-text>
+      </ion-col>
+      <ion-col size="2">
+        <ion-text>
+          <h2 [ngStyle]="{'color': data['colors'][i]}">
+            {{ d }}
+          </h2>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+  </ng-container>
+
+  <ng-container *ngIf="bLoadMore">
+    <ion-row *ngFor="let d of data['series']; let i = index">
+      <ion-col size="10">
+        <ion-text *ngIf="data['labels'][i] === 'Overall Result'">
+          <strong>
+            {{ data['labels'][i] }}
+          </strong>
+        </ion-text>
+        <ion-text *ngIf="data['labels'][i] != 'Overall Result'" class="list-text">
+          {{ data['labels'][i] }}
+        </ion-text>
+      </ion-col>
+      <ion-col size="2">
+        <ion-text>
+          <h2 [ngStyle]="{'color': data['colors'][i]}">
+            {{ d }}
+          </h2>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+  </ng-container>
+
+  <ion-item lines="none" *ngIf="data['series'] && data['series'].length > 14">
+    <ion-label slot="end" class="loadMore hover" *ngIf="!bLoadMore" (click)="bLoadMore = true">
+      Load more...
+    </ion-label>
+    <ion-label slot="end" class="loadMore hover" *ngIf="bLoadMore" (click)="bLoadMore = false">
+      load less...
+    </ion-label>
+  </ion-item>
+</ion-grid>

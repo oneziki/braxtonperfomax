@@ -1,0 +1,136 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="contentPageWrapper reportGrid">
+    <ion-card>
+      <ion-card-header>
+        <ion-row>
+          <ion-col size="6">
+            {{ _details['sAssessmentName'] }}
+          </ion-col>
+          <ion-col class="text-right">
+            <ion-button *ngIf="_reportData.hasOwnProperty('details')" (click)="emitPrinting()">
+              <ion-icon name="print-outline"></ion-icon>
+              Print Report
+            </ion-button>
+
+          </ion-col>
+        </ion-row>
+      </ion-card-header>
+
+      <ion-row>
+        <ion-col size="6">
+          <strong> Details </strong>
+        </ion-col>
+        <ion-col>
+          <strong>{{ _details['sDetailsHeading'] }}</strong>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-row>
+            <ion-col size="6">
+              {{ _details['sAssesseeLabel'] }}
+            </ion-col>
+            <ion-col size="6">
+              {{ _details['sAssesseeName'] }}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6">
+              {{ _details['sAssessorLabel'] }}
+            </ion-col>
+            <ion-col size="6">
+              {{ _details['sAssessorName'] }}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6">
+              {{ _details['sAssessorTypeLabel'] }}
+            </ion-col>
+            <ion-col size="6">
+              {{ _details['sAssessorTypeDescription'] }}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6">
+              Email
+            </ion-col>
+            <ion-col size="6">
+              {{ _details['sEmail'] }}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6">
+              Completed
+            </ion-col>
+            <ion-col size="6">
+              {{ _details['dDateCompleted'] }}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6">
+              {{ _details['sOverallScoreLabel'] }}
+            </ion-col>
+            <ion-col size="6">
+              <span class="color-dot" [ngStyle]="{ 'background': _details['overall_sColor']  }"></span>
+              {{ _details['overallScore'] }}
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <ion-col>
+          <ion-row *ngFor="let legendItem of _legend">
+            <ion-col>
+
+              <span class="color-dot" [ngStyle]="{ 'background': legendItem.sColor  }"></span>
+              {{ legendItem.sOptionName }}: {{ legendItem.iStart}} - {{ legendItem.iEnd }}
+
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <table class="table">
+            <thead>
+              <tr class="bg-primary">
+                <th>Questions Responded To</th>
+                <th class="text-center">Your Results</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let sCompetencyType of _questionData['sCompetencyType']">
+                <ng-container *ngFor="let Competencies of sCompetencyType['Competencies']">
+                  <ng-container *ngFor="let Outcomes of Competencies['Outcomes']">
+                    <!-- OUTCOMES  -->
+                    <tr>
+                      <th scope="row" colspan="2" class="text-left">
+                        {{ Outcomes.sOutcomeName }}
+                      </th>
+                    </tr>
+                    <ng-container *ngFor="let Indicators of Outcomes['Indicators']">
+                      <!-- INDICATORS -->
+                      <tr>
+                        <td>
+                          <p>{{ Indicators.sIndicatorName }}</p>
+                        </td>
+                        <td class="text-center">
+                          <p>
+                            <span class="color-dot" [ngStyle]="{ 'background': Indicators.sColor  }"
+                              *ngIf="Indicators.bShowColorDot == 1 && Indicators.sScore != 'N/A'"></span>
+                            {{ Indicators.sScore }}
+                            <span *ngIf="Indicators.bShowPercentage == 1 && Indicators.sScore != 'N/A'">%</span>
+                          </p>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </tbody>
+          </table>
+        </ion-col>
+      </ion-row>
+
+
+    </ion-card>
+  </ion-grid>
+</ion-content>

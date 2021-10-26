@@ -1,0 +1,271 @@
+<!-- <div #graphCard> -->
+<!-- id="iud-{{ data['MymaxTemplateMenuComponentUID'] }}" -->
+<ion-card [id]="forPrint ? 'print-iud-'+ data['MymaxTemplateMenuComponentUID'] : 'iud-'+ data['MymaxTemplateMenuComponentUID']"
+  class="mymaxCard homeCard personalLeave card portal-card project-task podholder forDash  {{ filter.currentViewSection }} {{ data['visualSettings']['ss_sCardTypes'] }}">
+  <ion-card-header class="card-header {{ _graphType }}">
+    <ion-card-title class="cardHeader card-title text-prime m-b-0-impo">
+      <h5 class="card-title text-prime m-b-0-impo">
+
+        <strong>
+          <span [innerHTML]="data['visualSettings'][ filter['viewPrefix'] + 'sHeading']"></span>
+          <ion-button color="light" size="small" class="myMax-btnPopover f-right" (click)="CreatePopover($event)">
+            <ion-icon name="menu"></ion-icon>
+          </ion-button>
+        </strong>
+
+        <ng-container *ngIf="data['population']">
+          <span class="body-extraInfo">
+            <i class="icofont icofont-users"></i>
+            {{ data['population'] }}
+          </span>
+        </ng-container>
+
+        <div class="myMax-btnList">
+          <!-- GO STEP-BACK -->
+          <!-- <a href="javascript:" title="Reverse Step" (click)="reverseStepThrough()" *ngIf="filter['viewPrefix'][2] === 's'">
+            <i class="icofont icofont-swoosh-left"></i> <strong>Reverse</strong> Step
+          </a> -->
+          <!-- LEGEND -->
+          <a href="javascript:" title="Toggle Legend" (click)="_showLegend = !_showLegend" (mousedown)="$event.stopPropagation()" (touchstart)="$event.stopPropagation()"
+            *ngIf="data['legends'] && _bShowLegend">
+            <i class="icofont icofont-traffic-light"></i>
+            <strong *ngIf="!_showLegend">Show</strong>
+            <strong *ngIf="_showLegend">Hide</strong>
+            Legend
+          </a>
+          <!-- SHOW INFO -->
+          <a href="javascript:" title="Toggle Info" (click)="_showInfo = !_showInfo; _hoverInfo = true" (mousedown)="$event.stopPropagation()"
+            (touchstart)="$event.stopPropagation()" *ngIf="_bShowInfoButton">
+            <i class="icofont icofont-info-circle"></i>
+            <strong *ngIf="!_showInfo">Show</strong> Info
+            <strong *ngIf="_showInfo">Hide</strong> Info
+          </a>
+          <!-- GO DETAILED -->
+          <!-- <a href="javascript:" title="Detailed View" (click)="showDetailed()" *ngIf="data['visualSettings']['bShowSingleDetailedView'] && filter.currentViewSection === 'summary'">
+            <i class="icofont icofont-ui-zoom-in"></i> <strong>Show</strong> Detailed Data
+          </a> -->
+          <!-- GO SUMMARY -->
+          <!-- <a href="javascript:" title="Summary View" (click)="showSummary()" *ngIf="filter.currentViewSection === 'detailed'">
+            <i class="icofont icofont-ui-zoom-out"></i> <strong>Back to</strong> Summary Data
+          </a> -->
+          <!-- GO MODAL -->
+          <a href="javascript:" title="Modal View" (click)="showModal($event)" *ngIf="data['cols'] > 2">
+            <i class="icofont icofont-resize"></i> <strong>Show</strong> Enlarged
+          </a>
+        </div>
+
+        <span class="d-block text-slate m-b-5">
+          {{ data['visualSettings'][ filter['viewPrefix'] + 'sDescription'] }}
+        </span>
+
+      </h5>
+
+    </ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content id="content" class="card-body {{ _graphType }} iud-{{ data['MymaxTemplateMenuComponentUID'] }} cols-{{ data['cols'] }} rows-{{ data['rows'] }}"
+    (window:resize)="onResize()">
+    <div id="content-body" class="card-body card-body-inner" #graphCard>
+      <!-- List Graphs -->
+      <ng-container *ngIf="_listGraphs.indexOf(data['visualSettings'][ filter['viewPrefix'] + 'sGraphTypes']) > -1">
+        <!-- Radial List -->
+        <ng-container *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'sGraphTypes'] === 'RadialList'">
+          <div class="row">
+            <div class="col-12 col-sm-4 text-center" *ngFor="let d of data['data']">
+              <!-- GRAPH -->
+              <app-graphHolder [type]="_graphType" [data]="data" [filter]="filter" [graphHeight]="_graphCardHeight / ( data['data'].length / 3) - 25"
+                [graphWidth]="_graphCardWidth / ( data['data'].length / 3) - 45">
+              </app-graphHolder>
+
+              <strong class="d-block m-t-5 text-center text-muted">{{ d['name'] }}</strong>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Pie List -->
+        <ng-container *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'sGraphTypes'] === 'pieList'">
+          <ion-grid class="mymaxPieListGrid">
+            <ion-row *ngFor="let d of data['apexData']">
+              <ion-col size="12">
+                <strong class="d-block m-t-5 text-center text-muted">{{ d['name'] }}</strong>
+              </ion-col>
+              <ion-col sizeXs="12" sizeSm="4" class="text-center">
+                <p>Conversing</p>
+                <app-graphHolder type="pieList" [data]="d['Conversing']" [filter]="filter" (podHolderHandler)="mymaxHandler($event)" [graphHeight]="_graphCardHeight"
+                  [graphWidth]="_graphCardWidth">
+                </app-graphHolder>
+
+              </ion-col>
+              <ion-col sizeXs="12" sizeSm="4" class="text-center">
+                <p>Reading</p>
+                <app-graphHolder type="pieList" [data]="d['Reading']" [filter]="filter" (podHolderHandler)="mymaxHandler($event)" [graphHeight]="_graphCardHeight - 25"
+                  [graphWidth]="_graphCardWidth">
+                </app-graphHolder>
+              </ion-col>
+              <ion-col sizeXs="12" sizeSm="4" class="text-center">
+                <p>Writing</p>
+                <app-graphHolder type="pieList" [data]="d['Writing']" [filter]="filter" (podHolderHandler)="mymaxHandler($event)" [graphHeight]="_graphCardHeight - 25"
+                  [graphWidth]="_graphCardWidth">
+                </app-graphHolder>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <!--  -->
+        </ng-container>
+      </ng-container>
+
+      <!-- Single Graphs -->
+      <ng-container *ngIf="_listGraphs.indexOf(data['visualSettings'][ filter['viewPrefix'] + 'sGraphTypes']) === -1">
+        <!-- GRAPH -->
+        <ng-container *ngIf="_graphCardHeight && _graphCardHeight > 0 && data['visualSettings'][ filter['viewPrefix'] + 'sLayout'] !== 'Custom Layout' && data['visualSettings'][ filter['viewPrefix'] + 'sGraphTypes'] !== 'Circle'">
+          <!--  -->
+          <app-graphHolder [type]="_graphType" [data]="data" [filter]="filter" [graphHeight]="_graphCardHeight - 25" [graphWidth]="_graphCardWidth"
+            (podHolderHandler)="mymaxHandler($event)">
+          </app-graphHolder>
+          <!--  -->
+        </ng-container>
+        
+        <!-- CIRCLE -->
+        <ng-container *ngIf="_graphCardHeight && _graphCardHeight > 0 && data['visualSettings'][ filter['viewPrefix'] + 'sLayout'] !== 'Custom Layout' && data['visualSettings'][ filter['viewPrefix'] + 'sGraphTypes'] === 'Circle'">
+          <app-graphHolder [type]="_graphType" [data]="data" [filter]="filter" [graphHeight]="_graphCardHeight" [graphWidth]="_graphCardWidth"
+            (podHolderHandler)="mymaxHandler($event)">
+          </app-graphHolder>
+        </ng-container>
+
+        <!-- REPORT -->
+        <ng-container *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'sLayout'] === 'Custom Layout'">
+          <app-customlayout [pdfData]="data"></app-customlayout>
+        </ng-container>
+      </ng-container>
+
+      <small style="display: none;">
+        <small>
+          <pre>
+              {{ data | json }}
+            </pre>
+        </small>
+      </small>
+    </div>
+  </ion-card-content>
+
+  <!-- Footer Legend -->
+  <ion-grid class="footerLegend" *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'bShowFooterLegend']">
+    <!-- Combo Footer Legend -->
+    <ion-row
+      *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'sGraphTypes'] === 'Combo' || data['visualSettings'][ filter['viewPrefix'] + 'sGraphTypes'] === 'Line'; else normalLegend">
+      <ion-col class="text-center">
+        <span class="pointer" (click)="_flSelect = 'All'">
+          <span class="color-dot bg-primary"></span> All
+        </span>
+      </ion-col>
+      <ion-col class="text-center" *ngFor="let legend of data['legends']; let iCol = index;">
+        <span class="pointer" (click)="_flSelect = legend['sName']">
+          <span class="color-dot" [ngStyle]="{'background': legend['sColor']}"></span> {{ legend['sName'] }}
+        </span>
+      </ion-col>
+    </ion-row>
+    <ng-template #normalLegend>
+      <ion-row>
+        <ion-col class="text-center" *ngFor="let legend of data['legends']; let iCol = index;">
+          <span class="color-dot" [ngStyle]="{'background': legend['sColor']}"></span> {{ legend['sName'] }}
+        </ion-col>
+      </ion-row>
+    </ng-template>
+  </ion-grid>
+
+  <!-- Radial Smilies -->
+  <table class="no-borders radial-smilies" *ngIf="data['data2']">
+    <ng-container *ngFor="let col of data['data2']['data']; let iCol = index;">
+      <tr *ngIf="iCol > 0">
+        <td class="text-center">
+          <strong class="animated grid-face" [ngStyle]="{'color': col[2]}">
+            <i class="icofont icofont-simple-smile" *ngIf="data['data2']['bSmileyFace']"></i>
+            <i class="icofont icofont-sad" *ngIf="!data['data2']['bSmileyFace']"></i>
+          </strong>
+        </td>
+        <td [ngStyle]="{'color': col[2]}">
+          {{ col[1] }}
+        </td>
+        <td class="text-right">
+          <span class="grid-role text-muted">{{ col[4] }}</span>
+        </td>
+      </tr>
+    </ng-container>
+  </table>
+  <!-- MeasureList -->
+  <ng-container *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'sGraphTypes'] !== 'MeasureList'">
+    <small class="m-l-10">
+      <!-- Status -->
+      <ng-container *ngIf="data['resultDate'] && data['resultDate']['label'] && data['resultDate']['value']">
+        <ng-container *ngIf="data['resultDate']['value'] !== ' '">
+          <span class="text-light-grey fw-600" *ngIf="filter['viewPrefix'][0] !== 't' || !_trendInfo.length">
+            {{ data['resultDate']['label'] }}: <span class="ws-nowrap">{{ data['resultDate']['value'] }}</span>
+          </span>
+        </ng-container>
+        <ng-container *ngIf="data['resultDate']['value'] === ' '">
+          <span class="text-light-grey fw-600" *ngIf="filter['viewPrefix'][0] !== 't' || !_trendInfo.length">
+            {{ data['resultDate']['label'] }}
+          </span>
+        </ng-container>
+        <ng-container *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'sGraphTypes'] === 'PieList'">
+          <div class="f-right" *ngIf="data['legends'][0]">
+            <ng-container *ngFor="let l of data['legends'][0]; let iL = index">
+              <span class="color-dot" [ngStyle]="{'background': l['sColor']}"></span> {{ l['sName'] }}
+            </ng-container>
+          </div>
+        </ng-container>
+      </ng-container>
+      <!-- TREND LEGEND -->
+      <ng-container *ngIf="data['visualSettings'][ filter['viewPrefix'] + 'sGraphTypes'] !== 'Radial'">
+        <span class="trendFilter text-muted" *ngIf="filter['viewPrefix'][0] === 't' && _trendInfo.length">
+          <span class="trendInfo-wrapper" style="display: inline-block;" *ngFor="let ti of _trendInfo">
+            {{ ti.label }}
+            <span class="trendInfo-bar bg-primary" [ngClass]="{'stripe': !ti.certainty }"></span>
+          </span>
+        </span>
+      </ng-container>
+    </small>
+  </ng-container>
+
+  <div class="context-content z-depth-bottom-0 animated" [ngClass]="{'zoomIn': _showLegend, 'zoomOut': !_showLegend}" [ngStyle]="{ 'height': _graphCardHeight}"
+    *ngIf="data['legends'] && data['legends'].length && _showLegend">
+    <i class="icofont icofont-close-circled text-danger close-context" (click)="_showLegend = !_showLegend"></i>
+    <span class="tooltip-content clearfix">
+      <div class="tooltip-content-table">
+        <ng-container *ngIf="data['legends'][0][0];else legendNest">
+          <ion-row *ngFor="let legend of data['legends'][0]">
+            <ion-col>
+              {{ legend['sName'] }}
+            </ion-col>
+            <ion-col class="text-right">
+              <ion-label class="label label-lg" [ngStyle]="{'background': legend['sColor']}">
+                {{ legend['fStart'] }} - {{ legend['fEnd'] }}
+              </ion-label>
+            </ion-col>
+          </ion-row>
+        </ng-container>
+        <ng-template #legendNest>
+          <ion-row *ngFor="let legend of data['legends']">
+            <ion-col>
+              {{ legend['sName'] }}
+            </ion-col>
+            <ion-col class="text-right">
+              <ion-label class="label label-lg legend-label" [ngStyle]="{'background': legend['sColor']}">
+                {{ legend['fStart'] }} - {{ legend['fEnd'] }}
+              </ion-label>
+            </ion-col>
+          </ion-row>
+        </ng-template>
+      </div>
+    </span>
+  </div>
+  <!-- INFO -->
+  <ng-container>
+    <div class="context-content z-depth-bottom-0 animated" [ngClass]="{'zoomIn': _showInfo, 'zoomOut': !_showInfo}" [ngStyle]="{ 'height': _graphCardHeight }">
+      <i class="icofont icofont-close-circled text-danger close-context"></i>
+      <span class="tooltip-content clearfix" [innerHTML]="data['visualSettings'][ filter['viewPrefix'] + 'sInfoText']">
+      </span>
+    </div>
+  </ng-container>
+</ion-card>
+<!-- </div> -->

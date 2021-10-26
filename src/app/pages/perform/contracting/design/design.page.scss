@@ -1,0 +1,14 @@
+.contractDesignGrid {
+  .designFab {
+    position: absolute !important;
+    bottom: 5px !important;
+  }
+
+  .default-img {
+    height: 100px;
+    width: 100px;
+    margin: 10px auto;
+    border-radius: 100%;
+    color: var(--lite-charcoal);
+  }
+}

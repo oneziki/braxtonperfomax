@@ -1,0 +1,77 @@
+.swotGrid {
+  ion-label {
+    font-size: 22px !important;
+    font-weight: 600;
+    color: var(--lite-grey) !important;
+  }
+
+  .f-right {
+    float: right;
+  }
+
+  .card {
+    transition: all 0.75s ease;
+    border-radius: 0;
+    margin-bottom: 10px;
+    width: 100%;
+    box-shadow: 0 1px 2.94px 0.06px rgba(0, 0, 0, 0.6);
+
+    &.card-transparent {
+      background: transparent !important;
+      box-shadow: none;
+      .card-header {
+        padding: 0 5px 25px;
+        .card-title {
+          display: block;
+          color: var(--primary);
+          border-top: 1px solid var(--slate-grey);
+          padding-top: 20px;
+          letter-spacing: 1px;
+          font-weight: 600;
+          font-size: 18px;
+
+          & + small {
+            color: var(--sub-grey);
+          }
+        }
+      }
+
+      ion-input {
+        border-radius: 25px 0px 0px 25px;
+      }
+
+      .p-l-10 {
+        padding-left: 10px;
+      }
+
+      .p-b-10 {
+        padding-bottom: 10px;
+      }
+
+      ion-card-title {
+        color: white;
+      }
+
+      ion-button {
+        --background: var(--danger);
+      }
+
+      .sub-title {
+        border-radius: 10px;
+        padding: 10px 20px !important;
+        color: var(--slate-grey);
+        margin-right: 10px;
+      }
+
+      .pointer {
+        cursor: pointer;
+      }
+    }
+  }
+
+  @media (max-width: 576px) {
+    .floatLeft {
+      float: left !important;
+    }
+  }
+}
